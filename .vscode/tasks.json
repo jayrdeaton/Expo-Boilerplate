@@ -1,0 +1,83 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Expo dev server",
+			"type": "shell",
+			"command": "npm start",
+			"isBackground": true,
+			"problemMatcher": [
+				{
+					"owner": "expo",
+					"pattern": {
+						"regexp": "^(?!x)x"
+					},
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": "Starting project",
+						"endsPattern": "(Press \\\\? to show all commands|Waiting on|Developer tools running|Dev server running|Metro waiting on)"
+					}
+				}
+			]
+		},
+		{
+			"label": "TypeScript check",
+			"type": "shell",
+			"command": "npm run -s check",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "ESLint",
+			"type": "shell",
+			"command": "npm run -s lint",
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Jest tests",
+			"type": "shell",
+			"command": "npm test --silent",
+			"problemMatcher": [
+				{
+					"owner": "jest",
+					"fileLocation": ["absolute"],
+					"pattern": {
+						"regexp": "^\\s*at\\s.*\\(\\s*(?:file:\\/\\/\\/)?(?!.*node_modules\\/)(\\/.*\\.(?:[jt]sx?)):(\\d+):(\\d+)\\s*\\)$",
+						"file": 1,
+						"line": 2,
+						"column": 3
+					},
+					"severity": "error"
+				},
+				{
+					"owner": "jest",
+					"fileLocation": ["relative", "${workspaceFolder}"],
+					"pattern": {
+						"regexp": "^\\s*at\\s.*\\(\\s*(?!.*node_modules\\/)(?!\\/)(.+\\.(?:[jt]sx?)):(\\d+):(\\d+)\\s*\\)$",
+						"file": 1,
+						"line": 2,
+						"column": 3
+					},
+					"severity": "error"
+				},
+				{
+					"owner": "jest",
+					"fileLocation": ["relative", "${workspaceFolder}"],
+					"pattern": {
+						"regexp": "^\\s*at\\s(?!.*node_modules\\/)(?!\\/)(.+\\.(?:[jt]sx?)):(\\d+):(\\d+)$",
+						"file": 1,
+						"line": 2,
+						"column": 3
+					},
+					"severity": "error"
+				}
+			],
+			"group": "test"
+		}
+	]
+}

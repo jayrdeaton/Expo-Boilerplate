@@ -1,0 +1,51 @@
+{
+  "cli": {
+    "version": ">= 14.4.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "simulator": {
+      "autoIncrement": true,
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      },
+      "channel": "simulator"
+    },
+    "client": {
+      "android": {
+        "buildType": "apk"
+      },
+      "autoIncrement": true,
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "client"
+    },
+    "development": {
+      "android": {
+        "buildType": "apk"
+      },
+      "autoIncrement": true,
+      "channel": "development",
+      "distribution": "internal"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "autoIncrement": true,
+      "channel": "preview"
+    },
+    "production": {
+      "android": {
+        "buildType": "apk"
+      },
+      "autoIncrement": true,
+      "channel": "production"
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

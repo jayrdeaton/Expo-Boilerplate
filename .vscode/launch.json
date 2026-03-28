@@ -1,0 +1,50 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "One",
+      "type": "expo",
+      "request": "attach",
+      "projectRoot": "${workspaceFolder}",
+      "bundlerPort": "8081",
+      "bundlerHost": "127.0.0.1"
+    },
+    {
+      "name": "Two",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "exponent",
+      "cwd": "${workspaceFolder}",
+      "sourceMaps": true,
+      "preLaunchTask": "Start Expo dev server"
+    },
+    {
+      "type": "expo",
+      "request": "attach",
+      "name": "Three",
+      "projectRoot": "${workspaceFolder}",
+      "bundlerPort": "8081",
+      "bundlerHost": "127.0.0.1",
+      "enableTurboSourcemaps": true
+    },
+    {
+        "type": "expo",
+        "request": "attach",
+        // Slightly different name
+        "name": "Debug my-app",
+        // When using monorepos OR workspaces that's not the root of your Expo app,
+        // you have to specify the expo project path. It will ask too if it cant find it.
+        "projectRoot": "${workspaceFolder}",
+        // These can be modified however you want
+        "bundlerPort": "8081",
+        // localhost or your LAN address should also work fine
+        "bundlerHost": "127.0.0.1",
+        // Enable trace logs to debug the debugger :) (it contains the CDP communications between vscode and the app)
+        "trace": true,
+        // You can disable something called "turbo source maps", it's a semi-experimental feature from vscode
+        // and should only be disabled if you are running into source maps or breakpoint binding issues
+        "enableTurboSourcemaps": false,
+        "sourceMap": true
+      }
+    ]
+}

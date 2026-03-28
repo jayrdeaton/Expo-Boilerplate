@@ -1,0 +1,53 @@
+# dependencies
+node_modules/
+
+# env
+.env
+tmp
+
+# Expo
+.expo/
+web-build/
+/ios/
+/android/
+expo-env.d.ts
+dist
+build*/
+
+# AI Readme files
+readmes/
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# testing
+coverage/
+
+# vscode
+.vscode/exponentIndex.js
+
+# vercel
+.vercel

@@ -1,0 +1,69 @@
+{
+  "expo": {
+    "name": "Expo Boilerplate",
+    "slug": "expo-boilerplate",
+    "version": "0.0.0",
+    "scheme": "app",
+    "description": "An Expo boilerplate project",
+    "orientation": "portrait",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "icon": "./src/assets/images/application_icon.png",
+    "userInterfaceStyle": "automatic",
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "ON_LOAD"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.infinitetoken.ExpoBoilerplate",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.infinitetoken.expoboilerplate",
+      "permissions": [
+        "CAMERA",
+        "VIBRATE"
+      ]
+    },
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
+    "extra": {
+      "message": "OTA update message",
+      "storybook": false
+    },
+    "plugins": [
+      "expo-asset",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/images/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "image": "./src/assets/images/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": false
+        }
+      ],
+      "expo-font",
+      "expo-sqlite"
+    ]
+  }
+}
