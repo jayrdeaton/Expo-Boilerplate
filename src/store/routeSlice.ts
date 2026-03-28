@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type RouteState = {
   name: string | null
@@ -12,12 +12,8 @@ const slice = createSlice({
   name: 'route',
   initialState,
   reducers: {
-    initialize(state, action: { payload: Partial<RouteState> }) {
-      return { ...state, ...action.payload }
-    },
-    setName(state, action: { payload: string }) {
-      state.name = action.payload
-    }
+    initialize: (state, action: PayloadAction<Partial<RouteState>>) => ({ ...state, ...action.payload }),
+    setName: (state, action: PayloadAction<string>) => ({ ...state, name: action.payload })
   }
 })
 
