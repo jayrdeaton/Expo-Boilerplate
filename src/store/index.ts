@@ -2,11 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Action, combineReducers, configureStore, Dispatch, Middleware } from '@reduxjs/toolkit'
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
 
-import list, { listActions } from './listSlice'
 import options, { optionsActions } from './optionsSlice'
 import route, { routeActions } from './routeSlice'
-import search, { searchActions } from './searchSlice'
-import selection, { selectionActions } from './selectionSlice'
 import settings, { settingsActions } from './settingsSlice'
 import snack, { snackActions } from './snackSlice'
 import theme, { themeActions } from './themeSlice'
@@ -18,11 +15,8 @@ const errorMiddleware: Middleware = () => (next: Dispatch<ActionWithError>) => (
 }
 
 const rootReducer = combineReducers({
-  list,
   options,
   route,
-  search,
-  selection,
   settings,
   snack,
   theme
@@ -52,4 +46,4 @@ export default store
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
-export { listActions, optionsActions, routeActions, searchActions, selectionActions, settingsActions, snackActions, themeActions }
+export { optionsActions, routeActions, settingsActions, snackActions, themeActions }

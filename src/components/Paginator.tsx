@@ -5,13 +5,17 @@ import { Surface, useTheme } from 'react-native-paper'
 import { useSettings } from '../hooks'
 import { Generic } from '../types'
 import { capitalizedString, singularString, snack } from '../utils'
-import { ActivityIndicator } from './ActivityIndicator'
-import { Collapsible } from './Collapsible'
-import { IconButton } from './IconButton'
-import { ImageOrIcon } from './ImageOrIcon'
-import { ItemMenu } from './ItemMenu'
-import { ListItem } from './ListItem'
-import { Menu } from './Menu'
+
+export type PaginatorProps<T> = {
+  collection: string
+  icon: string
+  id?: string
+  onChange: (item: T) => void
+  onLongPress?: () => void
+  onPress?: () => void
+  style?: ViewStyle
+  title?: string
+}
 
   collection: string
   icon: string
