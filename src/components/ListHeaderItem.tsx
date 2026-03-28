@@ -1,7 +1,6 @@
 import { memo, useCallback, useState } from 'react'
 import { GestureResponderEvent, View } from 'react-native'
 
-import { Filter } from '../models'
 import { Generic } from '../types'
 import { FlatListProps } from './FlatList'
 import { ItemFormModal } from './ItemFormModal'
@@ -9,10 +8,8 @@ import { ItemMenu } from './ItemMenu'
 import { ListItem, ListItemProps } from './ListItem'
 import { Menu } from './Menu'
 
-export type ListHeaderItemProps<T> = ListItemProps<T> & {
   collection: string
   onEdit?: (item: T) => void
-  params?: Filter
   waitOn?: boolean
 } & Omit<FlatListProps<T>, 'data' | 'renderItem'>
 

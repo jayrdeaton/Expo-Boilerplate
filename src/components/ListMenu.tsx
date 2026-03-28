@@ -27,7 +27,7 @@ export const ListMenu = ({ collection, hidden = [], disabled = [], onAdd, onRese
       {!hidden?.includes('Footer') ? <MenuItem selected={footerLock} disabled={disabled?.includes('Footer') || false} onPress={handleFooterLock} title='Footer' icon={`${icons.footer}${!footerLock ? '-outline' : ''}`} /> : null}
       {!hidden?.includes('Search') ? <MenuItem selected={search} disabled={disabled?.includes('Search') || false} onPress={handleSearch} title='Search' icon={`${icons.search}${!search ? '-outline' : ''}`} /> : null}
       {!hidden?.includes('Add') ? <MenuItem disabled={disabled?.includes('Grid') || false} onPress={onAdd} title={`Add ${collection}`} icon={icons.add} /> : null}
-      {!hidden?.includes('Reset') ? <MenuItem disabled={disabled?.includes('Grid') || false} onPress={onReset} title='Reset Filters' icon={icons.reset} /> : null}
+      {/* Reset Filters removed */}
     </View>
   )
 }

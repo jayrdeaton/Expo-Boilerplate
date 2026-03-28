@@ -9,7 +9,6 @@
 import { GestureResponderEvent } from 'react-native'
 
 import { icons } from '../constants'
-import { Filter } from '../models'
 import { Generic } from '../types'
 import { capitalizedString, singularString } from '../utils'
 import { Header } from './Header'
@@ -28,12 +27,10 @@ import { ScrollViewProvider } from './ScrollViewProvider'
  * @property params - Optional filter params for the query.
  * @property visible - Whether the modal is visible.
  */
-export type ItemPickerProps<T> = {
   collection: string
   icon: string
   onChange: (item: T, event?: GestureResponderEvent) => void
   onClose: () => void
-  params?: Filter
   visible: boolean
 } & Partial<ItemListProps<T>>
 

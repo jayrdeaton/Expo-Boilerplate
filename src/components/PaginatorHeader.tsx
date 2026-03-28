@@ -2,8 +2,6 @@ import { memo, type ReactNode, useCallback, useEffect, useMemo, useRef, useState
 import { FlatList, LayoutChangeEvent, ListRenderItem, StyleSheet, View, ViewStyle } from 'react-native'
 
 import { layout } from '../constants'
-import { useList } from '../hooks'
-import { Filter } from '../models'
 import { Generic } from '../types'
 import { capitalizedString, commaString, singularString, snack } from '../utils'
 import { ActivityIndicator } from './ActivityIndicator'
@@ -18,7 +16,6 @@ import { Row } from './Row'
 import { ScrollViewHeader } from './ScrollViewHeader'
 import { SettingsMenu } from './SettingsMenu'
 
-export type PaginatorHeaderProps<T> = {
   caption?: string
   collection: string
   children?: ReactNode
@@ -30,14 +27,12 @@ export type PaginatorHeaderProps<T> = {
   onChange: (item: T) => void
   onLayout?: (event: LayoutChangeEvent) => void
   onPress?: () => void
-  params?: Filter
   RightComponent?: ReactNode
   style?: ViewStyle
   title?: string
 }
 
 const PaginatorHeaderInner = <T extends Generic>({ children, collection, disabled, icon, id, LeftComponent, MenuItems, onChange, onLayout, onPress, params, RightComponent, style, title }: PaginatorHeaderProps<T>) => {
-  const { hash } = useList(collection, params)
   const [editing, setEditing] = useState(false)
   const flatListRef = useRef<FlatList<T>>(null)
   const master: T[] = []

@@ -3,20 +3,17 @@ import { GestureResponderEvent, ListRenderItem, StyleSheet, View } from 'react-n
 import { Gesture } from 'react-native-gesture-handler'
 import { scheduleOnRN } from 'react-native-worklets'
 
-import { useList, useOptions, useSettings } from '../hooks'
-import { Filter } from '../models'
+import { useOptions, useSettings } from '../hooks'
 import { Generic } from '../types'
 import { FlatList, FlatListProps } from './FlatList'
 import { GalleryItem } from './GalleryItem'
 import { GridItem } from './GridItem'
 import { ItemListEmpty } from './ItemListEmpty'
 import { ItemMenu } from './ItemMenu'
-import { ListFooter } from './ListFooter'
 import { ListItem } from './ListItem'
 import { Menu } from './Menu'
 import { ScrollViewContext } from './ScrollViewProvider'
 
-export type ItemListProps<T> = {
   collection: string
   icon: string
   isSelected?: (item: T) => boolean
@@ -25,7 +22,6 @@ export type ItemListProps<T> = {
   onLongPress?: (item: T, event?: GestureResponderEvent) => void
   onPress?: (item: T, event?: GestureResponderEvent) => void
   onRefresh?: () => void
-  params?: Filter
   waitOn?: boolean
 } & Omit<FlatListProps<T>, 'data' | 'renderItem'>
 
@@ -39,7 +35,6 @@ const MAX_COLUMNS = 5
 
 const ItemListInner = <T extends Generic>({ collection, icon, isSelected, items = [], onEdit, onPress, onLongPress, onRefresh, params, waitOn, ...props }: ItemListProps<T>) => {
   const { setProgressing } = useContext(ScrollViewContext)
-  const { filter, setFilter, hash, search, setSearch, sort, setSort } = useList(collection, params)
   const { columns, mode, setOptions } = useOptions<ItemListOptions>(collection, { columns: 3, mode: 'list' })
   const { headerLock, footerLock } = useSettings()
   const [anchor, setAnchor] = useState({ x: 0, y: 0 })
@@ -47,7 +42,6 @@ const ItemListInner = <T extends Generic>({ collection, icon, isSelected, items 
   const [menuItem, setMenuItem] = useState<T>()
   const [refreshing, setRefreshing] = useState(false)
 
-  const sortKeys = ['createdAt', 'title', 'updatedAt']
 
   const handleLongPressInternal = useCallback(
     (item: T, e?: GestureResponderEvent) => {
@@ -124,7 +118,6 @@ const ItemListInner = <T extends Generic>({ collection, icon, isSelected, items 
         {menuItem && <ItemMenu<T> collection={collection} item={menuItem} onDismiss={handleMenu} onEdit={onEdit ? handleEdit : undefined} />}
       </Menu>
       <FlatList {...props} horizontal={mode === 'gallery'} gesture={pinchGesture} keyboardShouldPersistTaps='handled' data={items} initialNumToRender={items.length} headerLock={headerLock} footerLock={footerLock} key={`${mode}${columns}`} numColumns={numColumns} onRefresh={handleRefresh} refreshing={refreshing} renderItem={renderItem} variant={undefined} ListEmptyComponent={listEmptyComponent} />
-      <ListFooter filter={filter} onFilterChange={setFilter} onSearchChange={setSearch} onSortChange={setSort} search={search} sort={sort} sortKeys={sortKeys} variant={undefined} />
     </View>
   )
 }

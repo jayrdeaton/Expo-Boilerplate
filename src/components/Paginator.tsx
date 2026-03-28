@@ -2,8 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Dimensions, FlatList, GestureResponderEvent, ListRenderItem, StyleSheet, View, ViewStyle } from 'react-native'
 import { Surface, useTheme } from 'react-native-paper'
 
-import { useList, useSettings } from '../hooks'
-import { Filter } from '../models'
+import { useSettings } from '../hooks'
 import { Generic } from '../types'
 import { capitalizedString, singularString, snack } from '../utils'
 import { ActivityIndicator } from './ActivityIndicator'
@@ -14,20 +13,17 @@ import { ItemMenu } from './ItemMenu'
 import { ListItem } from './ListItem'
 import { Menu } from './Menu'
 
-export type PaginatorProps<T> = {
   collection: string
   icon: string
   id?: string
   onChange: (item: T) => void
   onLongPress?: () => void
   onPress?: () => void
-  params?: Filter
   style?: ViewStyle
   title?: string
 }
 
 const PaginatorInner = <T extends Generic>({ collection, icon, id, onChange, onLongPress, onPress, params, style, title }: PaginatorProps<T>) => {
-  const { hash } = useList(collection, params)
   const { paginate } = useSettings()
   const { colors } = useTheme()
   const primaryColor = colors.primary
