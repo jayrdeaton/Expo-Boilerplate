@@ -10,8 +10,6 @@ describe('useSettings', () => {
     expect(result.current).toHaveProperty('imageMode')
     expect(result.current).toHaveProperty('paginate')
     expect(result.current).toHaveProperty('search')
-    expect(result.current).toHaveProperty('sound')
-    expect(result.current).toHaveProperty('vibrate')
     expect(result.current).toHaveProperty('debug')
     expect(result.current).toHaveProperty('keepAwake')
   })

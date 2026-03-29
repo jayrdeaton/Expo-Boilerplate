@@ -5,7 +5,7 @@ import { layout } from '../constants'
 import { useTheme } from '../hooks'
 import { ThemeVariant } from '../types'
 import { getVariantColors } from '../utils'
-import { ImageOrIcon } from './ImageOrIcon'
+import { Icon } from './Icon'
 import { TextAndCaption } from './TextAndCaption'
 import { Touchable, TouchableProps } from './Touchable'
 
@@ -15,7 +15,6 @@ export type DrawerItemProps = {
   children?: ReactNode
   focused?: boolean
   icon: string
-  image?: string | null
   size?: number
   style?: ViewStyle | ViewStyle[]
   title: string
@@ -23,7 +22,7 @@ export type DrawerItemProps = {
   variant?: ThemeVariant
 } & Omit<TouchableProps, 'children'>
 
-export const DrawerItem = ({ caption, children, column, focused, icon, image, size = 26, style, textStyle, title, variant, ...props }: DrawerItemProps) => {
+export const DrawerItem = ({ caption, children, column, focused, icon, size = 26, style, textStyle, title, variant, ...props }: DrawerItemProps) => {
   const { theme } = useTheme()
   const colors = useMemo(() => getVariantColors(theme, variant), [variant, theme])
   const backgroundColor = focused ? colors.container : theme.colors.background
@@ -32,7 +31,7 @@ export const DrawerItem = ({ caption, children, column, focused, icon, image, si
   return (
     <Touchable rippleColor={colors.ripple} style={[styles.container, { backgroundColor }, style]} {...props}>
       <View style={[styles.group, !column && styles.row]}>
-        <ImageOrIcon icon={`${icon}${focused ? '' : '-outline'}`} iconColor={iconColor} image={image} size={size} square />
+        <Icon name={`${icon}${focused ? '' : '-outline'}`} color={iconColor} size={size} />
         <TextAndCaption text={title} caption={caption} style={styles.text} textStyle={[{ color: textColor }, StyleSheet.flatten(textStyle)]} captionStyle={[{ color: textColor }, StyleSheet.flatten(textStyle)]} />
         {children}
       </View>
