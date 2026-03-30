@@ -18,15 +18,9 @@ const slice = createSlice({
   name: 'theme',
   initialState,
   reducers: {
-    initialize(state, action: PayloadAction<Partial<ThemeState>>) {
-      return { ...state, ...action.payload }
-    },
-    setAppearance(state, action: PayloadAction<'system' | 'light' | 'dark'>) {
-      state.appearance = action.payload
-    },
-    setColor(state, action: PayloadAction<string>) {
-      state.color = action.payload
-    }
+    initialize: (state, action: PayloadAction<Partial<ThemeState>>) => ({ ...state, ...action.payload }),
+    setAppearance: (state, action: PayloadAction<'system' | 'light' | 'dark'>) => ({ ...state, appearance: action.payload }),
+    setColor: (state, action: PayloadAction<string>) => ({ ...state, color: action.payload })
   }
 })
 

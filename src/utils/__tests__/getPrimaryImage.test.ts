@@ -1,5 +1,4 @@
 import { AppImage as Image } from '../../types'
-
 import { getPrimaryImage } from '../getPrimaryImage'
 
 describe('getPrimaryImage', () => {

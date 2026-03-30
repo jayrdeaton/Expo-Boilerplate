@@ -1,17 +1,8 @@
-import 'react-native-gesture-handler'
-import React from 'react'
-import { enableScreens } from 'react-native-screens'
-import { Providers } from './src/components'
-import Navigation from './src/navigation'
+import { ExpoRoot } from 'expo-router'
 
 enableScreens(true)
 
-const MainApp: React.FC = () => (
-  <Providers>
-    <Navigation />
-  </Providers>
-)
-
 export default function App() {
-  return <MainApp />
+  // expo-router expects the app directory to be at src/app
+  return <ExpoRoot appDir={require.resolve('./src/app')} />
 }

@@ -1,22 +1,28 @@
-import { DrawerContentComponentProps } from '@react-navigation/drawer'
+// Moved from src/navigation/Drawer.tsx
+import { useRouter, useSegments } from 'expo-router'
 import { useEffect } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { BlurView, DrawerItem, DrawerSection } from '../components'
+
 import { icons } from '../constants'
 import { useRoute, useSettings } from '../hooks'
+import { BlurView, DrawerItem, DrawerSection } from '.'
 
-const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
+const DrawerContent = () => {
   const { name, setName } = useRoute()
   const { debug } = useSettings()
   const insets = useSafeAreaInsets()
-  const state = navigation.getState()
-  const handlePress = (value: string) => navigation.navigate(value)
+  const router = useRouter()
+  const segments = useSegments()
 
   useEffect(() => {
-    const _name = state.routeNames[state.index]
-    setName(_name)
-  }, [setName, state.index, state.routeNames])
+    const current = Array.isArray(segments) && segments.length > 0 ? segments[0] : 'home'
+    setName(current)
+  }, [setName, segments])
+
+  const handlePress = (value: string) => {
+    router.push(`/(drawer)/${value}`)
+  }
 
   return (
     <>
@@ -27,8 +33,8 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
         </DrawerSection>
         {debug && (
           <DrawerSection title='Debug'>
-            <DrawerItem icon={icons.info} focused={name === 'icons'} title='Icons' onPress={() => handlePress('notFound')} />
-            <DrawerItem icon={icons.color} focused={name === 'palette'} title='Palette' onPress={() => handlePress('notFound')} />
+            <DrawerItem icon={icons.info} focused={name === 'icons'} title='Icons' onPress={() => handlePress('icons')} />
+            <DrawerItem icon={icons.color} focused={name === 'palette'} title='Palette' onPress={() => handlePress('palette')} />
           </DrawerSection>
         )}
       </ScrollView>

@@ -8,12 +8,8 @@ const slice = createSlice({
   name: 'options',
   initialState,
   reducers: {
-    initialize(state, action: PayloadAction<OptionsState>) {
-      return { ...state, ...action.payload }
-    },
-    setOptions(state, action: PayloadAction<OptionsState>) {
-      return { ...state, ...action.payload }
-    }
+    initialize: (state, action: PayloadAction<OptionsState>) => ({ ...state, ...action.payload }),
+    setOptions: (state, action: PayloadAction<OptionsState>) => ({ ...state, ...action.payload })
   }
 })
 

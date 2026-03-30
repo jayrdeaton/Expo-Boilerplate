@@ -1,6 +1,6 @@
-type Image = { id?: string; value?: string; blurhash?: string | null }
-
 import { NavigationItem } from '../NavigationItem'
+
+type Image = { id?: string; value?: string; blurhash?: string | null }
 
 describe('NavigationItem', () => {
   it('parses images when stored as JSON text', () => {

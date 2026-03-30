@@ -1,9 +1,0 @@
-{
-  "chat": {
-    "implicitContext": {
-      "enabled": true,
-      "files": [".vscode/assistant-context.md"],
-      "locations": ["workspace"]
-    }
-  }
-}

@@ -14,9 +14,7 @@ const slice = createSlice({
   name: 'snack',
   initialState,
   reducers: {
-    setSnack(state, action: PayloadAction<Snack | undefined>) {
-      state.snack = action.payload
-    }
+    setSnack: (state, action: PayloadAction<Snack | undefined>) => ({ ...state, snack: action.payload })
   }
 })
 

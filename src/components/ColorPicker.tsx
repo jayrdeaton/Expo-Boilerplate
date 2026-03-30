@@ -8,8 +8,6 @@
  *   <ColorPicker visible={open} anchor={coords} color={color} onPick={setColor} onClose={close} />
  */
 import { useMemo, useState } from 'react'
-
-const generateHexColor = () => '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0')
 import { StyleSheet } from 'react-native'
 import { scheduleOnRN } from 'react-native-worklets'
 import ReanimatedColorPicker, { HueSlider, Panel1, Swatches } from 'reanimated-color-picker'
@@ -20,6 +18,12 @@ import { Button } from './Button'
 import { IconButton } from './IconButton'
 import { Menu } from './Menu'
 import { Row } from './Row'
+
+const generateHexColor = () =>
+  '#' +
+  Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, '0')
 
 /**
  * Props for {@link ColorPicker}.
