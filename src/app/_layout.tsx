@@ -1,8 +1,11 @@
 import { Slot, useRouter } from 'expo-router'
 import { useEffect } from 'react'
+import { enableScreens } from 'react-native-screens'
 
 import { Providers } from '../components'
 import { AuthProvider, useAuth } from '../components/AuthContext'
+
+enableScreens(true)
 
 function AuthRedirector() {
   const { isAuthenticated } = useAuth()
