@@ -1,3 +1,3 @@
 export const storageKeys = {
-  uploads: 'UPLOAD_UPLOADS'
+  // Add app-specific AsyncStorage/SecureStore keys here
 }

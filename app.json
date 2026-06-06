@@ -1,70 +1,66 @@
 {
   "expo": {
-    "name": "Expo Boilerplate",
-    "slug": "expo-boilerplate",
+    "name": "Expo Starter",
+    "slug": "expo-starter",
     "version": "0.0.0",
     "scheme": "app",
-    "description": "An Expo boilerplate project",
+    "description": "An Expo starter project",
     "orientation": "portrait",
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "web"
     ],
-    "icon": "./src/assets/images/application_icon.png",
-    "userInterfaceStyle": "automatic",
     "updates": {
       "fallbackToCacheTimeout": 0,
       "checkAutomatically": "ON_LOAD"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.infinitetoken.ExpoBoilerplate",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
-    },
-    "android": {
-      "package": "com.infinitetoken.expoboilerplate",
-      "permissions": [
-        "CAMERA",
-        "VIBRATE"
-      ]
-    },
     "runtimeVersion": {
       "policy": "fingerprint"
     },
-    "extra": {
-      "message": "OTA update message",
-      "storybook": false
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "icon": "./assets/images/dark-icon.png",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.infinitetoken.ExpoStarter",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "icon": {
+        "dark": "./assets/images/dark-icon.png",
+        "light": "./assets/images/light-icon.png"
+      }
+    },
+    "android": {
+      "package": "com.infinitetoken.expostarter"
     },
     "plugins": [
-      "expo-asset",
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/splash.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "backgroundColor": "#F0F0F0",
           "dark": {
-            "image": "./src/assets/images/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#000000"
+            "image": "./assets/images/splash-icon.png",
+            "backgroundColor": "#0F0F0F"
           }
         }
       ],
-      [
-        "expo-sqlite",
-        {
-          "enableFTS": true,
-          "useSQLCipher": false
-        }
-      ],
-      "expo-font",
       "expo-sqlite",
-      "expo-router"
-    ]
+      "expo-asset"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": ""
+      }
+    }
   }
 }

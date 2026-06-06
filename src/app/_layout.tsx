@@ -1,33 +1,29 @@
-import { Slot, useRouter } from 'expo-router'
-import { useEffect } from 'react'
-import { enableScreens } from 'react-native-screens'
+import { Stack } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
+import { useUpdater } from '@rific/updater'
 
-import { Providers } from '../components'
-import { AuthProvider, useAuth } from '../components/AuthContext'
+import { Providers } from '@/components/Providers'
 
-enableScreens(true)
+SplashScreen.preventAutoHideAsync()
+SplashScreen.setOptions({ duration: 500, fade: true })
 
-function AuthRedirector() {
-  const { isAuthenticated } = useAuth()
-  const router = useRouter()
-  useEffect(() => {
-    if (!isAuthenticated && router.pathname !== '/login') {
-      router.replace('/login')
-    }
-    if (isAuthenticated && router.pathname === '/login') {
-      router.replace('/(drawer)/home')
-    }
-  }, [isAuthenticated, router])
-  return null
-}
-
-export default function RootLayout() {
+const RootNavigator = () => {
   return (
-    <AuthProvider>
-      <Providers>
-        <AuthRedirector />
-        <Slot />
-      </Providers>
-    </AuthProvider>
+    <Stack>
+      <Stack.Screen name='index' options={{ headerShown: false }} />
+      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+    </Stack>
   )
 }
+
+const RootLayout = () => {
+  useUpdater()
+
+  return (
+    <Providers>
+      <RootNavigator />
+    </Providers>
+  )
+}
+
+export default RootLayout

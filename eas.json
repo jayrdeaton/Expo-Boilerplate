@@ -1,18 +1,30 @@
 {
   "cli": {
-    "version": ">= 14.4.1",
+    "version": ">= 18.0.0",
     "appVersionSource": "remote"
   },
   "build": {
-    "production": {
-      "android": {
-        "buildType": "apk"
-      },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "staging": {
+      "distribution": "internal",
       "autoIncrement": true,
-      "channel": "production"
+      "channel": "staging",
+      "env": {
+        "EXPO_PUBLIC_ENABLE_DEV_TOOLS": "true"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "channel": "production",
+      "ios": {
+        "resourceClass": "m-medium"
+      }
     }
   },
   "submit": {
-    "default": {}
+    "production": {}
   }
 }

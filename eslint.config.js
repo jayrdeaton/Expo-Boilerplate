@@ -13,12 +13,13 @@ module.exports = defineConfig([
       parserOptions: {
         project: './tsconfig.json'
       }
-    }
+    },
+    settings: { react: { version: '19' } }
   },
   expoConfig,
   prettierRecommended,
   {
-    ignores: ['dist/**', 'node_modules/**', 'ios/**', 'android/**', '.expo/**', '.vscode/**']
+    ignores: ['dist/**', 'node_modules/**', 'ios/**', 'android/**', '.expo/**', '.vscode/**', 'coverage/**']
   },
   {
     plugins: {
@@ -39,7 +40,7 @@ module.exports = defineConfig([
       'no-console': 'warn',
       'react-native/sort-styles': 'warn',
       'react-native/no-inline-styles': 'warn',
-      // 'react-native/no-unused-styles': 'warn',
+      'react-native/no-unused-styles': 'warn',
       'react-native/no-raw-text': 'off'
     }
   }
