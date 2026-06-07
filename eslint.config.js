@@ -19,7 +19,7 @@ module.exports = defineConfig([
   expoConfig,
   prettierRecommended,
   {
-    ignores: ['dist/**', 'node_modules/**', 'ios/**', 'android/**', '.expo/**', '.vscode/**', 'coverage/**']
+    ignores: ['dist/**', 'node_modules/**', 'ios/**', 'android/**', '.expo/**', '.vscode/**', 'coverage/**', '.yalc/**']
   },
   {
     plugins: {

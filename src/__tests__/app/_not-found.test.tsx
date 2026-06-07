@@ -1,5 +1,8 @@
-import React from 'react'
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { render } from '@testing-library/react-native'
+import React from 'react'
+
+import NotFoundScreen from '../../app/_not-found'
 
 jest.mock('expo-router', () => ({
   Link: ({ children, href }: { children: React.ReactNode; href: string }) => {
@@ -7,11 +10,9 @@ jest.mock('expo-router', () => ({
     return <Text testID={`link-${href}`}>{children}</Text>
   },
   Stack: {
-    Screen: () => null,
-  },
+    Screen: () => null
+  }
 }))
-
-import NotFoundScreen from '../../app/_not-found'
 
 describe('NotFoundScreen', () => {
   it('renders without crashing', async () => {

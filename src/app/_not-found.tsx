@@ -6,7 +6,7 @@ const NotFoundScreen = () => {
     <>
       <Stack.Screen options={{ title: 'Not Found' }} />
       <View style={styles.container}>
-        <Text style={styles.title}>This screen doesn't exist.</Text>
+        <Text style={styles.title}>This screen doesn&apos;t exist.</Text>
         <Link href='/' style={styles.link}>
           <Text>Go to home screen</Text>
         </Link>

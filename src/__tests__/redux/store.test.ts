@@ -1,12 +1,13 @@
 // createThemeReducer is called at module level in store.ts — mock it before import.
-jest.mock('@rific/auto-paper', () => ({
-  createThemeReducer: () =>
-    (state = { appearance: 'auto', color: '#4caf50' }) =>
-      state,
-}))
-
-import { persistor, store } from '../../redux/store'
 import { settingsActions } from '../../redux/settingsSlice'
+import { persistor, store } from '../../redux/store'
+
+jest.mock('@rific/auto-paper', () => ({
+  createThemeReducer:
+    () =>
+    (state = { appearance: 'auto', color: '#4caf50' }) =>
+      state
+}))
 
 describe('store', () => {
   beforeEach(() => {
@@ -26,7 +27,7 @@ describe('store', () => {
       expect(store.getState().settings).toEqual({
         blur: true,
         vibrate: true,
-        debug: false,
+        debug: false
       })
     })
 

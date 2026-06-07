@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 // splashGate holds module-level Set state, so each test resets the module
 // to get a fresh gate set. expo-splash-screen is mocked in jest.setup.ts.
 
@@ -7,11 +8,9 @@ describe('splashGate', () => {
     jest.clearAllMocks()
   })
 
-  const load = () =>
-    require('../../utils/splashGate') as typeof import('../../utils/splashGate')
+  const load = () => require('../../utils/splashGate') as typeof import('../../utils/splashGate')
 
-  const splash = () =>
-    require('expo-splash-screen') as typeof import('expo-splash-screen')
+  const splash = () => require('expo-splash-screen') as typeof import('expo-splash-screen')
 
   it('does not hide splash while any gate remains open', () => {
     const { addGate, clearGate } = load()

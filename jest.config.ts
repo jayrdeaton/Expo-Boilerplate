@@ -9,6 +9,6 @@ export default {
     '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@/redux/(.*)$': '<rootDir>/src/redux/$1',
     '^@/types$': '<rootDir>/src/types/index.ts',
-    '^@/utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@/utils/(.*)$': '<rootDir>/src/utils/$1'
   }
 }

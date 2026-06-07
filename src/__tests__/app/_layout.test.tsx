@@ -1,24 +1,21 @@
-import React from 'react'
+import { useUpdater } from '@rific/updater'
 import { render } from '@testing-library/react-native'
 import * as SplashScreen from 'expo-splash-screen'
+import React from 'react'
+
+import RootLayout from '../../app/_layout'
 
 jest.mock('expo-router', () => ({
-  Stack: Object.assign(
-    (props: any) => props.children,
-    { Screen: () => null }
-  ),
+  Stack: Object.assign((props: any) => props.children, { Screen: () => null })
 }))
 
 jest.mock('@rific/updater', () => ({
-  useUpdater: jest.fn(),
+  useUpdater: jest.fn()
 }))
 
 jest.mock('../../components/Providers', () => ({
-  Providers: (props: any) => props.children,
+  Providers: (props: any) => props.children
 }))
-
-import RootLayout from '../../app/_layout'
-import { useUpdater } from '@rific/updater'
 
 const mockUseUpdater = useUpdater as jest.Mock
 

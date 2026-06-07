@@ -1,33 +1,34 @@
+import { render } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
-import { render } from '@testing-library/react-native'
+
+import { Providers } from '../../components/Providers'
 
 const mockHapticProviderCalls: unknown[] = []
 jest.mock('@rific/auto-paper', () => ({
-  createThemeReducer: () =>
+  createThemeReducer:
+    () =>
     (state = { appearance: 'auto', color: '#4caf50' }) =>
       state,
-  Provider: (props: any) => props.children,
+  Provider: (props: any) => props.children
 }))
 
 jest.mock('@rific/haptic-press', () => ({
   HapticPressProvider: (props: any) => {
     mockHapticProviderCalls.push(props)
     return props.children
-  },
+  }
 }))
 
 jest.mock('@rific/toaster', () => ({
   Toaster: () => null,
-  ToastProvider: (props: any) => props.children,
+  ToastProvider: (props: any) => props.children
 }))
 
 jest.mock('../../utils/splashGate', () => ({
   addGate: jest.fn(),
-  clearGate: jest.fn(),
+  clearGate: jest.fn()
 }))
-
-import { Providers } from '../../components/Providers'
 
 beforeEach(() => {
   mockHapticProviderCalls.length = 0
@@ -60,8 +61,6 @@ describe('Providers', () => {
       </Providers>
     )
     expect(mockHapticProviderCalls.length).toBeGreaterThan(0)
-    expect(mockHapticProviderCalls[0]).toEqual(
-      expect.objectContaining({ enabled: true })
-    )
+    expect(mockHapticProviderCalls[0]).toEqual(expect.objectContaining({ enabled: true }))
   })
 })

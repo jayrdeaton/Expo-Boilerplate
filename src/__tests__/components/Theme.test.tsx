@@ -1,14 +1,16 @@
+import { configureStore } from '@reduxjs/toolkit'
+import { act, render } from '@testing-library/react-native'
 import React from 'react'
 import { Text } from 'react-native'
-import { act, render } from '@testing-library/react-native'
-import { configureStore } from '@reduxjs/toolkit'
 import { Provider as ReduxProvider } from 'react-redux'
 
+import { Theme } from '../../components/Theme'
 import settingsReducer from '../../redux/settingsSlice'
+import { addGate, clearGate } from '../../utils/splashGate'
 
 jest.mock('../../utils/splashGate', () => ({
   addGate: jest.fn(),
-  clearGate: jest.fn(),
+  clearGate: jest.fn()
 }))
 
 // Keep provider spy in module scope so the factory closure can reference it.
@@ -17,11 +19,8 @@ jest.mock('@rific/auto-paper', () => ({
   Provider: (props: any) => {
     mockProviderCalls.push(props)
     return props.children
-  },
+  }
 }))
-
-import { Theme } from '../../components/Theme'
-import { addGate, clearGate } from '../../utils/splashGate'
 
 const mockAddGate = addGate as jest.Mock
 const mockClearGate = clearGate as jest.Mock
@@ -30,8 +29,8 @@ const makeStore = (themeState = { appearance: 'light' as const, color: '#4caf50'
   configureStore({
     reducer: {
       settings: settingsReducer,
-      theme: (state = themeState) => state,
-    },
+      theme: (state = themeState) => state
+    }
   })
 
 // Capture the addGate('theme') call that happens at module load time
@@ -108,7 +107,9 @@ describe('Theme', () => {
       </ReduxProvider>
     )
     const props = mockProviderCalls[0] as any
-    await act(async () => { props.onReady() })
+    await act(async () => {
+      props.onReady()
+    })
     expect(mockClearGate).toHaveBeenCalledWith('theme')
   })
 })

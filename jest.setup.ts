@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable react/display-name */
 
 /* global jest */
 jest.mock('react-native-reanimated', () => {
@@ -67,7 +66,6 @@ jest.mock('react-native-worklets', () => ({
   runOnJS: (fn: (...args: unknown[]) => unknown) => fn,
   runOnUI: (fn: (...args: unknown[]) => unknown) => fn
 }))
-
 ;(globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true
 
 // @expo/vector-icons
@@ -172,8 +170,7 @@ jest.mock('react-native-safe-area-context', () => ({
   ...jest.requireActual('react-native-safe-area-context'),
   SafeAreaProvider: ({ children }: { children?: React.ReactNode }) => children,
   SafeAreaInsetsContext: {
-    Consumer: ({ children }: { children?: (insets: object) => React.ReactNode }) =>
-      children?.({ top: 0, right: 0, bottom: 0, left: 0 })
+    Consumer: ({ children }: { children?: (insets: object) => React.ReactNode }) => children?.({ top: 0, right: 0, bottom: 0, left: 0 })
   },
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 })
 }))

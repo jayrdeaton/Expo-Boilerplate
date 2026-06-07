@@ -9,8 +9,7 @@ import settings from './settingsSlice'
 
 const theme = createThemeReducer({ color: colors.primary })
 
-const hasError = (action: unknown): action is { error?: unknown } =>
-  typeof action === 'object' && action !== null && 'error' in action && Boolean(action.error)
+const hasError = (action: unknown): action is { error?: unknown } => typeof action === 'object' && action !== null && 'error' in action && Boolean(action.error)
 
 const errorMiddleware: Middleware = () => (next) => (action) => {
   if (!hasError(action)) return next(action)
