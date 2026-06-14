@@ -19,7 +19,7 @@ const HapticBridge = ({ children }: ProvidersProps) => {
   const dispatch = useDispatch()
   const onChange = useCallback((s: HapticSettings) => dispatch(hapticActions.initialize(s)), [dispatch])
   return (
-    <HapticPressProvider value={haptic} onChange={onChange}>
+    <HapticPressProvider initialValue={haptic} onChange={onChange}>
       {children}
     </HapticPressProvider>
   )
@@ -28,12 +28,9 @@ const HapticBridge = ({ children }: ProvidersProps) => {
 const ScrollViewBridge = ({ children }: ProvidersProps) => {
   const scrollView = useSelector((state: RootState) => state.scrollView)
   const dispatch = useDispatch()
-  const onChange = useCallback(
-    (settings: ScrollViewSettings) => dispatch(scrollViewActions.initialize(settings)),
-    [dispatch]
-  )
+  const onChange = useCallback((settings: ScrollViewSettings) => dispatch(scrollViewActions.initialize(settings)), [dispatch])
   return (
-    <ScrollViewSettingsProvider onChange={onChange} value={scrollView}>
+    <ScrollViewSettingsProvider onChange={onChange} initialValue={scrollView}>
       {children}
     </ScrollViewSettingsProvider>
   )

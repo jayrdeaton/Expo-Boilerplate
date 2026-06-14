@@ -16,7 +16,7 @@ export const Theme = ({ children }: ThemeProps) => {
   const dispatch = useDispatch()
   const onChange = useCallback((s: ThemeSettings) => dispatch(themeActions.initialize(s)), [dispatch])
   return (
-    <Provider overrides={settings} onChange={onChange} onReady={() => clearGate('theme')}>
+    <Provider initialValue={settings} onChange={onChange} onReady={() => clearGate('theme')}>
       {children}
     </Provider>
   )
