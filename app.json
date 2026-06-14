@@ -27,7 +27,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.infinitetoken.ExpoStarter",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIViewControllerBasedStatusBarAppearance": false
       },
       "icon": {
         "dark": "./assets/images/dark-icon.png",
@@ -53,7 +54,6 @@
           }
         }
       ],
-      "expo-sqlite",
       "expo-asset"
     ],
     "extra": {

@@ -1,9 +1,8 @@
-import { Appbar } from '@rific/auto-paper'
 import { Button } from '@rific/haptic-press'
-import { useRouter } from 'expo-router'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { Stack, useRouter } from 'expo-router'
+import { StyleSheet, View } from 'react-native'
 import { Avatar, Card, Divider, Text, useTheme } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 type PackageEntry = {
   name: string
@@ -27,6 +26,13 @@ const INSTALLED: PackageEntry[] = [
     icon: 'gesture-tap',
     description: 'Haptic feedback wrappers for Paper components',
     route: '/demos/haptic-press'
+  },
+  {
+    name: 'scroll-view',
+    label: '@rific/scroll-view',
+    icon: 'layers-outline',
+    description: 'Floating blur headers, footers, keyboard-aware scroll, and FAB',
+    route: '/demos/scroll-view'
   },
   {
     name: 'toaster',
@@ -100,13 +106,11 @@ const PackageCard = ({ pkg, mode, cta }: PackageCardProps) => {
 
 const HomeScreen = () => {
   const theme = useTheme()
-
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
-      <Appbar.Header>
-        <Appbar.Content title='Expo Starter' />
-      </Appbar.Header>
-      <SafeAreaView style={styles.fill} edges={['bottom']}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollViewProvider>
+        <ScrollViewHeader title='Expo Starter' />
         <ScrollView contentContainerStyle={styles.container}>
           <Text variant='bodyLarge' style={[styles.intro, { color: theme.colors.onSurfaceVariant }]}>
             A lean, production-ready template with file-based routing, Redux, adaptive theming, and a curated set of @rific packages pre-wired.
@@ -128,17 +132,17 @@ const HomeScreen = () => {
             </Text>
           </View>
           {OPTIONAL.map((pkg) => (
-            <PackageCard key={pkg.name} pkg={pkg} mode='outlined' cta='Learn More' />
+            <PackageCard key={pkg.name} pkg={pkg} mode='elevated' cta='Learn More' />
           ))}
         </ScrollView>
-      </SafeAreaView>
+      </ScrollViewProvider>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   card: { marginBottom: 12 },
-  container: { padding: 16, paddingBottom: 32 },
+  container: { paddingHorizontal: 16, paddingTop: 16 },
   divider: { marginVertical: 24 },
   fill: { flex: 1 },
   intro: { marginBottom: 24 },

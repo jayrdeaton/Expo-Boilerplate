@@ -1,9 +1,9 @@
 import { Button } from '@rific/haptic-press'
+import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { useUpdater } from '@rific/updater'
-import { Stack } from 'expo-router'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { Stack, useRouter } from 'expo-router'
+import { StyleSheet, View } from 'react-native'
 import { Chip, Divider, Surface, Text, useTheme } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const INFO_ITEMS = [
   {
@@ -25,61 +25,64 @@ const INFO_ITEMS = [
 ]
 
 const UpdaterDemo = () => {
+  const router = useRouter()
   const theme = useTheme()
   const { check, checking, updateReady } = useUpdater({ autoCheck: false })
 
   return (
-    <SafeAreaView style={[styles.fill, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
-      <Stack.Screen options={{ title: '@rific/updater' }} />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text variant='headlineSmall'>Updater</Text>
-        <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-          OTA update hook for Expo apps. Silently fetches updates on every foreground resume with no UI interruption. Exposes a manual check function and an optional confirmation callback before applying the update.
-        </Text>
+    <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollViewProvider>
+        <ScrollViewHeader backAction={() => router.back()} title='Updater' caption='@rific/updater' />
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
+            OTA update hook for Expo apps. Silently fetches updates on every foreground resume with no UI interruption. Exposes a manual check function and an optional confirmation callback before applying the update.
+          </Text>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Status
-        </Text>
-        <View style={styles.row}>
-          <Chip icon={checking ? 'loading' : 'check-circle-outline'} selected={checking}>
-            {checking ? 'Checking…' : 'Idle'}
-          </Chip>
-          <Chip icon={updateReady ? 'arrow-up-circle-outline' : 'check-circle-outline'} selected={updateReady}>
-            {updateReady ? 'Update Ready' : 'Up to Date'}
-          </Chip>
-        </View>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Status
+          </Text>
+          <View style={styles.row}>
+            <Chip icon={checking ? 'loading' : 'check-circle-outline'} selected={checking}>
+              {checking ? 'Checking…' : 'Idle'}
+            </Chip>
+            <Chip icon={updateReady ? 'arrow-up-circle-outline' : 'check-circle-outline'} selected={updateReady}>
+              {updateReady ? 'Update Ready' : 'Up to Date'}
+            </Chip>
+          </View>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Manual Check
-        </Text>
-        <Button mode='contained' onPress={check} disabled={checking} loading={checking}>
-          {checking ? 'Checking…' : 'Check for Update'}
-        </Button>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Manual Check
+          </Text>
+          <Button mode='contained' onPress={check} disabled={checking} loading={checking}>
+            {checking ? 'Checking…' : 'Check for Update'}
+          </Button>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          How It Works
-        </Text>
-        <Surface style={[styles.infoCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          {INFO_ITEMS.map((item, i) => (
-            <View key={item.label} style={[styles.infoItem, i === 0 && styles.infoItemFirst]}>
-              <Text variant='labelMedium'>{item.label}</Text>
-              <Text variant='bodySmall' style={[styles.infoItemDesc, { color: theme.colors.onSurfaceVariant }]}>
-                {item.desc}
-              </Text>
-            </View>
-          ))}
-        </Surface>
-      </ScrollView>
-    </SafeAreaView>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            How It Works
+          </Text>
+          <Surface style={[styles.infoCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            {INFO_ITEMS.map((item, i) => (
+              <View key={item.label} style={[styles.infoItem, i === 0 && styles.infoItemFirst]}>
+                <Text variant='labelMedium'>{item.label}</Text>
+                <Text variant='bodySmall' style={[styles.infoItemDesc, { color: theme.colors.onSurfaceVariant }]}>
+                  {item.desc}
+                </Text>
+              </View>
+            ))}
+          </Surface>
+        </ScrollView>
+      </ScrollViewProvider>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, paddingBottom: 32 },
-  desc: { marginTop: 8 },
+  container: { paddingHorizontal: 16, paddingTop: 16 },
+  desc: { marginTop: 0 },
   divider: { marginVertical: 20 },
   fill: { flex: 1 },
   infoCard: { borderRadius: 12 },

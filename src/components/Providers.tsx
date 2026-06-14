@@ -1,10 +1,11 @@
-import { HapticPressProvider } from '@rific/haptic-press'
+import { hapticActions, HapticPressProvider, type HapticSettings } from '@rific/haptic-press'
+import { scrollViewActions, type ScrollViewSettings, ScrollViewSettingsProvider } from '@rific/scroll-view'
 import { Toaster, ToastProvider } from '@rific/toaster'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { Provider as ReduxProvider, useSelector } from 'react-redux'
+import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { persistor, type RootState, store } from '@/redux/store'
@@ -13,9 +14,29 @@ import { Theme } from './Theme'
 
 export type ProvidersProps = { children: React.ReactNode }
 
-const HapticPressBootstrap = ({ children }: ProvidersProps) => {
-  const vibrate = useSelector((state: RootState) => state.settings.vibrate)
-  return <HapticPressProvider enabled={vibrate}>{children}</HapticPressProvider>
+const HapticBridge = ({ children }: ProvidersProps) => {
+  const haptic = useSelector((state: RootState) => state.haptic)
+  const dispatch = useDispatch()
+  const onChange = useCallback((s: HapticSettings) => dispatch(hapticActions.initialize(s)), [dispatch])
+  return (
+    <HapticPressProvider value={haptic} onChange={onChange}>
+      {children}
+    </HapticPressProvider>
+  )
+}
+
+const ScrollViewBridge = ({ children }: ProvidersProps) => {
+  const scrollView = useSelector((state: RootState) => state.scrollView)
+  const dispatch = useDispatch()
+  const onChange = useCallback(
+    (settings: ScrollViewSettings) => dispatch(scrollViewActions.initialize(settings)),
+    [dispatch]
+  )
+  return (
+    <ScrollViewSettingsProvider onChange={onChange} value={scrollView}>
+      {children}
+    </ScrollViewSettingsProvider>
+  )
 }
 
 export const Providers = ({ children }: ProvidersProps) => {
@@ -24,16 +45,18 @@ export const Providers = ({ children }: ProvidersProps) => {
       <SafeAreaProvider>
         <ReduxProvider store={store}>
           <PersistGate persistor={persistor}>
-            <HapticPressBootstrap>
-              <KeyboardProvider>
-                <Theme>
-                  <ToastProvider>
-                    {children}
-                    <Toaster />
-                  </ToastProvider>
-                </Theme>
-              </KeyboardProvider>
-            </HapticPressBootstrap>
+            <HapticBridge>
+              <ScrollViewBridge>
+                <KeyboardProvider>
+                  <Theme>
+                    <ToastProvider>
+                      {children}
+                      <Toaster />
+                    </ToastProvider>
+                  </Theme>
+                </KeyboardProvider>
+              </ScrollViewBridge>
+            </HapticBridge>
           </PersistGate>
         </ReduxProvider>
       </SafeAreaProvider>

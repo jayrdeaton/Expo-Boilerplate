@@ -1,7 +1,7 @@
-import { Stack } from 'expo-router'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { Stack, useRouter } from 'expo-router'
+import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const FEATURES = ['Auto-grows vertically with content as the user types', 'Drag handle lets users manually resize the input', 'Configurable min/max height constraints', 'initialHeight for a fixed starting size', 'Compatible with react-native-paper TextInput — pass it via TextInputComponent', 'Forwarded ref for imperative focus control', 'onHeightChange callback for layout-aware UIs', 'renderHandle prop for a fully custom resize handle', 'handleColor for quick handle tint without a custom renderer']
 
@@ -39,61 +39,65 @@ import { TextInput } from 'react-native-paper'
 />`
 
 const ResizableInputPage = () => {
+  const router = useRouter()
   const theme = useTheme()
 
   return (
-    <SafeAreaView style={[styles.fill, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
-      <Stack.Screen options={{ title: '@rific/resizable-input' }} />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text variant='headlineSmall'>Resizable Input</Text>
-        <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-          Auto-growing, drag-resizable text input for React Native. Expands with content automatically and gives users a drag handle to resize manually. Drop-in compatible with react-native-paper TextInput.
-        </Text>
+    <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollViewProvider>
+        <ScrollViewHeader backAction={() => router.back()} title='@rific/resizable-input' />
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text variant='headlineSmall'>Resizable Input</Text>
+          <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
+            Auto-growing, drag-resizable text input for React Native. Expands with content automatically and gives users a drag handle to resize manually. Drop-in compatible with react-native-paper TextInput.
+          </Text>
 
-        <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{'npm install @rific/resizable-input \\\n  react-native-gesture-handler react-native-reanimated'}</Text>
-        </Surface>
+          <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{'npm install @rific/resizable-input \\\n  react-native-gesture-handler react-native-reanimated'}</Text>
+          </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Features
-        </Text>
-        {FEATURES.map((f) => (
-          <View key={f} style={styles.bullet}>
-            <Text style={{ color: theme.colors.primary }}>•</Text>
-            <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
-              {f}
-            </Text>
-          </View>
-        ))}
-
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Key Props
-        </Text>
-        <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          {PROPS.map((prop, i) => (
-            <View key={prop.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
-              <View style={styles.propRow}>
-                <Text style={[styles.code, { color: theme.colors.primary }]}>{prop.name}</Text>
-                <Text style={[styles.code, styles.propType, { color: theme.colors.secondary }]}>{prop.type}</Text>
-              </View>
-              <Text variant='bodySmall' style={[styles.propDesc, { color: theme.colors.onSurfaceVariant }]}>
-                {prop.desc}
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Features
+          </Text>
+          {FEATURES.map((f) => (
+            <View key={f} style={styles.bullet}>
+              <Text style={{ color: theme.colors.primary }}>•</Text>
+              <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
+                {f}
               </Text>
             </View>
           ))}
-        </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Usage
-        </Text>
-        <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
-        </Surface>
-      </ScrollView>
-    </SafeAreaView>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Key Props
+          </Text>
+          <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            {PROPS.map((prop, i) => (
+              <View key={prop.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
+                <View style={styles.propRow}>
+                  <Text style={[styles.code, { color: theme.colors.primary }]}>{prop.name}</Text>
+                  <Text style={[styles.code, styles.propType, { color: theme.colors.secondary }]}>{prop.type}</Text>
+                </View>
+                <Text variant='bodySmall' style={[styles.propDesc, { color: theme.colors.onSurfaceVariant }]}>
+                  {prop.desc}
+                </Text>
+              </View>
+            ))}
+          </Surface>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Usage
+          </Text>
+          <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
+          </Surface>
+        </ScrollView>
+      </ScrollViewProvider>
+    </View>
   )
 }
 
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
     lineHeight: 20
   },
   codeBlock: { borderRadius: 12, padding: 16 },
-  container: { padding: 16, paddingBottom: 32 },
+  container: { paddingHorizontal: 16, paddingTop: 16 },
   desc: { marginTop: 8 },
   divider: { marginVertical: 20 },
   fill: { flex: 1 },

@@ -1,7 +1,7 @@
-import { Stack } from 'expo-router'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { Stack, useRouter } from 'expo-router'
+import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const FEATURES = ['Full-screen camera view with animated scan overlay', 'Bounds component draws a highlighted rectangle around detected barcodes', 'TimerRing shows a countdown ring when a scan timeout is configured', 'Pinch-to-zoom with configurable min/max zoom range', 'Scan deduplication — onScan fires once per unique code per session', 'useScanOverlays hook for building custom animated feedback', 'Photo capture with configurable quality and base64 output', 'Multi-barcode support — detects all codes in frame simultaneously', 'TypeScript types for scan results, bounds, and photo results']
 
@@ -41,61 +41,65 @@ const USAGE = `import { Scanner } from '@rific/scanner'
 />`
 
 const ScannerPage = () => {
+  const router = useRouter()
   const theme = useTheme()
 
   return (
-    <SafeAreaView style={[styles.fill, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
-      <Stack.Screen options={{ title: '@rific/scanner' }} />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text variant='headlineSmall'>Scanner</Text>
-        <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-          Full-screen barcode scanner for React Native with animated scan overlays, pinch-to-zoom, a timeout countdown ring, and scan deduplication. Wraps expo-camera with a ready-to-use scanning experience.
-        </Text>
+    <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollViewProvider>
+        <ScrollViewHeader backAction={() => router.back()} title='@rific/scanner' />
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text variant='headlineSmall'>Scanner</Text>
+          <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
+            Full-screen barcode scanner for React Native with animated scan overlays, pinch-to-zoom, a timeout countdown ring, and scan deduplication. Wraps expo-camera with a ready-to-use scanning experience.
+          </Text>
 
-        <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/scanner expo-camera</Text>
-        </Surface>
+          <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/scanner expo-camera</Text>
+          </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Features
-        </Text>
-        {FEATURES.map((f) => (
-          <View key={f} style={styles.bullet}>
-            <Text style={{ color: theme.colors.primary }}>•</Text>
-            <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
-              {f}
-            </Text>
-          </View>
-        ))}
-
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Key Props & Types
-        </Text>
-        <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          {PROPS.map((prop, i) => (
-            <View key={prop.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
-              <View style={styles.propRow}>
-                <Text style={[styles.code, { color: theme.colors.primary }]}>{prop.name}</Text>
-                <Text style={[styles.code, styles.propType, { color: theme.colors.secondary }]}>{prop.type}</Text>
-              </View>
-              <Text variant='bodySmall' style={[styles.propDesc, { color: theme.colors.onSurfaceVariant }]}>
-                {prop.desc}
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Features
+          </Text>
+          {FEATURES.map((f) => (
+            <View key={f} style={styles.bullet}>
+              <Text style={{ color: theme.colors.primary }}>•</Text>
+              <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
+                {f}
               </Text>
             </View>
           ))}
-        </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Usage
-        </Text>
-        <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
-        </Surface>
-      </ScrollView>
-    </SafeAreaView>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Key Props & Types
+          </Text>
+          <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            {PROPS.map((prop, i) => (
+              <View key={prop.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
+                <View style={styles.propRow}>
+                  <Text style={[styles.code, { color: theme.colors.primary }]}>{prop.name}</Text>
+                  <Text style={[styles.code, styles.propType, { color: theme.colors.secondary }]}>{prop.type}</Text>
+                </View>
+                <Text variant='bodySmall' style={[styles.propDesc, { color: theme.colors.onSurfaceVariant }]}>
+                  {prop.desc}
+                </Text>
+              </View>
+            ))}
+          </Surface>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Usage
+          </Text>
+          <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
+          </Surface>
+        </ScrollView>
+      </ScrollViewProvider>
+    </View>
   )
 }
 
@@ -114,7 +118,7 @@ const styles = StyleSheet.create({
     lineHeight: 20
   },
   codeBlock: { borderRadius: 12, padding: 16 },
-  container: { padding: 16, paddingBottom: 32 },
+  container: { paddingHorizontal: 16, paddingTop: 16 },
   desc: { marginTop: 8 },
   divider: { marginVertical: 20 },
   fill: { flex: 1 },

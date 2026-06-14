@@ -68,6 +68,77 @@ jest.mock('react-native-worklets', () => ({
 }))
 ;(globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true
 
+// @rific/auto-paper
+jest.mock('@rific/auto-paper', () => {
+  const { createSlice } = jest.requireActual('@reduxjs/toolkit')
+  const defaultThemeSettings = { appearance: 'system', blur: true, color: '#6750a4', harmony: 'split-complementary' }
+  const slice = createSlice({
+    name: 'theme',
+    initialState: defaultThemeSettings,
+    reducers: {
+      initialize: (state: object, action: { payload: object }) => ({ ...state, ...action.payload }),
+      setAppearance: (state: object, action: { payload: string }) => ({ ...state, appearance: action.payload }),
+      setBlur: (state: object, action: { payload: boolean }) => ({ ...state, blur: action.payload }),
+      setColor: (state: object, action: { payload: string }) => ({ ...state, color: action.payload }),
+      setHarmony: (state: object, action: { payload: string }) => ({ ...state, harmony: action.payload })
+    }
+  })
+  return {
+    createThemeReducer: (init: object = {}) =>
+      createSlice({ name: 'theme', initialState: { ...slice.getInitialState(), ...init }, reducers: slice.caseReducers as never }).reducer,
+    themeActions: slice.actions,
+    themeReducer: slice.reducer,
+    defaultThemeSettings,
+    Provider: ({ children }: { children?: React.ReactNode }) => children,
+    useThemeSettings: () => ({ settings: slice.getInitialState(), set: jest.fn() })
+  }
+})
+
+// @rific/haptic-press
+jest.mock('@rific/haptic-press', () => {
+  const { createSlice } = jest.requireActual('@reduxjs/toolkit')
+  const defaultHapticSettings = { vibrate: true }
+  const slice = createSlice({
+    name: 'haptic',
+    initialState: defaultHapticSettings,
+    reducers: {
+      initialize: (_state: object, action: { payload: object }) => action.payload,
+      setVibrate: (state: object, action: { payload: boolean }) => ({ ...state, vibrate: action.payload })
+    }
+  })
+  return {
+    defaultHapticSettings,
+    hapticReducer: slice.reducer,
+    hapticActions: slice.actions,
+    HapticPressProvider: ({ children }: { children?: React.ReactNode }) => children,
+    useHapticSettings: () => ({ settings: defaultHapticSettings, set: jest.fn() })
+  }
+})
+
+// @rific/scroll-view
+jest.mock('@rific/scroll-view', () => {
+  const { createSlice } = jest.requireActual('@reduxjs/toolkit')
+  const defaultScrollViewSettings = { backActionFixed: true, footerFixed: false, headerFixed: false, snapBack: false }
+  const slice = createSlice({
+    name: 'scrollView',
+    initialState: defaultScrollViewSettings,
+    reducers: {
+      initialize: (_state: object, action: { payload: object }) => action.payload
+    }
+  })
+  return {
+    defaultScrollViewSettings,
+    scrollViewReducer: slice.reducer,
+    scrollViewActions: slice.actions,
+    ScrollViewSettingsProvider: ({ children }: { children?: React.ReactNode }) => children,
+    useScrollViewSettings: () => ({ settings: defaultScrollViewSettings, set: jest.fn() }),
+    ScrollViewProvider: ({ children }: { children?: React.ReactNode }) => children,
+    ScrollView: ({ children }: { children?: React.ReactNode }) => children,
+    ScrollViewHeader: () => null,
+    ScrollViewFooter: () => null
+  }
+})
+
 // @expo/vector-icons
 jest.mock('@expo/vector-icons', () => {
   const Icon = ({ children }: { children?: React.ReactNode }) => children || null
@@ -98,26 +169,6 @@ jest.mock('expo-blur', () => ({
 jest.mock('expo-linking', () => ({
   useLinkingURL: () => null
 }))
-
-// expo-sqlite
-jest.mock('expo-sqlite', () => {
-  const makeResult = () => ({ rows: { length: 0, item: (_: number) => undefined } })
-  const makeTx = () => ({
-    executeSql: (_sql: string, _params?: unknown[], success?: (tx: unknown, res: unknown) => void) => {
-      const res = makeResult()
-      if (typeof success === 'function') success(null, res)
-      return res
-    }
-  })
-  return {
-    openDatabaseSync: (_name?: string) => ({
-      transaction: (cb: (tx: ReturnType<typeof makeTx>) => void) => cb(makeTx())
-    }),
-    openDatabase: (_name?: string) => ({
-      transaction: (cb: (tx: ReturnType<typeof makeTx>) => void) => cb(makeTx())
-    })
-  }
-})
 
 // expo-splash-screen
 jest.mock('expo-splash-screen', () => ({
@@ -167,22 +218,11 @@ jest.mock('react-native-keyboard-controller', () => ({
 
 // react-native-safe-area-context
 jest.mock('react-native-safe-area-context', () => ({
-  ...jest.requireActual('react-native-safe-area-context'),
   SafeAreaProvider: ({ children }: { children?: React.ReactNode }) => children,
   SafeAreaInsetsContext: {
     Consumer: ({ children }: { children?: (insets: object) => React.ReactNode }) => children?.({ top: 0, right: 0, bottom: 0, left: 0 })
   },
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 })
-}))
-
-// react-native-svg
-jest.mock('react-native-svg', () => ({
-  __esModule: true,
-  default: ({ children }: { children?: React.ReactNode }) => children,
-  Svg: ({ children }: { children?: React.ReactNode }) => children,
-  Circle: 'Circle',
-  G: 'G',
-  Path: 'Path'
 }))
 
 // redux-persist

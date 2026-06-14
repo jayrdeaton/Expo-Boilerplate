@@ -1,7 +1,7 @@
-import { Stack } from 'expo-router'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { Stack, useRouter } from 'expo-router'
+import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const FEATURES = ['6 cell modes: solid, gradient, density, stacked, dots, priority', 'Animated entrance with configurable direction (ltr / rtl) and duration', 'Timeline variant — zoomable horizontal time-series view', 'Scatter plot variant for raw data distribution', 'Custom color scale with thresholds', 'Day and month label rendering', 'Tooltip with custom render function', 'Custom cell renderer for full control over appearance', 'onDayPress handler with date and data payload', 'Dark / light color scheme support', 'Auto-scaling from data range', 'Infinite scroll with onEndReached']
 
@@ -40,61 +40,65 @@ const data = [
 />`
 
 const HeatmapPage = () => {
+  const router = useRouter()
   const theme = useTheme()
 
   return (
-    <SafeAreaView style={[styles.fill, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
-      <Stack.Screen options={{ title: '@rific/heatmap' }} />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text variant='headlineSmall'>Heatmap</Text>
-        <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-          GitHub-style activity heatmap for React Native with SVG rendering. Supports six cell visualization modes, an animated entrance, an inline timeline view, and full customization of colors, labels, and tooltips.
-        </Text>
+    <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollViewProvider>
+        <ScrollViewHeader backAction={() => router.back()} title='@rific/heatmap' />
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text variant='headlineSmall'>Heatmap</Text>
+          <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
+            GitHub-style activity heatmap for React Native with SVG rendering. Supports six cell visualization modes, an animated entrance, an inline timeline view, and full customization of colors, labels, and tooltips.
+          </Text>
 
-        <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/heatmap react-native-svg</Text>
-        </Surface>
+          <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/heatmap react-native-svg</Text>
+          </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Features
-        </Text>
-        {FEATURES.map((f) => (
-          <View key={f} style={styles.bullet}>
-            <Text style={{ color: theme.colors.primary }}>•</Text>
-            <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
-              {f}
-            </Text>
-          </View>
-        ))}
-
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Key Props
-        </Text>
-        <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          {PROPS.map((prop, i) => (
-            <View key={prop.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
-              <View style={styles.propRow}>
-                <Text style={[styles.code, { color: theme.colors.primary }]}>{prop.name}</Text>
-                <Text style={[styles.code, styles.propType, { color: theme.colors.secondary }]}>{prop.type}</Text>
-              </View>
-              <Text variant='bodySmall' style={[styles.propDesc, { color: theme.colors.onSurfaceVariant }]}>
-                {prop.desc}
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Features
+          </Text>
+          {FEATURES.map((f) => (
+            <View key={f} style={styles.bullet}>
+              <Text style={{ color: theme.colors.primary }}>•</Text>
+              <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
+                {f}
               </Text>
             </View>
           ))}
-        </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Usage
-        </Text>
-        <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
-        </Surface>
-      </ScrollView>
-    </SafeAreaView>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Key Props
+          </Text>
+          <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            {PROPS.map((prop, i) => (
+              <View key={prop.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
+                <View style={styles.propRow}>
+                  <Text style={[styles.code, { color: theme.colors.primary }]}>{prop.name}</Text>
+                  <Text style={[styles.code, styles.propType, { color: theme.colors.secondary }]}>{prop.type}</Text>
+                </View>
+                <Text variant='bodySmall' style={[styles.propDesc, { color: theme.colors.onSurfaceVariant }]}>
+                  {prop.desc}
+                </Text>
+              </View>
+            ))}
+          </Surface>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Usage
+          </Text>
+          <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
+          </Surface>
+        </ScrollView>
+      </ScrollViewProvider>
+    </View>
   )
 }
 
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
     lineHeight: 20
   },
   codeBlock: { borderRadius: 12, padding: 16 },
-  container: { padding: 16, paddingBottom: 32 },
+  container: { paddingHorizontal: 16, paddingTop: 16 },
   desc: { marginTop: 8 },
   divider: { marginVertical: 20 },
   fill: { flex: 1 },

@@ -1,7 +1,7 @@
-import { Stack } from 'expo-router'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { Stack, useRouter } from 'expo-router'
+import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const FEATURES = ['Smooth SVG ring animation driven by React Native Animated', 'Start / stop controlled by a timestamp string — no manual animation state', 'Resume mid-timer with startProgress (0–1)', 'Configurable color, radius, and stroke width', 'Children rendered at the center of the ring — display a countdown, icon, or label', 'onStart / onStop callbacks for side-effects', 'Uses native driver for 60 fps animation without JS thread', 'Zero dependencies beyond react-native-svg']
 
@@ -49,61 +49,65 @@ const CountdownTimer = () => {
 }`
 
 const TimerPage = () => {
+  const router = useRouter()
   const theme = useTheme()
 
   return (
-    <SafeAreaView style={[styles.fill, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
-      <Stack.Screen options={{ title: '@rific/timer' }} />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text variant='headlineSmall'>Timer</Text>
-        <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-          Animated SVG progress ring timer for React Native. Controlled by a timestamp string — set it to start the countdown, null to stop. Supports resume, center content, and native-driver animation for smooth 60 fps rendering.
-        </Text>
+    <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollViewProvider>
+        <ScrollViewHeader backAction={() => router.back()} title='@rific/timer' />
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text variant='headlineSmall'>Timer</Text>
+          <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
+            Animated SVG progress ring timer for React Native. Controlled by a timestamp string — set it to start the countdown, null to stop. Supports resume, center content, and native-driver animation for smooth 60 fps rendering.
+          </Text>
 
-        <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/timer react-native-svg</Text>
-        </Surface>
+          <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/timer react-native-svg</Text>
+          </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Features
-        </Text>
-        {FEATURES.map((f) => (
-          <View key={f} style={styles.bullet}>
-            <Text style={{ color: theme.colors.primary }}>•</Text>
-            <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
-              {f}
-            </Text>
-          </View>
-        ))}
-
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Key Props
-        </Text>
-        <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          {PROPS.map((prop, i) => (
-            <View key={prop.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
-              <View style={styles.propRow}>
-                <Text style={[styles.code, { color: theme.colors.primary }]}>{prop.name}</Text>
-                <Text style={[styles.code, styles.propType, { color: theme.colors.secondary }]}>{prop.type}</Text>
-              </View>
-              <Text variant='bodySmall' style={[styles.propDesc, { color: theme.colors.onSurfaceVariant }]}>
-                {prop.desc}
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Features
+          </Text>
+          {FEATURES.map((f) => (
+            <View key={f} style={styles.bullet}>
+              <Text style={{ color: theme.colors.primary }}>•</Text>
+              <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
+                {f}
               </Text>
             </View>
           ))}
-        </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Usage
-        </Text>
-        <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
-        </Surface>
-      </ScrollView>
-    </SafeAreaView>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Key Props
+          </Text>
+          <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            {PROPS.map((prop, i) => (
+              <View key={prop.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
+                <View style={styles.propRow}>
+                  <Text style={[styles.code, { color: theme.colors.primary }]}>{prop.name}</Text>
+                  <Text style={[styles.code, styles.propType, { color: theme.colors.secondary }]}>{prop.type}</Text>
+                </View>
+                <Text variant='bodySmall' style={[styles.propDesc, { color: theme.colors.onSurfaceVariant }]}>
+                  {prop.desc}
+                </Text>
+              </View>
+            ))}
+          </Surface>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Usage
+          </Text>
+          <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
+          </Surface>
+        </ScrollView>
+      </ScrollViewProvider>
+    </View>
   )
 }
 
@@ -122,7 +126,7 @@ const styles = StyleSheet.create({
     lineHeight: 20
   },
   codeBlock: { borderRadius: 12, padding: 16 },
-  container: { padding: 16, paddingBottom: 32 },
+  container: { paddingHorizontal: 16, paddingTop: 16 },
   desc: { marginTop: 8 },
   divider: { marginVertical: 20 },
   fill: { flex: 1 },

@@ -54,3 +54,6 @@ coverage/
 
 # vercel
 .vercel
+
+# in / out
+*.txt

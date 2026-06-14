@@ -1,7 +1,7 @@
-import { Stack } from 'expo-router'
-import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { Stack, useRouter } from 'expo-router'
+import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const FEATURES = ['Single hook — no refs, no state, no useEffect', 'Works with any focusable component (TextInput, custom inputs)', 'Call order determines focus order — no indices to manage', 'onSubmitEditing auto-wired to advance to the next field', 'Last field in the chain can submit the form']
 
@@ -47,58 +47,62 @@ const MyForm = () => {
 }`
 
 const FocusChainPage = () => {
+  const router = useRouter()
   const theme = useTheme()
 
   return (
-    <SafeAreaView style={[styles.fill, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
-      <Stack.Screen options={{ title: '@rific/focus-chain' }} />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text variant='headlineSmall'>Focus Chain</Text>
-        <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-          Auto-advancing focus chain for React Native form inputs. Call the hook once, spread the result onto each input in order — pressing Next or Return automatically moves focus to the next field with no wiring required.
-        </Text>
+    <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ScrollViewProvider>
+        <ScrollViewHeader backAction={() => router.back()} title='@rific/focus-chain' />
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text variant='headlineSmall'>Focus Chain</Text>
+          <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
+            Auto-advancing focus chain for React Native form inputs. Call the hook once, spread the result onto each input in order — pressing Next or Return automatically moves focus to the next field with no wiring required.
+          </Text>
 
-        <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/focus-chain</Text>
-        </Surface>
+          <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/focus-chain</Text>
+          </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Features
-        </Text>
-        {FEATURES.map((f) => (
-          <View key={f} style={styles.bullet}>
-            <Text style={{ color: theme.colors.primary }}>•</Text>
-            <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
-              {f}
-            </Text>
-          </View>
-        ))}
-
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          API
-        </Text>
-        <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          {API_ITEMS.map((item, i) => (
-            <View key={item.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
-              <Text style={[styles.code, { color: theme.colors.primary }]}>{item.name}</Text>
-              <Text variant='bodySmall' style={[styles.apiDesc, { color: theme.colors.onSurfaceVariant }]}>
-                {item.desc}
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Features
+          </Text>
+          {FEATURES.map((f) => (
+            <View key={f} style={styles.bullet}>
+              <Text style={{ color: theme.colors.primary }}>•</Text>
+              <Text variant='bodyMedium' style={[styles.fill, { color: theme.colors.onSurfaceVariant }]}>
+                {f}
               </Text>
             </View>
           ))}
-        </Surface>
 
-        <Divider style={styles.divider} />
-        <Text variant='titleMedium' style={styles.sectionLabel}>
-          Usage
-        </Text>
-        <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-          <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
-        </Surface>
-      </ScrollView>
-    </SafeAreaView>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            API
+          </Text>
+          <Surface style={[styles.apiCard, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            {API_ITEMS.map((item, i) => (
+              <View key={item.name} style={[styles.apiItem, i === 0 && styles.apiItemFirst]}>
+                <Text style={[styles.code, { color: theme.colors.primary }]}>{item.name}</Text>
+                <Text variant='bodySmall' style={[styles.apiDesc, { color: theme.colors.onSurfaceVariant }]}>
+                  {item.desc}
+                </Text>
+              </View>
+            ))}
+          </Surface>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Usage
+          </Text>
+          <Surface style={[styles.codeBlock, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{USAGE}</Text>
+          </Surface>
+        </ScrollView>
+      </ScrollViewProvider>
+    </View>
   )
 }
 
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
     lineHeight: 20
   },
   codeBlock: { borderRadius: 12, padding: 16 },
-  container: { padding: 16, paddingBottom: 32 },
+  container: { paddingHorizontal: 16, paddingTop: 16 },
   desc: { marginTop: 8 },
   divider: { marginVertical: 20 },
   fill: { flex: 1 },
