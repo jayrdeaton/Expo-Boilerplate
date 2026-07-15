@@ -80,6 +80,53 @@ const ToasterDemo = () => {
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
+            Variable Height
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            Captions and images make some toasts taller than others — the stack now measures each card instead of assuming a fixed height, so nothing overlaps.
+          </Text>
+          <View style={styles.row}>
+            <Button
+              mode='outlined'
+              icon='text'
+              compact
+              onPress={() =>
+                toast.info(
+                  'Sync complete',
+                  'We compared 1,204 records across three data sources and found 12 conflicts, which were resolved automatically using your default merge strategy. A full changelog is available anytime from account settings.'
+                )
+              }
+            >
+              Long Caption
+            </Button>
+            <Button mode='outlined' icon='image' compact onPress={() => toast.success('Photo uploaded', 'Compressed and saved to your library', 'https://picsum.photos/200')}>
+              With Image
+            </Button>
+          </View>
+          <Button
+            mode='outlined'
+            icon='layers'
+            style={styles.item}
+            compact
+            onPress={() => {
+              toast.warning('Heads up')
+              setTimeout(() => toast.info('New message', 'From Sarah'), 250)
+              setTimeout(
+                () =>
+                  toast.success(
+                    'Backup finished',
+                    'All 48 photos in this album were uploaded and verified against the originals on your device, so nothing was lost in the process.',
+                    'https://picsum.photos/200'
+                  ),
+                500
+              )
+            }}
+          >
+            Mixed Stack
+          </Button>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
             History
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>

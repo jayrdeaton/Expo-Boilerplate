@@ -197,6 +197,28 @@ const ScrollViewDemo = () => {
           <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-custom-list' as any)}>
             Open example
           </Button>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Grid / Columns
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            Toggles numColumns between a single-column list and a 3-column grid via a key remount — repro bed for the header/offset remount bug.
+          </Text>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-grid' as any)}>
+            Open example
+          </Button>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>Flash List</Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            {'@shopify/flash-list via CustomList — same pull-to-search and blur chrome, virtualized with '}
+            <Text variant='bodySmall' style={{ fontFamily: 'monospace' }}>estimatedItemSize</Text>
+            {'.'}
+          </Text>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-flash-list' as any)}>
+            Open example
+          </Button>
         </ScrollView>
         <ScrollViewFooter style={styles.footer}>
           <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>@rific/scroll-view</Text>

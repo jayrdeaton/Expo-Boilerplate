@@ -6,13 +6,13 @@ A lean, production-ready Expo starter with file-based routing, Redux, theming, a
 
 | Layer | Package |
 |---|---|
-| Framework | Expo ~56 / React Native ~0.85 |
-| Navigation | expo-router ~56 |
+| Framework | Expo ~57 / React Native ~0.86 |
+| Navigation | expo-router ~57 |
 | State | Redux Toolkit + redux-persist |
 | UI | react-native-paper ~5 |
-| Gestures | react-native-gesture-handler ~2.31 |
-| Animations | react-native-reanimated ~4 |
-| OTA | expo-updates ~56 |
+| Gestures | react-native-gesture-handler ~2.32 |
+| Animations | react-native-reanimated ~4.5 |
+| OTA | expo-updates ~57 |
 | Language | TypeScript ~6 |
 
 ---
@@ -21,14 +21,29 @@ A lean, production-ready Expo starter with file-based routing, Redux, theming, a
 
 ### `@rific/auto-paper`
 
-Adaptive `react-native-paper` theming. Derives a full triadic Material 3 palette from a single seed color and wires it to system / light / dark appearance automatically.
+Adaptive `react-native-paper` theming. Derives a full triadic Material 3 palette from a single seed color and wires it to system / light / dark appearance automatically. Bridged to Redux in [`Theme.tsx`](src/components/Theme.tsx) for persistence.
 
 ```ts
-import { AutoPaperProvider } from '@rific/auto-paper';
+import { Provider, useThemeSettings } from '@rific/auto-paper';
 
-<AutoPaperProvider seedColor="#6750A4">
+<Provider initialValue={settings} onChange={onChange}>
   {children}
-</AutoPaperProvider>
+</Provider>
+```
+
+---
+
+### `@rific/scroll-view`
+
+Blur-chrome scroll system. Drop-in replacements for `ScrollView`, `FlatList`, and `SectionList` with floating headers/footers, pull-to-search, keyboard awareness, and horizontal paging. Bridged to Redux in [`Providers.tsx`](src/components/Providers.tsx).
+
+```ts
+import { FlatList, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view';
+
+<ScrollViewProvider>
+  <ScrollViewHeader title="My Screen" />
+  <FlatList data={items} renderItem={renderItem} keyExtractor={keyExtractor} />
+</ScrollViewProvider>
 ```
 
 ---
@@ -38,9 +53,9 @@ import { AutoPaperProvider } from '@rific/auto-paper';
 Haptic feedback wrappers for `react-native-paper` and built-in pressable components. Drop-in replacements that fire `expo-haptics` on press.
 
 ```ts
-import { HapticButton, HapticPressable } from '@rific/haptic-press';
+import { Button } from '@rific/haptic-press';
 
-<HapticButton mode="contained" onPress={handlePress}>Submit</HapticButton>
+<Button mode="contained" onPress={handlePress}>Submit</Button>
 ```
 
 ---
@@ -50,14 +65,17 @@ import { HapticButton, HapticPressable } from '@rific/haptic-press';
 Stacking, animated toast notifications with a history stack and swipe-to-dismiss. Includes a provider and a `useToast` hook.
 
 ```ts
-import { ToasterProvider, useToast } from '@rific/toaster';
+import { Toaster, ToastProvider, useToast } from '@rific/toaster';
 
 // Wrap your app
-<ToasterProvider />
+<ToastProvider>
+  {children}
+  <Toaster />
+</ToastProvider>
 
 // Trigger anywhere
-const { show } = useToast();
-show({ message: 'Saved!', type: 'success' });
+const { success } = useToast();
+success('Saved!');
 ```
 
 ---
@@ -130,13 +148,15 @@ npm run update:bump      # bump OTA version + push
 
 ```
 src/
-  app/          # expo-router file-based routes
-  components/   # shared UI components
-  constants/    # app-wide constants
-  redux/        # store, slices, persistor
-  types/        # shared TypeScript types
-  utils/        # utility functions
-  __tests__/    # Jest test suite
+  app/            # expo-router file-based routes
+    demos/        # example screens for each included @rific package
+    packages/     # example screens for each optional @rific package
+  components/     # shared UI components (Providers, Theme)
+  constants/      # app-wide constants
+  redux/          # store, slices, persistor
+  types/          # shared TypeScript types
+  utils/          # utility functions
+  __tests__/      # Jest test suite
 ```
 
 ---
@@ -145,4 +165,4 @@ src/
 
 - **EAS project ID** — set `extra.eas.projectId` in [app.json](app.json)
 - **Bundle identifiers** — `ios.bundleIdentifier` and `android.package` in [app.json](app.json)
-- **Theme seed color** — passed to `AutoPaperProvider` in your root layout
+- **Theme seed color** — defaults to `#6750a4`; override by swapping `themeReducer` for `createThemeReducer({ color: '...' })` from `@rific/auto-paper` in [redux/store.ts](src/redux/store.ts)
