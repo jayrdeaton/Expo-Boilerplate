@@ -56,7 +56,7 @@ const ScannerPage = () => {
           </Text>
 
           <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/scanner expo-camera</Text>
+            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{'npm install @rific/scanner expo-camera \\\n  react-native-gesture-handler react-native-reanimated react-native-svg'}</Text>
           </Surface>
 
           <Divider style={styles.divider} />

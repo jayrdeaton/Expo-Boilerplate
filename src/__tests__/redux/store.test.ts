@@ -1,5 +1,6 @@
 import { hapticActions } from '@rific/haptic-press'
 import { scrollViewActions } from '@rific/scroll-view'
+
 import { settingsActions } from '../../redux/settingsSlice'
 import { persistor, store } from '../../redux/store'
 

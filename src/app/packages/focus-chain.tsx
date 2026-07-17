@@ -3,7 +3,7 @@ import { Stack, useRouter } from 'expo-router'
 import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
 
-const FEATURES = ['Single hook — no refs, no state, no useEffect', 'Works with any focusable component (TextInput, custom inputs)', 'Call order determines focus order — no indices to manage', 'onSubmitEditing auto-wired to advance to the next field', 'Last field in the chain can submit the form']
+const FEATURES = ['Single hook — no refs, no state, no useEffect', 'Works with any focusable component (TextInput, custom inputs)', 'No React Native dependency — works in plain React too (wire onSubmitEditing to the Enter key on DOM inputs)', 'Call order determines focus order — no indices to manage', 'onSubmitEditing auto-wired to advance to the next field', 'Last field in the chain can submit the form']
 
 const API_ITEMS = [
   { name: 'useFocusChain()', desc: 'Returns a register factory. Call once at the top of your component.' },
@@ -58,7 +58,7 @@ const FocusChainPage = () => {
         <ScrollView contentContainerStyle={styles.container}>
           <Text variant='headlineSmall'>Focus Chain</Text>
           <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-            Auto-advancing focus chain for React Native form inputs. Call the hook once, spread the result onto each input in order — pressing Next or Return automatically moves focus to the next field with no wiring required.
+            Auto-advancing focus chain for React form inputs — React Native or web. Call the hook once, spread the result onto each input in order — pressing Next or Return automatically moves focus to the next field with no wiring required.
           </Text>
 
           <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>

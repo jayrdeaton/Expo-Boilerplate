@@ -6,18 +6,18 @@ import { Providers } from '../../components/Providers'
 
 const mockHapticProviderCalls: unknown[] = []
 jest.mock('@rific/auto-paper', () => ({
-  createThemeReducer:
-    () =>
-    (state = { appearance: 'auto', color: '#4caf50' }) =>
-      state,
-  Provider: (props: any) => props.children
+  Provider: (props: any) => props.children,
+  themeActions: { initialize: (payload: unknown) => ({ payload, type: 'theme/initialize' }) },
+  themeReducer: (state = { appearance: 'auto', blur: true, color: '#4caf50', harmony: 'split-complementary' }) => state
 }))
 
 jest.mock('@rific/haptic-press', () => ({
+  hapticActions: { initialize: (payload: unknown) => ({ payload, type: 'haptic/initialize' }) },
   HapticPressProvider: (props: any) => {
     mockHapticProviderCalls.push(props)
     return props.children
-  }
+  },
+  hapticReducer: (state = { vibrate: true }) => state
 }))
 
 jest.mock('@rific/toaster', () => ({
@@ -61,6 +61,6 @@ describe('Providers', () => {
       </Providers>
     )
     expect(mockHapticProviderCalls.length).toBeGreaterThan(0)
-    expect(mockHapticProviderCalls[0]).toEqual(expect.objectContaining({ enabled: true }))
+    expect(mockHapticProviderCalls[0]).toEqual(expect.objectContaining({ initialValue: expect.objectContaining({ vibrate: true }) }))
   })
 })

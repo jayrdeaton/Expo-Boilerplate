@@ -3,7 +3,7 @@ import { Stack, useRouter } from 'expo-router'
 import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
 
-const FEATURES = ['Auto-grows vertically with content as the user types', 'Drag handle lets users manually resize the input', 'Configurable min/max height constraints', 'initialHeight for a fixed starting size', 'Compatible with react-native-paper TextInput — pass it via TextInputComponent', 'Forwarded ref for imperative focus control', 'onHeightChange callback for layout-aware UIs', 'renderHandle prop for a fully custom resize handle', 'handleColor for quick handle tint without a custom renderer']
+const FEATURES = ['Auto-grows vertically with content as the user types', 'Drag handle lets users manually resize the input', 'Configurable min/max height constraints', 'initialHeight for a fixed starting size', 'Defaults to react-native-paper TextInput when installed (optional peer) — override via TextInputComponent', 'Forwarded ref for imperative focus control', 'onHeightChange callback for layout-aware UIs', 'renderHandle prop for a fully custom resize handle', 'handleColor for quick handle tint without a custom renderer']
 
 const PROPS = [
   { name: 'autoGrow', type: 'boolean', desc: 'Grow with content as the user types. Default: true.' },
@@ -14,7 +14,7 @@ const PROPS = [
   { name: 'handleColor', type: 'string', desc: 'Tint color for the built-in drag handle.' },
   { name: 'renderHandle', type: '() => ReactNode', desc: 'Fully replace the default drag handle.' },
   { name: 'onHeightChange', type: '(h: number) => void', desc: 'Fires whenever the component height changes.' },
-  { name: 'TextInputComponent', type: 'ComponentType', desc: 'Swap in react-native-paper TextInput or any custom input.' }
+  { name: 'TextInputComponent', type: 'ComponentType', desc: 'Override the input component. Defaults to react-native-paper TextInput when installed, else the RN TextInput.' }
 ]
 
 const USAGE = `import { ResizableInput } from '@rific/resizable-input'

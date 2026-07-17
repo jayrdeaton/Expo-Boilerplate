@@ -19,13 +19,14 @@ jest.mock('@rific/auto-paper', () => ({
   Provider: (props: any) => {
     mockProviderCalls.push(props)
     return props.children
-  }
+  },
+  themeActions: { initialize: (payload: unknown) => ({ payload, type: 'theme/initialize' }) }
 }))
 
 const mockAddGate = addGate as jest.Mock
 const mockClearGate = clearGate as jest.Mock
 
-const makeStore = (themeState = { appearance: 'light' as const, color: '#4caf50' }) =>
+const makeStore = (themeState: { appearance: 'light' | 'dark' | 'system'; color: string } = { appearance: 'light', color: '#4caf50' }) =>
   configureStore({
     reducer: {
       settings: settingsReducer,
@@ -70,7 +71,7 @@ describe('Theme', () => {
       </ReduxProvider>
     )
     expect(mockProviderCalls.length).toBeGreaterThan(0)
-    expect(mockProviderCalls[0]).toEqual(expect.objectContaining({ appearance: 'dark' }))
+    expect(mockProviderCalls[0]).toEqual(expect.objectContaining({ initialValue: expect.objectContaining({ appearance: 'dark' }) }))
   })
 
   it('passes color from Redux state to auto-paper Provider', async () => {
@@ -82,7 +83,7 @@ describe('Theme', () => {
       </ReduxProvider>
     )
     expect(mockProviderCalls.length).toBeGreaterThan(0)
-    expect(mockProviderCalls[0]).toEqual(expect.objectContaining({ color: '#ff0000' }))
+    expect(mockProviderCalls[0]).toEqual(expect.objectContaining({ initialValue: expect.objectContaining({ color: '#ff0000' }) }))
   })
 
   it('passes an onReady callback to auto-paper Provider', async () => {

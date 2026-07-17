@@ -1,26 +1,14 @@
-import { FlashList } from '@shopify/flash-list'
 import { CustomList, PullSearch, type PullSearchHandle, ScrollViewFooter, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { FlashList } from '@shopify/flash-list'
 import { useRouter } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import Animated from 'react-native-reanimated'
 import { Chip, Divider, Text, useTheme } from 'react-native-paper'
+import Animated from 'react-native-reanimated'
 
 import { timeout } from '@/utils/timeout'
 
-const ALL_ITEMS = [
-  'Apple', 'Apricot', 'Artichoke', 'Asparagus', 'Avocado', 'Banana', 'Barley',
-  'Blackberry', 'Blueberry', 'Broccoli', 'Brown Rice', 'Buckwheat', 'Bulgur',
-  'Carrot', 'Cauliflower', 'Celery', 'Cherry', 'Coconut', 'Corn', 'Cranberry',
-  'Cucumber', 'Date', 'Dragon Fruit', 'Eggplant', 'Farro', 'Fig', 'Freekeh',
-  'Garlic', 'Ginger', 'Grape', 'Grapefruit', 'Guava', 'Kamut', 'Kale', 'Kiwi',
-  'Lemon', 'Lettuce', 'Lime', 'Lychee', 'Mango', 'Melon', 'Millet', 'Mushroom',
-  'Nectarine', 'Oats', 'Onion', 'Orange', 'Papaya', 'Passion Fruit', 'Peach',
-  'Pear', 'Pepper', 'Pineapple', 'Plum', 'Pomegranate', 'Potato', 'Pumpkin',
-  'Quinoa', 'Raspberry', 'Rye', 'Sorghum', 'Spelt', 'Spinach', 'Strawberry',
-  'Tangerine', 'Teff', 'Tomato', 'Watermelon', 'Wheat', 'White Rice', 'Wild Rice',
-  'Zucchini',
-]
+const ALL_ITEMS = ['Apple', 'Apricot', 'Artichoke', 'Asparagus', 'Avocado', 'Banana', 'Barley', 'Blackberry', 'Blueberry', 'Broccoli', 'Brown Rice', 'Buckwheat', 'Bulgur', 'Carrot', 'Cauliflower', 'Celery', 'Cherry', 'Coconut', 'Corn', 'Cranberry', 'Cucumber', 'Date', 'Dragon Fruit', 'Eggplant', 'Farro', 'Fig', 'Freekeh', 'Garlic', 'Ginger', 'Grape', 'Grapefruit', 'Guava', 'Kamut', 'Kale', 'Kiwi', 'Lemon', 'Lettuce', 'Lime', 'Lychee', 'Mango', 'Melon', 'Millet', 'Mushroom', 'Nectarine', 'Oats', 'Onion', 'Orange', 'Papaya', 'Passion Fruit', 'Peach', 'Pear', 'Pepper', 'Pineapple', 'Plum', 'Pomegranate', 'Potato', 'Pumpkin', 'Quinoa', 'Raspberry', 'Rye', 'Sorghum', 'Spelt', 'Spinach', 'Strawberry', 'Tangerine', 'Teff', 'Tomato', 'Watermelon', 'Wheat', 'White Rice', 'Wild Rice', 'Zucchini']
 
 type Item = { key: string; name: string; isLast: boolean }
 
@@ -48,49 +36,44 @@ const FlashListDemo = () => {
     await timeout(3000)
   }, [])
 
-  const listHeader = useMemo(() => (
-    <View>
-      <PullSearch
-        onChangeText={handleChangeText}
-        onHeightChange={setPullSearchHeight}
-        placeholder='Search…'
-        ref={searchRef}
-        value={query}
-      />
-      <View style={styles.filters}>
-        <Chip compact selected={sort === 'asc'} onPress={() => setSort('asc')} icon='sort-alphabetical-ascending'>A–Z</Chip>
-        <Chip compact selected={sort === 'desc'} onPress={() => setSort('desc')} icon='sort-alphabetical-descending'>Z–A</Chip>
+  const listHeader = useMemo(
+    () => (
+      <View>
+        <PullSearch onChangeText={handleChangeText} onHeightChange={setPullSearchHeight} placeholder='Search…' ref={searchRef} value={query} />
+        <View style={styles.filters}>
+          <Chip compact selected={sort === 'asc'} onPress={() => setSort('asc')} icon='sort-alphabetical-ascending'>
+            A–Z
+          </Chip>
+          <Chip compact selected={sort === 'desc'} onPress={() => setSort('desc')} icon='sort-alphabetical-descending'>
+            Z–A
+          </Chip>
+        </View>
       </View>
-    </View>
-  ), [handleChangeText, query, sort])
+    ),
+    [handleChangeText, query, sort]
+  )
 
-  const renderItem = useCallback(({ item }: { item: Item }) => (
-    <View style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
-      <Text variant='bodyMedium' style={{ color: theme.colors.onSurfaceVariant }}>{item.name}</Text>
-      {!item.isLast && <Divider style={styles.divider} />}
-    </View>
-  ), [theme])
+  const renderItem = useCallback(
+    ({ item }: { item: Item }) => (
+      <View style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
+        <Text variant='bodyMedium' style={{ color: theme.colors.onSurfaceVariant }}>
+          {item.name}
+        </Text>
+        {!item.isLast && <Divider style={styles.divider} />}
+      </View>
+    ),
+    [theme]
+  )
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
       <ScrollViewProvider>
-        <ScrollViewHeader
-          backAction={() => router.back()}
-          title='Flash List'
-        />
-        <CustomList
-          component={AnimatedFlashList}
-          data={data}
-          estimatedItemSize={48}
-          keyExtractor={(item: Item) => item.key}
-          ListHeaderComponent={listHeader}
-          onRefresh={handleRefresh}
-          pullSearchHeight={pullSearchHeight}
-          renderItem={renderItem}
-          scrollRef={scrollRef}
-        />
+        <ScrollViewHeader backAction={() => router.back()} title='Flash List' />
+        <CustomList component={AnimatedFlashList} data={data} keyExtractor={(item: Item) => item.key} ListHeaderComponent={listHeader} onRefresh={handleRefresh} pullSearchHeight={pullSearchHeight} renderItem={renderItem} scrollRef={scrollRef} />
         <ScrollViewFooter style={styles.footer}>
-          <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>FlashList · CustomList</Text>
+          <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>
+            FlashList · CustomList
+          </Text>
         </ScrollViewFooter>
       </ScrollViewProvider>
     </View>
@@ -100,9 +83,9 @@ const FlashListDemo = () => {
 const styles = StyleSheet.create({
   divider: { marginLeft: 16 },
   fill: { flex: 1 },
-  filters: { flexDirection: 'row', gap: 8, paddingHorizontal: 8, paddingBottom: 8 },
+  filters: { flexDirection: 'row', gap: 8, paddingBottom: 8, paddingHorizontal: 8 },
   footer: { flex: 1, justifyContent: 'center' },
-  item: { paddingHorizontal: 16, paddingVertical: 14 },
+  item: { paddingHorizontal: 16, paddingVertical: 14 }
 })
 
 export default FlashListDemo

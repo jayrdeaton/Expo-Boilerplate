@@ -68,77 +68,6 @@ jest.mock('react-native-worklets', () => ({
 }))
 ;(globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true
 
-// @rific/auto-paper
-jest.mock('@rific/auto-paper', () => {
-  const { createSlice } = jest.requireActual('@reduxjs/toolkit')
-  const defaultThemeSettings = { appearance: 'system', blur: true, color: '#6750a4', harmony: 'split-complementary' }
-  const slice = createSlice({
-    name: 'theme',
-    initialState: defaultThemeSettings,
-    reducers: {
-      initialize: (state: object, action: { payload: object }) => ({ ...state, ...action.payload }),
-      setAppearance: (state: object, action: { payload: string }) => ({ ...state, appearance: action.payload }),
-      setBlur: (state: object, action: { payload: boolean }) => ({ ...state, blur: action.payload }),
-      setColor: (state: object, action: { payload: string }) => ({ ...state, color: action.payload }),
-      setHarmony: (state: object, action: { payload: string }) => ({ ...state, harmony: action.payload })
-    }
-  })
-  return {
-    createThemeReducer: (init: object = {}) =>
-      createSlice({ name: 'theme', initialState: { ...slice.getInitialState(), ...init }, reducers: slice.caseReducers as never }).reducer,
-    themeActions: slice.actions,
-    themeReducer: slice.reducer,
-    defaultThemeSettings,
-    Provider: ({ children }: { children?: React.ReactNode }) => children,
-    useThemeSettings: () => ({ settings: slice.getInitialState(), set: jest.fn() })
-  }
-})
-
-// @rific/haptic-press
-jest.mock('@rific/haptic-press', () => {
-  const { createSlice } = jest.requireActual('@reduxjs/toolkit')
-  const defaultHapticSettings = { vibrate: true }
-  const slice = createSlice({
-    name: 'haptic',
-    initialState: defaultHapticSettings,
-    reducers: {
-      initialize: (_state: object, action: { payload: object }) => action.payload,
-      setVibrate: (state: object, action: { payload: boolean }) => ({ ...state, vibrate: action.payload })
-    }
-  })
-  return {
-    defaultHapticSettings,
-    hapticReducer: slice.reducer,
-    hapticActions: slice.actions,
-    HapticPressProvider: ({ children }: { children?: React.ReactNode }) => children,
-    useHapticSettings: () => ({ settings: defaultHapticSettings, set: jest.fn() })
-  }
-})
-
-// @rific/scroll-view
-jest.mock('@rific/scroll-view', () => {
-  const { createSlice } = jest.requireActual('@reduxjs/toolkit')
-  const defaultScrollViewSettings = { backActionFixed: true, footerFixed: false, headerFixed: false, snapBack: false }
-  const slice = createSlice({
-    name: 'scrollView',
-    initialState: defaultScrollViewSettings,
-    reducers: {
-      initialize: (_state: object, action: { payload: object }) => action.payload
-    }
-  })
-  return {
-    defaultScrollViewSettings,
-    scrollViewReducer: slice.reducer,
-    scrollViewActions: slice.actions,
-    ScrollViewSettingsProvider: ({ children }: { children?: React.ReactNode }) => children,
-    useScrollViewSettings: () => ({ settings: defaultScrollViewSettings, set: jest.fn() }),
-    ScrollViewProvider: ({ children }: { children?: React.ReactNode }) => children,
-    ScrollView: ({ children }: { children?: React.ReactNode }) => children,
-    ScrollViewHeader: () => null,
-    ScrollViewFooter: () => null
-  }
-})
-
 // @expo/vector-icons
 jest.mock('@expo/vector-icons', () => {
   const Icon = ({ children }: { children?: React.ReactNode }) => children || null
@@ -195,6 +124,7 @@ jest.mock('react-native-gesture-handler', () => {
     Gesture: {
       Pinch: () => makeGesture(),
       Pan: () => makeGesture(),
+      Native: () => makeGesture(),
       Simultaneous: (..._gs: unknown[]) => makeGesture(),
       Race: (..._gs: unknown[]) => makeGesture(),
       Sequence: (..._gs: unknown[]) => makeGesture()
