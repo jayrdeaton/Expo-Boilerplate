@@ -26,17 +26,15 @@ const ScrollViewDemo = () => {
 
   const [pullSearchHeight, setPullSearchHeight] = useState(0)
   const searchRef = useRef<PullSearchHandle>(null)
-  const [query, setQuery] = useState('')
-  const handleChangeText = useCallback((text: string) => setQuery(text), [])
+  const handleChangeText = useCallback(() => {}, [])
   const pullSearch = useMemo(() => (
     <PullSearch
       onChangeText={handleChangeText}
       onHeightChange={setPullSearchHeight}
       placeholder='Example pull search...'
       ref={searchRef}
-      value={query}
     />
-  ), [handleChangeText, query])
+  ), [handleChangeText])
 
   const [fixed, setFixed] = useState(false)
   const [showCaption, setShowCaption] = useState(true)

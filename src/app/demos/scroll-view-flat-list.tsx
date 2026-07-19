@@ -49,9 +49,8 @@ const FlatListDemo = () => {
       onHeightChange={setPullSearchHeight}
       placeholder='Search fruits & vegetables…'
       ref={searchRef}
-      value={query}
     />
-  ), [handleChangeText, query])
+  ), [handleChangeText])
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>

@@ -31,7 +31,7 @@
     "@reduxjs/toolkit": "^2.12.0",
     "@rific/auto-paper": "^0.6.0",
     "@rific/haptic-press": "^0.4.0",
-    "@rific/scroll-view": "^0.4.0",
+    "@rific/scroll-view": "^0.4.2",
     "@rific/toaster": "^0.3.0",
     "@rific/updater": "^0.2.0",
     "@shopify/flash-list": "2.0.2",

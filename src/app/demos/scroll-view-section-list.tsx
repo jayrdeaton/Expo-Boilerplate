@@ -119,9 +119,8 @@ const SectionListDemo = () => {
       onHeightChange={setPullSearchHeight}
       placeholder='Search fruits & vegetables…'
       ref={searchRef}
-      value={query}
     />
-  ), [handleChangeText, query])
+  ), [handleChangeText])
 
   const renderItem = useCallback(({ item, index, section }: { item: FoodItem; index: number; section: FoodSection }) => {
     const isLast = index === section.data.length - 1

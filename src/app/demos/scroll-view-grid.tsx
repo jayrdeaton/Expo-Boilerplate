@@ -45,9 +45,8 @@ const GridDemo = () => {
       onHeightChange={setPullSearchHeight}
       placeholder='Search fruits & vegetables…'
       ref={searchRef}
-      value={query}
     />
-  ), [handleChangeText, query])
+  ), [handleChangeText])
 
   const centerContent = useMemo(() => (
     <SegmentedButtons

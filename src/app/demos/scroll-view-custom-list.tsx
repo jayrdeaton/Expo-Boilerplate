@@ -62,7 +62,7 @@ const CustomListDemo = () => {
   const listHeader = useMemo(
     () => (
       <View>
-        <PullSearch onChangeText={handleChangeText} onHeightChange={setPullSearchHeight} placeholder='Search…' ref={searchRef} value={query} />
+        <PullSearch onChangeText={handleChangeText} onHeightChange={setPullSearchHeight} placeholder='Search…' ref={searchRef} />
         <View style={styles.filters}>
           <Chip compact selected={sort === 'asc'} onPress={() => setSort('asc')} icon='sort-alphabetical-ascending'>
             A–Z
@@ -73,7 +73,7 @@ const CustomListDemo = () => {
         </View>
       </View>
     ),
-    [handleChangeText, query, sort]
+    [handleChangeText, sort]
   )
 
   const renderItem = useCallback(
