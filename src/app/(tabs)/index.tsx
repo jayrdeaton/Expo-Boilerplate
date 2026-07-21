@@ -21,6 +21,13 @@ const INSTALLED: PackageEntry[] = [
     route: '/demos/auto-paper'
   },
   {
+    name: 'drawer',
+    label: '@rific/drawer',
+    icon: 'dock-left',
+    description: 'Left/right sliding drawer with edge-swipe gestures',
+    route: '/demos/drawer'
+  },
+  {
     name: 'haptic-press',
     label: '@rific/haptic-press',
     icon: 'gesture-tap',

@@ -6,16 +6,7 @@ import { Surface, Text, useTheme } from 'react-native-paper'
 
 import { timeout } from '@/utils/timeout'
 
-const ITEMS = [
-  'Apple', 'Apricot', 'Avocado', 'Banana', 'Blackberry', 'Blueberry', 'Cherry',
-  'Coconut', 'Cranberry', 'Date', 'Dragon Fruit', 'Fig', 'Grape', 'Grapefruit',
-  'Guava', 'Kiwi', 'Lemon', 'Lime', 'Lychee', 'Mango', 'Melon', 'Nectarine',
-  'Orange', 'Papaya', 'Passion Fruit', 'Peach', 'Pear', 'Pineapple', 'Plum',
-  'Pomegranate', 'Raspberry', 'Strawberry', 'Tangerine', 'Watermelon',
-  'Artichoke', 'Asparagus', 'Broccoli', 'Carrot', 'Cauliflower', 'Celery',
-  'Cucumber', 'Eggplant', 'Garlic', 'Ginger', 'Kale', 'Lettuce', 'Mushroom',
-  'Onion', 'Pepper', 'Potato', 'Pumpkin', 'Spinach', 'Tomato', 'Zucchini',
-]
+const ITEMS = ['Apple', 'Apricot', 'Avocado', 'Banana', 'Blackberry', 'Blueberry', 'Cherry', 'Coconut', 'Cranberry', 'Date', 'Dragon Fruit', 'Fig', 'Grape', 'Grapefruit', 'Guava', 'Kiwi', 'Lemon', 'Lime', 'Lychee', 'Mango', 'Melon', 'Nectarine', 'Orange', 'Papaya', 'Passion Fruit', 'Peach', 'Pear', 'Pineapple', 'Plum', 'Pomegranate', 'Raspberry', 'Strawberry', 'Tangerine', 'Watermelon', 'Artichoke', 'Asparagus', 'Broccoli', 'Carrot', 'Cauliflower', 'Celery', 'Cucumber', 'Eggplant', 'Garlic', 'Ginger', 'Kale', 'Lettuce', 'Mushroom', 'Onion', 'Pepper', 'Potato', 'Pumpkin', 'Spinach', 'Tomato', 'Zucchini']
 
 type Item = { key: string }
 
@@ -37,37 +28,28 @@ const FlatListDemo = () => {
     await timeout(3000)
   }, [])
 
-  const renderItem = useCallback(({ item }: { item: Item }) => (
-    <Surface elevation={0} style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
-      <Text variant='bodyMedium' style={{ color: theme.colors.onSurfaceVariant }}>{item.key}</Text>
-    </Surface>
-  ), [theme])
+  const renderItem = useCallback(
+    ({ item }: { item: Item }) => (
+      <Surface elevation={0} style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
+        <Text variant='bodyMedium' style={{ color: theme.colors.onSurfaceVariant }}>
+          {item.key}
+        </Text>
+      </Surface>
+    ),
+    [theme]
+  )
 
-  const pullSearch = useMemo(() => (
-    <PullSearch
-      onChangeText={handleChangeText}
-      onHeightChange={setPullSearchHeight}
-      placeholder='Search fruits & vegetables…'
-      ref={searchRef}
-    />
-  ), [handleChangeText])
+  const pullSearch = useMemo(() => <PullSearch onChangeText={handleChangeText} onHeightChange={setPullSearchHeight} placeholder='Search fruits & vegetables…' ref={searchRef} />, [handleChangeText])
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
       <ScrollViewProvider>
         <ScrollViewHeader backAction={() => router.back()} caption='@rific/scroll-view' title='Flat List' />
-        <FlatList
-          contentContainerStyle={styles.container}
-          data={data}
-          keyExtractor={(item) => item.key}
-          keyboardShouldPersistTaps='handled'
-          ListHeaderComponent={pullSearch}
-          onRefresh={handleRefresh}
-          pullSearchHeight={pullSearchHeight}
-          renderItem={renderItem}
-        />
+        <FlatList contentContainerStyle={styles.container} data={data} keyExtractor={(item) => item.key} keyboardShouldPersistTaps='handled' ListHeaderComponent={pullSearch} onRefresh={handleRefresh} pullSearchHeight={pullSearchHeight} renderItem={renderItem} />
         <ScrollViewFooter style={styles.footer}>
-          <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>@rific/scroll-view</Text>
+          <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>
+            @rific/scroll-view
+          </Text>
         </ScrollViewFooter>
       </ScrollViewProvider>
     </View>

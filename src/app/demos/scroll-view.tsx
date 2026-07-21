@@ -11,9 +11,36 @@ const ProgressControls = () => {
   const { setProgress, setProgressing } = useScrollView()
   return (
     <View style={styles.progressRow}>
-      <Button compact mode='outlined' onPress={() => { setProgressing(true); setProgress(null) }}>Indeterminate</Button>
-      <Button compact mode='outlined' onPress={() => { setProgressing(true); setProgress(0.6) }}>60%</Button>
-      <Button compact mode='outlined' onPress={() => { setProgressing(false); setProgress(null) }}>Clear</Button>
+      <Button
+        compact
+        mode='outlined'
+        onPress={() => {
+          setProgressing(true)
+          setProgress(null)
+        }}
+      >
+        Indeterminate
+      </Button>
+      <Button
+        compact
+        mode='outlined'
+        onPress={() => {
+          setProgressing(true)
+          setProgress(0.6)
+        }}
+      >
+        60%
+      </Button>
+      <Button
+        compact
+        mode='outlined'
+        onPress={() => {
+          setProgressing(false)
+          setProgress(null)
+        }}
+      >
+        Clear
+      </Button>
     </View>
   )
 }
@@ -21,20 +48,16 @@ const ProgressControls = () => {
 const ScrollViewDemo = () => {
   const router = useRouter()
   const theme = useTheme()
-  const { settings: { blur }, set: setTheme } = useThemeSettings()
+  const {
+    settings: { blur },
+    set: setTheme
+  } = useThemeSettings()
   const { settings, set } = useScrollViewSettings()
 
   const [pullSearchHeight, setPullSearchHeight] = useState(0)
   const searchRef = useRef<PullSearchHandle>(null)
   const handleChangeText = useCallback(() => {}, [])
-  const pullSearch = useMemo(() => (
-    <PullSearch
-      onChangeText={handleChangeText}
-      onHeightChange={setPullSearchHeight}
-      placeholder='Example pull search...'
-      ref={searchRef}
-    />
-  ), [handleChangeText])
+  const pullSearch = useMemo(() => <PullSearch onChangeText={handleChangeText} onHeightChange={setPullSearchHeight} placeholder='Example pull search...' ref={searchRef} />, [handleChangeText])
 
   const [fixed, setFixed] = useState(false)
   const [showCaption, setShowCaption] = useState(true)
@@ -46,18 +69,7 @@ const ScrollViewDemo = () => {
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
       <Stack.Screen options={{ headerShown: false }} />
       <ScrollViewProvider fixed={fixed}>
-        <ScrollViewHeader
-          actionSize={actionSize}
-          backAction={() => router.back()}
-          caption={showCaption ? '@rific/scroll-view' : undefined}
-          title='Scroll View'
-          trailingAction={
-            showTrailing
-              ? <Appbar.Action icon={settings.headerFixed ? 'lock' : 'lock-open-outline'} onPress={() => set({ headerFixed: !settings.headerFixed })} />
-              : undefined
-          }
-          trailingActionFixed={trailingActionFixed}
-        />
+        <ScrollViewHeader actionSize={actionSize} backAction={() => router.back()} caption={showCaption ? '@rific/scroll-view' : undefined} title='Scroll View' trailingAction={showTrailing ? <Appbar.Action icon={settings.headerFixed ? 'lock' : 'lock-open-outline'} onPress={() => set({ headerFixed: !settings.headerFixed })} /> : undefined} trailingActionFixed={trailingActionFixed} />
         <ScrollView contentContainerStyle={styles.container} pullSearchHeight={pullSearchHeight}>
           {pullSearch}
 
@@ -66,7 +78,9 @@ const ScrollViewDemo = () => {
           </Text>
 
           <Divider style={styles.divider} />
-          <Text variant='titleMedium' style={styles.sectionLabel}>Header & Footer</Text>
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Header & Footer
+          </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             When not fixed, the header and footer scroll away with the content.
           </Text>
@@ -86,18 +100,26 @@ const ScrollViewDemo = () => {
             <Text variant='bodyMedium'>Caption</Text>
             <Switch value={showCaption} onValueChange={setShowCaption} />
           </View>
-          <Text variant='bodySmall' style={[styles.chipLabel, { color: theme.colors.onSurfaceVariant }]}>Action size</Text>
+          <Text variant='bodySmall' style={[styles.chipLabel, { color: theme.colors.onSurfaceVariant }]}>
+            Action size
+          </Text>
           <View style={styles.chips}>
             {ACTION_SIZES.map((s) => (
-              <Chip key={s} selected={actionSize === s} onPress={() => setActionSize(s)}>{s}</Chip>
+              <Chip key={s} selected={actionSize === s} onPress={() => setActionSize(s)}>
+                {s}
+              </Chip>
             ))}
           </View>
 
           <Divider style={styles.divider} />
-          <Text variant='titleMedium' style={styles.sectionLabel}>Blur</Text>
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Blur
+          </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             {'Applies a blur backdrop to the header and footer chrome. Powered by '}
-            <Text variant='bodySmall' style={{ color: theme.colors.primary }} onPress={() => router.push('/demos/auto-paper' as any)}>@rific/auto-paper</Text>
+            <Text variant='bodySmall' style={{ color: theme.colors.primary }} onPress={() => router.push('/demos/auto-paper' as any)}>
+              @rific/auto-paper
+            </Text>
             {' — toggle here affects all scroll-view screens.'}
           </Text>
           <View style={styles.row}>
@@ -106,7 +128,9 @@ const ScrollViewDemo = () => {
           </View>
 
           <Divider style={styles.divider} />
-          <Text variant='titleMedium' style={styles.sectionLabel}>Actions</Text>
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Actions
+          </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Back and trailing action slots. When not fixed, both scroll away with the header.
           </Text>
@@ -124,7 +148,9 @@ const ScrollViewDemo = () => {
           </View>
 
           <Divider style={styles.divider} />
-          <Text variant='titleMedium' style={styles.sectionLabel}>Snap Back</Text>
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Snap Back
+          </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Snaps the header and/or footer back into view immediately on scroll up. Individual overrides take precedence over both.
           </Text>
@@ -142,14 +168,18 @@ const ScrollViewDemo = () => {
           </View>
 
           <Divider style={styles.divider} />
-          <Text variant='titleMedium' style={styles.sectionLabel}>Progress Bar</Text>
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Progress Bar
+          </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Drives the progress bar on the header chrome.
           </Text>
           <ProgressControls />
 
           <Divider style={styles.divider} />
-          <Text variant='titleMedium' style={styles.sectionLabel}>Pull Search</Text>
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Pull Search
+          </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Pull down past the header to reveal a search bar. Available in Flat List, Section List, and Custom List below.
           </Text>
@@ -188,7 +218,9 @@ const ScrollViewDemo = () => {
           </Button>
 
           <Divider style={styles.divider} />
-          <Text variant='titleMedium' style={styles.sectionLabel}>Custom List</Text>
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Custom List
+          </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Bring your own list component with pull-to-search, sort filters, and a centerContent segmented control.
           </Text>
@@ -208,10 +240,14 @@ const ScrollViewDemo = () => {
           </Button>
 
           <Divider style={styles.divider} />
-          <Text variant='titleMedium' style={styles.sectionLabel}>Flash List</Text>
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Flash List
+          </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             {'@shopify/flash-list via CustomList — same pull-to-search and blur chrome, virtualized with '}
-            <Text variant='bodySmall' style={{ fontFamily: 'monospace' }}>estimatedItemSize</Text>
+            <Text variant='bodySmall' style={styles.monospaceText}>
+              estimatedItemSize
+            </Text>
             {'.'}
           </Text>
           <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-flash-list' as any)}>
@@ -219,7 +255,9 @@ const ScrollViewDemo = () => {
           </Button>
         </ScrollView>
         <ScrollViewFooter style={styles.footer}>
-          <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>@rific/scroll-view</Text>
+          <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>
+            @rific/scroll-view
+          </Text>
         </ScrollViewFooter>
       </ScrollViewProvider>
     </View>
@@ -236,6 +274,7 @@ const styles = StyleSheet.create({
   fill: { flex: 1 },
   footer: { flex: 1, justifyContent: 'center' },
   hint: { marginBottom: 12 },
+  monospaceText: { fontFamily: 'monospace' },
   progressRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   row: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 },
   sectionLabel: { marginBottom: 8 }

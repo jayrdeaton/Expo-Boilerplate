@@ -1,5 +1,5 @@
 import { BlurView, useThemeSettings } from '@rific/auto-paper'
-import { PullSearch, type PullSearchHandle, SectionList, ScrollViewFooter, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { PullSearch, type PullSearchHandle, ScrollViewFooter, ScrollViewHeader, ScrollViewProvider, SectionList } from '@rific/scroll-view'
 import { useRouter } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -16,8 +16,8 @@ const ALL_SECTIONS: FoodSection[] = [
       { key: 'lemon', name: 'Lemon' },
       { key: 'lime', name: 'Lime' },
       { key: 'orange', name: 'Orange' },
-      { key: 'tangerine', name: 'Tangerine' },
-    ],
+      { key: 'tangerine', name: 'Tangerine' }
+    ]
   },
   {
     title: 'Tropical',
@@ -31,8 +31,8 @@ const ALL_SECTIONS: FoodSection[] = [
       { key: 'mango', name: 'Mango' },
       { key: 'papaya', name: 'Papaya' },
       { key: 'passion-fruit', name: 'Passion Fruit' },
-      { key: 'pineapple', name: 'Pineapple' },
-    ],
+      { key: 'pineapple', name: 'Pineapple' }
+    ]
   },
   {
     title: 'Berries',
@@ -43,8 +43,8 @@ const ALL_SECTIONS: FoodSection[] = [
       { key: 'cranberry', name: 'Cranberry' },
       { key: 'grape', name: 'Grape' },
       { key: 'raspberry', name: 'Raspberry' },
-      { key: 'strawberry', name: 'Strawberry' },
-    ],
+      { key: 'strawberry', name: 'Strawberry' }
+    ]
   },
   {
     title: 'Stone Fruit',
@@ -54,8 +54,8 @@ const ALL_SECTIONS: FoodSection[] = [
       { key: 'fig', name: 'Fig' },
       { key: 'nectarine', name: 'Nectarine' },
       { key: 'peach', name: 'Peach' },
-      { key: 'plum', name: 'Plum' },
-    ],
+      { key: 'plum', name: 'Plum' }
+    ]
   },
   {
     title: 'Other Fruit',
@@ -65,8 +65,8 @@ const ALL_SECTIONS: FoodSection[] = [
       { key: 'melon', name: 'Melon' },
       { key: 'pear', name: 'Pear' },
       { key: 'pomegranate', name: 'Pomegranate' },
-      { key: 'watermelon', name: 'Watermelon' },
-    ],
+      { key: 'watermelon', name: 'Watermelon' }
+    ]
   },
   {
     title: 'Vegetables',
@@ -90,15 +90,17 @@ const ALL_SECTIONS: FoodSection[] = [
       { key: 'pumpkin', name: 'Pumpkin' },
       { key: 'spinach', name: 'Spinach' },
       { key: 'tomato', name: 'Tomato' },
-      { key: 'zucchini', name: 'Zucchini' },
-    ],
-  },
+      { key: 'zucchini', name: 'Zucchini' }
+    ]
+  }
 ]
 
 const SectionListDemo = () => {
   const router = useRouter()
   const theme = useTheme()
-  const { settings: { blur } } = useThemeSettings()
+  const {
+    settings: { blur }
+  } = useThemeSettings()
   const [query, setQuery] = useState('')
   const [pullSearchHeight, setPullSearchHeight] = useState(0)
   const searchRef = useRef<PullSearchHandle>(null)
@@ -106,59 +108,50 @@ const SectionListDemo = () => {
   const sections = useMemo<FoodSection[]>(() => {
     const q = query.toLowerCase()
     if (!q) return ALL_SECTIONS
-    return ALL_SECTIONS
-      .map((s) => ({ ...s, data: s.data.filter((item) => item.name.toLowerCase().includes(q)) }))
-      .filter((s) => s.data.length > 0)
+    return ALL_SECTIONS.map((s) => ({ ...s, data: s.data.filter((item) => item.name.toLowerCase().includes(q)) })).filter((s) => s.data.length > 0)
   }, [query])
 
   const handleChangeText = useCallback((text: string) => setQuery(text), [])
 
-  const pullSearch = useMemo(() => (
-    <PullSearch
-      onChangeText={handleChangeText}
-      onHeightChange={setPullSearchHeight}
-      placeholder='Search fruits & vegetables…'
-      ref={searchRef}
-    />
-  ), [handleChangeText])
+  const pullSearch = useMemo(() => <PullSearch onChangeText={handleChangeText} onHeightChange={setPullSearchHeight} placeholder='Search fruits & vegetables…' ref={searchRef} />, [handleChangeText])
 
-  const renderItem = useCallback(({ item, index, section }: { item: FoodItem; index: number; section: FoodSection }) => {
-    const isLast = index === section.data.length - 1
-    return (
-      <View style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
-        <Text variant='bodyMedium' style={{ color: theme.colors.onSurfaceVariant }}>{item.name}</Text>
-        {!isLast && <Divider style={styles.itemDivider} />}
-      </View>
-    )
-  }, [theme])
+  const renderItem = useCallback(
+    ({ item, index, section }: { item: FoodItem; index: number; section: FoodSection }) => {
+      const isLast = index === section.data.length - 1
+      return (
+        <View style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
+          <Text variant='bodyMedium' style={{ color: theme.colors.onSurfaceVariant }}>
+            {item.name}
+          </Text>
+          {!isLast && <Divider style={styles.itemDivider} />}
+        </View>
+      )
+    },
+    [theme]
+  )
 
-  const renderSectionHeader = useCallback(({ section }: { section: FoodSection }) => (
-    <BlurView blur={blur} style={styles.sectionHeader}>
-      <Text variant='titleSmall' style={{ color: theme.colors.primary }}>{section.title}</Text>
-    </BlurView>
-  ), [blur, theme])
+  const renderSectionHeader = useCallback(
+    ({ section }: { section: FoodSection }) => (
+      <BlurView blur={blur} style={styles.sectionHeader}>
+        <Text variant='titleSmall' style={{ color: theme.colors.primary }}>
+          {section.title}
+        </Text>
+      </BlurView>
+    ),
+    [blur, theme]
+  )
 
   const keyExtractor = useCallback((item: FoodItem) => item.key, [])
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
       <ScrollViewProvider>
-        <ScrollViewHeader
-          backAction={() => router.back()}
-          caption='@rific/scroll-view'
-          title='Section List'
-        />
-        <SectionList
-          keyExtractor={keyExtractor}
-          ListHeaderComponent={pullSearch}
-          pullSearchHeight={pullSearchHeight}
-          renderItem={renderItem}
-          renderSectionHeader={renderSectionHeader}
-          sections={sections}
-          stickySectionHeadersEnabled
-        />
+        <ScrollViewHeader backAction={() => router.back()} caption='@rific/scroll-view' title='Section List' />
+        <SectionList keyExtractor={keyExtractor} ListHeaderComponent={pullSearch} pullSearchHeight={pullSearchHeight} renderItem={renderItem} renderSectionHeader={renderSectionHeader} sections={sections} stickySectionHeadersEnabled />
         <ScrollViewFooter style={styles.footer}>
-          <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>@rific/scroll-view</Text>
+          <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>
+            @rific/scroll-view
+          </Text>
         </ScrollViewFooter>
       </ScrollViewProvider>
     </View>
@@ -170,7 +163,7 @@ const styles = StyleSheet.create({
   footer: { flex: 1, justifyContent: 'center' },
   item: { paddingHorizontal: 16, paddingVertical: 14 },
   itemDivider: { marginLeft: 16 },
-  sectionHeader: { paddingHorizontal: 16, paddingVertical: 8 },
+  sectionHeader: { paddingHorizontal: 16, paddingVertical: 8 }
 })
 
 export default SectionListDemo

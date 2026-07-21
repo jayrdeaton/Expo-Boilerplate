@@ -7,7 +7,7 @@ import { Text, useTheme } from 'react-native-paper'
 const PAGES = Array.from({ length: 20 }, (_, i) => ({
   key: String(i + 1),
   title: `Page ${i + 1}`,
-  body: `Page ${i + 1} of 20`,
+  body: `Page ${i + 1} of 20`
 }))
 
 type Page = (typeof PAGES)[number]
@@ -16,13 +16,7 @@ const HorizontalContent = ({ onBack }: { onBack: () => void }) => {
   const theme = useTheme()
   const { width, height: windowHeight } = useWindowDimensions()
   const { headerHeight, footerHeight } = useContext(ScrollViewContext)
-  const bgColors = useMemo(() => [
-    theme.colors.primaryContainer,
-    theme.colors.secondaryContainer,
-    theme.colors.tertiaryContainer,
-    theme.colors.errorContainer,
-    theme.colors.surfaceVariant,
-  ], [theme])
+  const bgColors = useMemo(() => [theme.colors.primaryContainer, theme.colors.secondaryContainer, theme.colors.tertiaryContainer, theme.colors.errorContainer, theme.colors.surfaceVariant], [theme])
 
   const renderItem = useCallback(
     ({ item, index }: { item: Page; index: number }) => (
@@ -35,20 +29,13 @@ const HorizontalContent = ({ onBack }: { onBack: () => void }) => {
         </Text>
       </View>
     ),
-    [theme, width, windowHeight, headerHeight, footerHeight, bgColors],
+    [theme, width, windowHeight, headerHeight, footerHeight, bgColors]
   )
 
   return (
     <>
       <ScrollViewHeader backAction={onBack} caption='@rific/scroll-view' title='Horizontal' />
-      <FlatList
-        alwaysBounceVertical={false}
-        data={PAGES}
-        horizontal
-        keyExtractor={(item) => item.key}
-        pagingEnabled
-        renderItem={renderItem}
-      />
+      <FlatList alwaysBounceVertical={false} data={PAGES} horizontal keyExtractor={(item) => item.key} pagingEnabled renderItem={renderItem} />
       <ScrollViewFooter style={styles.footer}>
         <Text variant='labelMedium' style={{ color: theme.colors.onSurfaceVariant }}>
           @rific/scroll-view
@@ -76,7 +63,7 @@ const styles = StyleSheet.create({
   footer: { flex: 1, justifyContent: 'center' },
   page: { alignItems: 'center', justifyContent: 'center' },
   pageBody: { marginTop: 12, textAlign: 'center' },
-  pageTitle: { textAlign: 'center' },
+  pageTitle: { textAlign: 'center' }
 })
 
 export default HorizontalDemo
