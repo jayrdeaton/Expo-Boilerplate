@@ -1,4 +1,4 @@
-import { AppearancePicker, ColorPicker, Dialog, HarmonyPicker, Menu, useThemeSettings } from '@rific/auto-paper'
+import { AppearancePicker, ColorPicker, Dialog, HarmonyPicker, Menu, PalettePicker, useThemeSettings } from '@rific/auto-paper'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { useState } from 'react'
@@ -34,6 +34,15 @@ const AutoPaperDemo = () => {
             Tap a swatch — the whole app re-themes live.
           </Text>
           <ColorPicker value={color} onChange={(c) => set({ color: c })} />
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Palette Picker
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            Same seed swatches, but each one previews its full triadic palette as a pie instead of a flat color.
+          </Text>
+          <PalettePicker value={color} onChange={(c) => set({ color: c })} harmony={harmony} />
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>

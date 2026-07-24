@@ -98,10 +98,6 @@ const DrawerDemoContent = () => {
             Left/right sliding drawer with edge-swipe gestures. Not yet published — still being tested here.
           </Text>
 
-          <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>{'npm install @rific/drawer \\\n  react-native-gesture-handler react-native-reanimated'}</Text>
-          </Surface>
-
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
             Try it
@@ -196,7 +192,6 @@ const styles = StyleSheet.create({
   },
   fill: { flex: 1 },
   hint: { marginBottom: 12 },
-  installBox: { borderRadius: 8, marginTop: 16, padding: 12 },
   propDesc: { marginTop: 2 },
   propRow: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' },
   propType: { marginLeft: 8 },
