@@ -3,41 +3,44 @@ import { Stack, useRouter } from 'expo-router'
 import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
 
-const FEATURES = ['6 cell modes: solid, gradient, density, stacked, dots, priority', 'Animated entrance with configurable direction (ltr / rtl) and duration', 'Timeline variant — zoomable horizontal time-series view', 'Scatter plot variant for raw data distribution', 'Custom color scale with thresholds', 'Day and month label rendering', 'Tooltip with custom render function', 'Custom cell renderer for full control over appearance', 'onDayPress handler with date and data payload', 'Dark / light color scheme support', 'Auto-scaling from data range', 'Infinite scroll with onEndReached']
+const FEATURES = ['6 cell modes: solid, gradient, density, stacked, dots, priority', 'Load-ripple, today-pulse, and press-spring animations, enabled with a single animated prop', 'Heatmap.Timeline variant: zoomable horizontal time-series view', 'Heatmap.Scatter variant for raw data distribution', 'Custom color scale with thresholds', 'Day and month label rendering', 'Tooltip with custom render function, pluralized unit label out of the box', 'Custom cell renderer for full control over appearance', 'onDayPress handler with date and data payload', 'Dark / light color scheme support', 'Auto-scaling from data range', 'Infinite scroll with onEndReached, extend endDate to append more weeks', 'Multi-category segments array for stacked/dots/priority cell modes']
 
 const PROPS = [
-  { name: 'data', type: 'DataPoint[]', desc: 'Array of { date, value, color?, segments?, metadata? }' },
-  { name: 'cellMode', type: 'CellMode', desc: '"solid" | "gradient" | "density" | "stacked" | "dots" | "priority"' },
-  { name: 'colorScale', type: 'ColorScale', desc: '{ thresholds, colors, emptyColor? } for threshold-based coloring' },
-  { name: 'animated', type: 'boolean', desc: 'Animate cells in on mount' },
-  { name: 'animationDirection', type: '"ltr" | "rtl"', desc: 'Direction the animation sweeps across' },
-  { name: 'showMonthLabels', type: 'boolean', desc: 'Render month labels above the grid' },
-  { name: 'showDayLabels', type: 'boolean', desc: 'Render day-of-week labels on the left' },
-  { name: 'onDayPress', type: 'function', desc: '(day, date) — called when a cell is tapped' },
-  { name: 'renderTooltip', type: 'function', desc: 'Custom tooltip node rendered on cell press' },
-  { name: 'renderCell', type: 'function', desc: 'Completely override cell rendering' },
-  { name: 'autoScale', type: 'boolean', desc: 'Derive color thresholds from the data range automatically' }
+  { name: 'data', type: 'DataPoint[]', desc: 'Required. Array of { date, value, color?, segments?, metadata? }; date is YYYY-MM-DD.' },
+  { name: 'startDate / endDate', type: 'Date', desc: 'Range shown on the grid. Default: 1 year ago through today.' },
+  { name: 'cellMode', type: 'CellMode', desc: '"solid" | "gradient" | "density" | "stacked" | "dots" | "priority". Default: "solid".' },
+  { name: 'colorScale', type: 'Partial<ColorScale>', desc: 'Thresholds and colors used to shade cells. Default: GitHub greens.' },
+  { name: 'color', type: 'string', desc: 'Single accent color, overrides the default color scale.' },
+  { name: 'colorScheme', type: '"light" | "dark"', desc: 'Switch between built-in light and dark palettes.' },
+  { name: 'autoScale', type: 'boolean', desc: 'Scale cell intensity relative to the max value in data. Default: true.' },
+  { name: 'animated', type: 'boolean', desc: 'Enable load ripple, today pulse, and press spring animations. Default: false.' },
+  { name: 'showMonthLabels / showDayLabels', type: 'boolean', desc: 'Render month/day-of-week labels. Both default: true.' },
+  { name: 'onDayPress', type: '(point: DataPoint | null, date: string) => void', desc: 'Called when a cell is tapped.' },
+  { name: 'onEndReached', type: '() => void', desc: 'Called when the user scrolls near the right edge; use with endDate for infinite scroll.' },
+  { name: 'renderTooltip / renderCell', type: 'function', desc: 'Replace the default tooltip or cell with a custom component.' }
 ]
 
-const USAGE = `import { Heatmap } from '@rific/heatmap'
+const USAGE = `import Heatmap from '@rific/heatmap'
 
 const data = [
-  { date: '2024-01-15', value: 4 },
-  { date: '2024-01-16', value: 12 },
-  { date: '2024-01-17', value: 7 },
+  { date: '2026-01-15', value: 4 },
+  { date: '2026-01-16', value: 12 },
+  { date: '2026-01-17', value: 7 },
   // ...
 ]
 
-<Heatmap
+<Heatmap.Calendar
   data={data}
   cellMode="gradient"
   color="#4caf50"
   animated
-  animationDirection="ltr"
   showMonthLabels
   showDayLabels
-  onDayPress={(day, date) => console.log(date, day?.value)}
-/>`
+  onDayPress={(point, date) => console.log(date, point?.value)}
+/>
+
+// Heatmap.Timeline (zoomable time-series) and Heatmap.Scatter (raw
+// distribution) are also exported for the same DataPoint[] shape`
 
 const HeatmapPage = () => {
   const router = useRouter()
@@ -51,7 +54,7 @@ const HeatmapPage = () => {
         <ScrollView contentContainerStyle={styles.container}>
           <Text variant='headlineSmall'>Heatmap</Text>
           <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-            GitHub-style activity heatmap for React Native with SVG rendering. Supports six cell visualization modes, an animated entrance, an inline timeline view, and full customization of colors, labels, and tooltips.
+            GitHub-style activity heatmap for React Native with SVG rendering. Supports six cell visualization modes, entrance/press animations, Timeline and Scatter variants alongside the default Calendar, and full customization of colors, labels, and tooltips.
           </Text>
 
           <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>

@@ -1,18 +1,18 @@
+import { useFocusChain } from '@rific/focus-chain'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
+import { useToast } from '@rific/toaster'
 import { Stack, useRouter } from 'expo-router'
-import { Platform, StyleSheet, View } from 'react-native'
-import { Divider, Surface, Text, useTheme } from 'react-native-paper'
+import { useCallback } from 'react'
+import { Keyboard, Platform, StyleSheet, View } from 'react-native'
+import { Divider, Surface, Text, TextInput, useTheme } from 'react-native-paper'
 
-const FEATURES = ['Single hook — no refs, no state, no useEffect', 'Works with any focusable component (TextInput, custom inputs)', 'No React Native dependency — works in plain React too (wire onSubmitEditing to the Enter key on DOM inputs)', 'Call order determines focus order — no indices to manage', 'onSubmitEditing auto-wired to advance to the next field', 'Last field in the chain can submit the form']
+const FEATURES = ['Single hook, no refs, no state, no useEffect', 'Works with any focusable component (TextInput, custom inputs)', 'No React Native dependency, works in plain React too (wire onSubmitEditing to the Enter key on DOM inputs)', 'Call order determines focus order, no indices to manage', 'onSubmitEditing auto-wired to advance to the next field', 'Last field in the chain can submit the form']
 
 const API_ITEMS = [
   { name: 'useFocusChain()', desc: 'Returns a register factory. Call once at the top of your component.' },
   { name: 'register()', desc: 'Call once per input in order. Returns { ref, onSubmitEditing, focus }.' },
   { name: 'ref', desc: 'Pass to the input ref prop to register the focusable element.' },
-  {
-    name: 'onSubmitEditing',
-    desc: 'Pass to onSubmitEditing. Focuses the next registered input automatically.'
-  },
+  { name: 'onSubmitEditing', desc: 'Pass to onSubmitEditing. Focuses the next registered input automatically.' },
   { name: 'focus()', desc: 'Imperatively focus this specific input from anywhere.' }
 ]
 
@@ -46,24 +46,40 @@ const MyForm = () => {
   )
 }`
 
-const FocusChainPage = () => {
+const FocusChainDemo = () => {
   const router = useRouter()
   const theme = useTheme()
+  const register = useFocusChain()
+  const first = register()
+  const second = register()
+  const third = register()
+  const { success } = useToast()
+
+  const handleSubmit = useCallback(() => {
+    Keyboard.dismiss()
+    success('Submitted!')
+  }, [success])
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
       <Stack.Screen options={{ headerShown: false }} />
       <ScrollViewProvider>
-        <ScrollViewHeader backAction={() => router.back()} title='@rific/focus-chain' />
-        <ScrollView contentContainerStyle={styles.container}>
-          <Text variant='headlineSmall'>Focus Chain</Text>
+        <ScrollViewHeader backAction={() => router.back()} caption='@rific/focus-chain' title='Focus Chain' />
+        <ScrollView contentContainerStyle={styles.container} keyboardAware keyboardShouldPersistTaps='handled'>
           <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-            Auto-advancing focus chain for React form inputs — React Native or web. Call the hook once, spread the result onto each input in order — pressing Next or Return automatically moves focus to the next field with no wiring required.
+            Auto-advancing focus chain for React form inputs, React Native or web. Call the hook once, spread the result onto each input in order, then pressing Next or Return automatically moves focus to the next field with no wiring required.
           </Text>
 
-          <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>
-            <Text style={[styles.code, { color: theme.colors.onSurfaceVariant }]}>npm install @rific/focus-chain</Text>
-          </Surface>
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Try it
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            Press Next (or Return) on your keyboard to move through the fields below. No manual ref wiring.
+          </Text>
+          <TextInput {...first} label='First name' mode='outlined' returnKeyType='next' style={styles.input} />
+          <TextInput {...second} label='Last name' mode='outlined' returnKeyType='next' style={styles.input} />
+          <TextInput {...third} autoCapitalize='none' keyboardType='email-address' label='Email' mode='outlined' onSubmitEditing={handleSubmit} returnKeyType='done' style={styles.input} />
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
@@ -126,8 +142,9 @@ const styles = StyleSheet.create({
   desc: { marginTop: 8 },
   divider: { marginVertical: 20 },
   fill: { flex: 1 },
-  installBox: { borderRadius: 8, marginTop: 16, padding: 12 },
+  hint: { marginBottom: 12 },
+  input: { marginBottom: 12 },
   sectionLabel: { marginBottom: 12 }
 })
 
-export default FocusChainPage
+export default FocusChainDemo

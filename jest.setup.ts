@@ -94,6 +94,18 @@ jest.mock('expo-blur', () => ({
   BlurView: ({ children }: { children?: React.ReactNode }) => children
 }))
 
+// expo-font: resolved true by default so components that gate on an icon font (see Theme.tsx's
+// own useFonts(MaterialCommunityIcons.font)) don't need per-test setup just to render past it.
+// isLoaded/loadAsync are also needed here (not just useFonts): @expo/vector-icons/MaterialCommunityIcons
+// (the exact subpath react-native-paper's own Icon renderer imports, distinct from the
+// '@expo/vector-icons' barrel mocked below) calls Font.isLoaded/Font.loadAsync directly in its own
+// component lifecycle, real font asset resolution and all, any time an actual icon renders.
+jest.mock('expo-font', () => ({
+  isLoaded: () => true,
+  loadAsync: () => Promise.resolve(),
+  useFonts: () => [true, null]
+}))
+
 // expo-linking
 jest.mock('expo-linking', () => ({
   useLinkingURL: () => null

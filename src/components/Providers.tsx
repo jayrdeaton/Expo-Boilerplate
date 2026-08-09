@@ -1,9 +1,13 @@
+import { Drawer } from '@rific/drawer'
 import { hapticActions, HapticPressProvider, type HapticSettings } from '@rific/haptic-press'
 import { scrollViewActions, type ScrollViewSettings, ScrollViewSettingsProvider } from '@rific/scroll-view'
-import { Toaster, ToastProvider } from '@rific/toaster'
+import { type HistoryContainerProps, HistoryModal, Toaster, ToastProvider } from '@rific/toaster'
+import * as Haptics from 'expo-haptics'
 import React, { useCallback } from 'react'
+import { useWindowDimensions } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
+import * as RNPaper from 'react-native-paper'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -14,12 +18,21 @@ import { Theme } from './Theme'
 
 export type ProvidersProps = { children: React.ReactNode }
 
+const HistoryDrawerContainer = ({ children, onClose, visible }: HistoryContainerProps) => {
+  const { height } = useWindowDimensions()
+  return (
+    <Drawer open={visible} onClose={onClose} side='bottom' height={height * 0.85}>
+      {children}
+    </Drawer>
+  )
+}
+
 const HapticBridge = ({ children }: ProvidersProps) => {
   const haptic = useSelector((state: RootState) => state.haptic)
   const dispatch = useDispatch()
   const onChange = useCallback((s: HapticSettings) => dispatch(hapticActions.initialize(s)), [dispatch])
   return (
-    <HapticPressProvider initialValue={haptic} onChange={onChange}>
+    <HapticPressProvider initialValue={haptic} onChange={onChange} paper={RNPaper}>
       {children}
     </HapticPressProvider>
   )
@@ -46,9 +59,9 @@ export const Providers = ({ children }: ProvidersProps) => {
               <ScrollViewBridge>
                 <KeyboardProvider>
                   <Theme>
-                    <ToastProvider>
+                    <ToastProvider haptics={Haptics} paper={RNPaper}>
                       {children}
-                      <Toaster />
+                      <Toaster historyModal={<HistoryModal Container={HistoryDrawerContainer} />} />
                     </ToastProvider>
                   </Theme>
                 </KeyboardProvider>

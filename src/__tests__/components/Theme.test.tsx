@@ -6,11 +6,15 @@ import { Provider as ReduxProvider } from 'react-redux'
 
 import { Theme } from '../../components/Theme'
 import settingsReducer from '../../redux/settingsSlice'
-import { addGate, clearGate } from '../../utils/splashGate'
+import { markSplashReady, useSplashReady } from '../../utils/splashGate'
 
 jest.mock('../../utils/splashGate', () => ({
-  addGate: jest.fn(),
-  clearGate: jest.fn()
+  markSplashReady: jest.fn(),
+  // A real (not mocked) useSplashReady would need a real createSplashGate instance behind it.
+  // Theme's own 'fonts' gate is driven by useFonts below, which the mock in jest.setup.ts already
+  // resolves synchronously to `[true]`, so there's nothing useful this fake would add beyond not
+  // throwing when Theme calls it.
+  useSplashReady: jest.fn()
 }))
 
 // Keep provider spy in module scope so the factory closure can reference it.
@@ -23,8 +27,8 @@ jest.mock('@rific/auto-paper', () => ({
   themeActions: { initialize: (payload: unknown) => ({ payload, type: 'theme/initialize' }) }
 }))
 
-const mockAddGate = addGate as jest.Mock
-const mockClearGate = clearGate as jest.Mock
+const mockMarkSplashReady = markSplashReady as jest.Mock
+const mockUseSplashReady = useSplashReady as jest.Mock
 
 const makeStore = (themeState: { appearance: 'light' | 'dark' | 'system'; color: string } = { appearance: 'light', color: '#4caf50' }) =>
   configureStore({
@@ -34,23 +38,12 @@ const makeStore = (themeState: { appearance: 'light' | 'dark' | 'system'; color:
     }
   })
 
-// Capture the addGate('theme') call that happens at module load time
-// before beforeEach clears all mocks.
-let addGateCalledOnImport = false
-beforeAll(() => {
-  addGateCalledOnImport = mockAddGate.mock.calls.some(([k]) => k === 'theme')
-})
-
 beforeEach(() => {
   jest.clearAllMocks()
   mockProviderCalls.length = 0
 })
 
 describe('Theme', () => {
-  it('calls addGate("theme") on module load', () => {
-    expect(addGateCalledOnImport).toBe(true)
-  })
-
   it('renders children', async () => {
     const { getByText } = await render(
       <ReduxProvider store={makeStore()}>
@@ -99,7 +92,7 @@ describe('Theme', () => {
     expect(typeof props.onReady).toBe('function')
   })
 
-  it('calls clearGate("theme") when onReady fires', async () => {
+  it("marks the 'theme' splash gate ready when onReady fires", async () => {
     await render(
       <ReduxProvider store={makeStore()}>
         <Theme>
@@ -111,6 +104,19 @@ describe('Theme', () => {
     await act(async () => {
       props.onReady()
     })
-    expect(mockClearGate).toHaveBeenCalledWith('theme')
+    expect(mockMarkSplashReady).toHaveBeenCalledWith('theme')
+  })
+
+  // The icon font mock in jest.setup.ts resolves useFonts synchronously to [true]. See its own
+  // comment for why every react-native-paper icon in this app depends on that exact font.
+  it("marks the 'fonts' splash gate ready once the icon font resolves", async () => {
+    await render(
+      <ReduxProvider store={makeStore()}>
+        <Theme>
+          <Text>child</Text>
+        </Theme>
+      </ReduxProvider>
+    )
+    expect(mockUseSplashReady).toHaveBeenCalledWith('fonts', true)
   })
 })

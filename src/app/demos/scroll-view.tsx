@@ -120,7 +120,7 @@ const ScrollViewDemo = () => {
             <Text variant='bodySmall' style={{ color: theme.colors.primary }} onPress={() => router.push('/demos/auto-paper' as any)}>
               @rific/auto-paper
             </Text>
-            {' — toggle here affects all scroll-view screens.'}
+            {'. Toggle here affects all scroll-view screens.'}
           </Text>
           <View style={styles.row}>
             <Text variant='bodyMedium'>Blur enabled</Text>
@@ -233,7 +233,7 @@ const ScrollViewDemo = () => {
             Grid / Columns
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            Toggles numColumns between a single-column list and a 3-column grid via a key remount — repro bed for the header/offset remount bug.
+            Toggles numColumns between a single-column list and a 3-column grid via a key remount, a repro bed for the header/offset remount bug.
           </Text>
           <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-grid' as any)}>
             Open example
@@ -244,13 +244,24 @@ const ScrollViewDemo = () => {
             Flash List
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            {'@shopify/flash-list via CustomList — same pull-to-search and blur chrome, virtualized with '}
+            {'@shopify/flash-list via CustomList, same pull-to-search and blur chrome, virtualized with '}
             <Text variant='bodySmall' style={styles.monospaceText}>
               estimatedItemSize
             </Text>
             {'.'}
           </Text>
           <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-flash-list' as any)}>
+            Open example
+          </Button>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Keyboard Aware
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            Adds the keyboard height to the bottom content inset so focused fields stay visible above the keyboard. Native only, no effect on web.
+          </Text>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-keyboard' as any)}>
             Open example
           </Button>
         </ScrollView>

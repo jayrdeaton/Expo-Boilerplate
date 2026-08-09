@@ -21,10 +21,17 @@ const INSTALLED: PackageEntry[] = [
     route: '/demos/auto-paper'
   },
   {
+    name: 'focus-chain',
+    label: '@rific/focus-chain',
+    icon: 'link-variant',
+    description: 'Auto-advancing focus chain for form inputs',
+    route: '/demos/focus-chain'
+  },
+  {
     name: 'drawer',
     label: '@rific/drawer',
     icon: 'dock-left',
-    description: 'Left/right sliding drawer with edge-swipe gestures',
+    description: 'Drawer & bottom sheet, any of the 4 edges, edge-swipe gestures',
     route: '/demos/drawer'
   },
   {
@@ -54,30 +61,30 @@ const INSTALLED: PackageEntry[] = [
     icon: 'refresh',
     description: 'Silent OTA update hook for Expo apps',
     route: '/demos/updater'
-  }
-]
-
-const OPTIONAL: PackageEntry[] = [
-  {
-    name: 'focus-chain',
-    label: '@rific/focus-chain',
-    icon: 'link-variant',
-    description: 'Auto-advancing focus chain for form inputs',
-    route: '/packages/focus-chain'
   },
   {
-    name: 'heatmap',
-    label: '@rific/heatmap',
-    icon: 'calendar-month-outline',
-    description: 'GitHub-style activity heatmap with SVG rendering',
-    route: '/packages/heatmap'
+    name: 'splash-gate',
+    label: '@rific/splash-gate',
+    icon: 'rocket-launch-outline',
+    description: 'Named-condition splash screen gating for Expo apps',
+    route: '/demos/splash-gate'
   },
   {
     name: 'resizable-input',
     label: '@rific/resizable-input',
     icon: 'resize',
     description: 'Auto-growing, drag-resizable text input',
-    route: '/packages/resizable-input'
+    route: '/demos/resizable-input'
+  }
+]
+
+const OPTIONAL: PackageEntry[] = [
+  {
+    name: 'heatmap',
+    label: '@rific/heatmap',
+    icon: 'calendar-month-outline',
+    description: 'GitHub-style activity heatmap with SVG rendering',
+    route: '/packages/heatmap'
   },
   {
     name: 'scanner',
@@ -101,7 +108,7 @@ const PackageCard = ({ pkg, mode, cta }: PackageCardProps) => {
   const router = useRouter()
   return (
     <Card mode={mode} style={styles.card} onPress={() => router.push(pkg.route as any)}>
-      <Card.Title title={pkg.label} titleVariant='labelLarge' subtitle={pkg.description} left={(props) => <Avatar.Icon {...props} icon={pkg.icon} size={40} />} />
+      <Card.Title title={pkg.label} titleVariant='labelLarge' subtitle={pkg.description} subtitleNumberOfLines={2} left={(props) => <Avatar.Icon {...props} icon={pkg.icon} size={40} />} />
       <Card.Actions>
         <Button compact onPress={() => router.push(pkg.route as any)}>
           {cta}
@@ -135,7 +142,7 @@ const HomeScreen = () => {
           <View style={styles.optionalHeader}>
             <Text variant='titleMedium'>Optional Packages</Text>
             <Text variant='bodySmall' style={[styles.optionalSubtitle, { color: theme.colors.onSurfaceVariant }]}>
-              Not installed by default — add as needed.
+              Not installed by default. Add as needed.
             </Text>
           </View>
           {OPTIONAL.map((pkg) => (

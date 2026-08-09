@@ -1,7 +1,8 @@
-import { Button, Card, Chip, FAB, useVibration } from '@rific/haptic-press'
+import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useVibration } from '@rific/haptic-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { NotificationFeedbackType } from 'expo-haptics'
 import { Stack, useRouter } from 'expo-router'
+import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Divider, Text, useTheme } from 'react-native-paper'
 
@@ -9,6 +10,9 @@ const HapticPressDemo = () => {
   const router = useRouter()
   const theme = useTheme()
   const vibration = useVibration()
+  const [checked, setChecked] = useState(true)
+  const [switchOn, setSwitchOn] = useState(true)
+  const [segment, setSegment] = useState('day')
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
@@ -17,7 +21,7 @@ const HapticPressDemo = () => {
         <ScrollViewHeader backAction={() => router.back()} title='Haptic Press' caption='@rific/haptic-press' />
         <ScrollView contentContainerStyle={styles.container}>
           <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-            Drop-in replacements for react-native-paper pressable components — Button, Card, Chip, FAB, IconButton, TouchableRipple — that automatically fire expo-haptics on press. Enabled/disabled globally via HapticPressProvider.
+            Drop-in replacements for react-native-paper pressable components (Button, IconButton, TouchableRipple, Card, Chip, AppbarBackAction, AppbarAction, FAB, Checkbox, Switch, SegmentedButtons) that automatically fire expo-haptics on press. Enabled/disabled globally via HapticPressProvider.
           </Text>
 
           <Divider style={styles.divider} />
@@ -61,14 +65,14 @@ const HapticPressDemo = () => {
             Wrapped Components
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            Each is a drop-in replacement for its react-native-paper counterpart — same API, haptics added automatically.
+            Each is a drop-in replacement for its react-native-paper counterpart: same API, haptics added automatically.
           </Text>
 
           <Button mode='contained' style={styles.item} onPress={() => {}}>
-            Button — contained
+            Button (contained)
           </Button>
           <Button mode='outlined' style={styles.item} onPress={() => {}}>
-            Button — outlined
+            Button (outlined)
           </Button>
 
           <View style={[styles.row, styles.item]}>
@@ -90,6 +94,27 @@ const HapticPressDemo = () => {
             <FAB icon='check' size='small' mode='flat' onPress={() => {}} />
             <FAB icon='heart' size='small' mode='elevated' onPress={() => {}} />
           </View>
+
+          <View style={[styles.row, styles.item]}>
+            <IconButton icon='star-outline' onPress={() => {}} />
+            <AppbarAction icon='dots-vertical' onPress={() => {}} />
+          </View>
+
+          <View style={[styles.row, styles.item]}>
+            <Checkbox status={checked ? 'checked' : 'unchecked'} onPress={() => setChecked((c) => !c)} />
+            <Switch value={switchOn} onValueChange={setSwitchOn} />
+          </View>
+
+          <SegmentedButtons
+            style={styles.item}
+            value={segment}
+            onValueChange={(value) => setSegment(Array.isArray(value) ? value[0] : value)}
+            buttons={[
+              { value: 'day', label: 'Day' },
+              { value: 'week', label: 'Week' },
+              { value: 'month', label: 'Month' }
+            ]}
+          />
         </ScrollView>
       </ScrollViewProvider>
     </View>

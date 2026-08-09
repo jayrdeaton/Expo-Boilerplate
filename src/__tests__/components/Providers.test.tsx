@@ -21,13 +21,14 @@ jest.mock('@rific/haptic-press', () => ({
 }))
 
 jest.mock('@rific/toaster', () => ({
+  HistoryModal: () => null,
   Toaster: () => null,
   ToastProvider: (props: any) => props.children
 }))
 
 jest.mock('../../utils/splashGate', () => ({
-  addGate: jest.fn(),
-  clearGate: jest.fn()
+  markSplashReady: jest.fn(),
+  useSplashReady: jest.fn()
 }))
 
 beforeEach(() => {

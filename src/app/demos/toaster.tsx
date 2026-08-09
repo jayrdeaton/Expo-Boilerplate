@@ -83,7 +83,7 @@ const ToasterDemo = () => {
             Variable Height
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            Captions and images make some toasts taller than others — the stack now measures each card instead of assuming a fixed height, so nothing overlaps.
+            Captions and images make some toasts taller than others, so the stack now measures each card instead of assuming a fixed height, and nothing overlaps.
           </Text>
           <View style={styles.row}>
             <Button mode='outlined' icon='text' compact onPress={() => toast.info('Sync complete', 'We compared 1,204 records across three data sources and found 12 conflicts, which were resolved automatically using your default merge strategy. A full changelog is available anytime from account settings.')}>

@@ -1,0 +1,6 @@
+# Expo Android autolinking rewrites this file in place (strips the legacy
+# `package` attribute from AndroidManifest.xml) whenever a local Android build
+# runs, since AGP 8+ forbids declaring both `namespace` (build.gradle) and
+# `package` (manifest) at once. That local-only mutation isn't part of the
+# published package and shouldn't affect runtime-version fingerprinting.
+node_modules/@react-native-masked-view/masked-view/android/src/main/AndroidManifest.xml

@@ -3,13 +3,13 @@ import { Stack, useRouter } from 'expo-router'
 import { Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, useTheme } from 'react-native-paper'
 
-const FEATURES = ['Smooth SVG ring animation driven by React Native Animated', 'Start / stop controlled by a timestamp string — no manual animation state', 'Resume mid-timer with startProgress (0–1)', 'Configurable color, radius, and stroke width', 'Children rendered at the center of the ring — display a countdown, icon, or label', 'onStart / onStop callbacks for side-effects', 'Uses native driver for 60 fps animation without JS thread', 'Zero dependencies beyond react-native-svg']
+const FEATURES = ['Smooth SVG ring animation driven by React Native Animated', 'Start / stop controlled by a timestamp string, no manual animation state', 'Resume mid-timer with startProgress (0–1)', 'Configurable color, radius, and stroke width', 'Children rendered at the center of the ring, display a countdown, icon, or label', 'onStart / onStop callbacks for side-effects', 'Uses native driver for 60 fps animation without JS thread', 'Zero dependencies beyond react-native-svg']
 
 const PROPS = [
-  { name: 'started', type: 'string | null', desc: 'ISO timestamp string. Set to start; set to null to stop and reset.' },
-  { name: 'duration', type: 'number', desc: 'Total timer duration in seconds.' },
-  { name: 'color', type: 'string', desc: 'Stroke color of the progress ring.' },
-  { name: 'radius', type: 'number', desc: 'Radius of the ring in pixels.' },
+  { name: 'started', type: 'string | null', desc: 'Required. ISO timestamp string. Set to start; set to null to stop and reset.' },
+  { name: 'duration', type: 'number', desc: 'Required. Total timer duration in seconds.' },
+  { name: 'color', type: 'string', desc: 'Required. Stroke color of the progress ring.' },
+  { name: 'radius', type: 'number', desc: 'Required. Radius of the ring in pixels.' },
   { name: 'width', type: 'number', desc: 'Stroke width. Default: 6.' },
   { name: 'startProgress', type: 'number', desc: 'Initial progress (0–1) for resuming a mid-timer. Default: 0.' },
   { name: 'onStart', type: '() => void', desc: 'Called when the animation begins.' },
@@ -60,7 +60,7 @@ const TimerPage = () => {
         <ScrollView contentContainerStyle={styles.container}>
           <Text variant='headlineSmall'>Timer</Text>
           <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-            Animated SVG progress ring timer for React Native. Controlled by a timestamp string — set it to start the countdown, null to stop. Supports resume, center content, and native-driver animation for smooth 60 fps rendering.
+            Animated SVG progress ring timer for React Native. Controlled by a timestamp string: set it to start the countdown, null to stop. Supports resume, center content, and native-driver animation for smooth 60 fps rendering.
           </Text>
 
           <Surface style={[styles.installBox, { backgroundColor: theme.colors.surfaceVariant }]} elevation={0}>

@@ -1,13 +1,15 @@
-import { AppearancePicker, ColorPicker, Dialog, HarmonyPicker, Menu, PalettePicker, useThemeSettings } from '@rific/auto-paper'
+import { AppearancePicker, ColorPicker, Dialog, HarmonyPicker, Menu, PalettePicker, useAutoPaperTheme, useThemeSettings } from '@rific/auto-paper'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, Dialog as PaperDialog, Divider, Menu as PaperMenu, Surface, Switch, Text, useTheme } from 'react-native-paper'
+import { Button, Dialog as PaperDialog, Divider, Menu as PaperMenu, Surface, Switch, Text } from 'react-native-paper'
 
 const AutoPaperDemo = () => {
   const router = useRouter()
-  const theme = useTheme()
+  // useAutoPaperTheme() is a typed drop-in for react-native-paper's own useTheme(): same theme,
+  // with colors.success/warning/danger (and their on*/Container variants) typed in.
+  const theme = useAutoPaperTheme()
   const {
     settings: { appearance, blur, color, harmony },
     set
@@ -15,6 +17,11 @@ const AutoPaperDemo = () => {
 
   const [dialogVisible, setDialogVisible] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false)
+
+  // ColorPicker/PalettePicker only take a single seed string. This app's own settings screen
+  // never puts the global theme into explicit-triad mode, but `color` is typed for that
+  // possibility (see the Two-Color Theming demo below), so narrow it defensively here.
+  const seedColor = typeof color === 'string' ? color : color.primary
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
@@ -31,9 +38,9 @@ const AutoPaperDemo = () => {
             Seed Color
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            Tap a swatch — the whole app re-themes live.
+            Tap a swatch and the whole app re-themes live.
           </Text>
-          <ColorPicker value={color} onChange={(c) => set({ color: c })} />
+          <ColorPicker value={seedColor} onChange={(c) => set({ color: c })} />
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
@@ -42,7 +49,7 @@ const AutoPaperDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Same seed swatches, but each one previews its full triadic palette as a pie instead of a flat color.
           </Text>
-          <PalettePicker value={color} onChange={(c) => set({ color: c })} harmony={harmony} />
+          <PalettePicker value={seedColor} onChange={(c) => set({ color: c })} harmony={harmony} />
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
@@ -143,6 +150,72 @@ const AutoPaperDemo = () => {
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
+            Two-Color Theming
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            {'Instead of one seed + harmony, '}
+            <Text variant='bodySmall' style={styles.monospaceText}>
+              color
+            </Text>
+            {' also accepts an explicit '}
+            <Text variant='bodySmall' style={styles.monospaceText}>
+              {'{ primary, secondary, tertiary }'}
+            </Text>
+            {' triad, each color used exactly as given. Paired with '}
+            <Text variant='bodySmall' style={styles.monospaceText}>
+              getThirdColor
+            </Text>
+            {', any two arbitrary colors can derive a third that stays maximally distinct from both.'}
+          </Text>
+          <Button mode='outlined' onPress={() => router.push('/demos/auto-paper-two-color' as any)}>
+            Open example
+          </Button>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Semantic Colors
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            success/warning/danger are fixed brand colors, not derived from the seed, exposed via useAutoPaperTheme() with full type safety. danger stays separate from MD3&apos;s own error, which Paper components (TextInput, HelperText) read directly.
+          </Text>
+          <View style={styles.palette}>
+            {[
+              { label: 'Success', bg: theme.colors.success, on: theme.colors.onSuccess },
+              { label: 'Warning', bg: theme.colors.warning, on: theme.colors.onWarning },
+              { label: 'Danger', bg: theme.colors.danger, on: theme.colors.onDanger }
+            ].map((p) => (
+              <Surface key={p.label} style={[styles.paletteChip, { backgroundColor: p.bg }]} elevation={2}>
+                <Text variant='labelSmall' style={[styles.paletteLabel, { color: p.on }]}>
+                  {p.label}
+                </Text>
+                <Text variant='labelSmall' style={[styles.paletteHex, { color: p.on + 'B3' }]}>
+                  {p.bg}
+                </Text>
+              </Surface>
+            ))}
+          </View>
+          <View style={[styles.palette, styles.paletteRow]}>
+            {[
+              { label: 'Success', sublabel: 'Container', bg: theme.colors.successContainer, on: theme.colors.onSuccessContainer },
+              { label: 'Warning', sublabel: 'Container', bg: theme.colors.warningContainer, on: theme.colors.onWarningContainer },
+              { label: 'Danger', sublabel: 'Container', bg: theme.colors.dangerContainer, on: theme.colors.onDangerContainer }
+            ].map((p) => (
+              <Surface key={p.label} style={[styles.paletteChip, { backgroundColor: p.bg }]} elevation={2}>
+                <Text variant='labelSmall' style={[styles.paletteLabel, { color: p.on }]}>
+                  {p.label}
+                </Text>
+                <Text variant='labelSmall' style={[styles.paletteSublabel, { color: p.on }]}>
+                  {p.sublabel}
+                </Text>
+                <Text variant='labelSmall' style={[styles.paletteHex, { color: p.on + 'B3' }]}>
+                  {p.bg}
+                </Text>
+              </Surface>
+            ))}
+          </View>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
             Live Theme Colors
           </Text>
           {[
@@ -162,6 +235,18 @@ const AutoPaperDemo = () => {
             { label: 'onError', value: theme.colors.onError },
             { label: 'errorContainer', value: theme.colors.errorContainer },
             { label: 'onErrorContainer', value: theme.colors.onErrorContainer },
+            { label: 'success', value: theme.colors.success },
+            { label: 'onSuccess', value: theme.colors.onSuccess },
+            { label: 'successContainer', value: theme.colors.successContainer },
+            { label: 'onSuccessContainer', value: theme.colors.onSuccessContainer },
+            { label: 'warning', value: theme.colors.warning },
+            { label: 'onWarning', value: theme.colors.onWarning },
+            { label: 'warningContainer', value: theme.colors.warningContainer },
+            { label: 'onWarningContainer', value: theme.colors.onWarningContainer },
+            { label: 'danger', value: theme.colors.danger },
+            { label: 'onDanger', value: theme.colors.onDanger },
+            { label: 'dangerContainer', value: theme.colors.dangerContainer },
+            { label: 'onDangerContainer', value: theme.colors.onDangerContainer },
             { label: 'background', value: theme.colors.background },
             { label: 'onBackground', value: theme.colors.onBackground },
             { label: 'surface', value: theme.colors.surface },
@@ -205,6 +290,7 @@ const styles = StyleSheet.create({
   divider: { marginVertical: 20 },
   fill: { flex: 1 },
   hint: { marginBottom: 12 },
+  monospaceText: { fontFamily: 'monospace' },
   palette: { flexDirection: 'row', gap: 8 },
   paletteChip: { alignItems: 'center', borderRadius: 10, flex: 1, padding: 12 },
   paletteHex: { marginTop: 4 },
