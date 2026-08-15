@@ -1,4 +1,4 @@
-import { AppearancePicker, ColorPicker, Dialog, HarmonyPicker, Menu, PalettePicker, useAutoPaperTheme, useThemeSettings } from '@rific/auto-paper'
+import { AppearancePicker, AutoAppearancePicker, AutoPalettePicker, ColorPicker, Dialog, HarmonyPicker, Menu, PalettePicker, useAutoPaperTheme, useThemeSettings } from '@rific/auto-paper'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { useState } from 'react'
@@ -47,9 +47,9 @@ const AutoPaperDemo = () => {
             Palette Picker
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            Same seed swatches, but each one previews its full triadic palette as a pie instead of a flat color.
+            Same seed swatches, but each one previews its full triadic palette as a pie instead of a flat color. Pass onHarmonyChange to fold a compact harmony row into the same dialog — open it and try changing harmony right there, every pie reshapes live.
           </Text>
-          <PalettePicker value={seedColor} onChange={(c) => set({ color: c })} harmony={harmony} />
+          <PalettePicker value={seedColor} onChange={(c) => set({ color: c })} harmony={harmony} onHarmonyChange={(h) => set({ harmony: h })} />
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
@@ -65,6 +65,28 @@ const AutoPaperDemo = () => {
             Controls how secondary and tertiary colors are derived from the seed.
           </Text>
           <HarmonyPicker value={harmony} onChange={(h) => set({ harmony: h })} />
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Auto Pickers
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            AutoAppearancePicker and AutoPalettePicker are the same pickers as above, pre-wired straight to this app&apos;s live theme — no value/onChange (or harmony/onHarmonyChange) to pass, they read/write useThemeSettings() internally. Reach for the plain versions instead when a picker needs to be controlled by something other than the global theme, e.g. a local preview before committing.
+          </Text>
+          <View style={styles.autoPickersRow}>
+            <View style={styles.autoPickerCol}>
+              <Text variant='labelLarge' style={[styles.autoPickerLabel, { color: theme.colors.onSurfaceVariant }]}>
+                Appearance
+              </Text>
+              <AutoAppearancePicker />
+            </View>
+            <View style={styles.autoPickerCol}>
+              <Text variant='labelLarge' style={[styles.autoPickerLabel, { color: theme.colors.onSurfaceVariant }]}>
+                Palette + Harmony
+              </Text>
+              <AutoPalettePicker />
+            </View>
+          </View>
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
@@ -281,6 +303,9 @@ const AutoPaperDemo = () => {
 }
 
 const styles = StyleSheet.create({
+  autoPickerCol: { alignItems: 'flex-start', gap: 8 },
+  autoPickerLabel: { marginBottom: 0 },
+  autoPickersRow: { flexDirection: 'row', gap: 32 },
   blurButtons: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   blurRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 },
   colorDot: { borderRadius: 12, height: 24, width: 24 },

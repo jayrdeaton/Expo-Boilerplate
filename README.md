@@ -41,21 +41,29 @@ const { colors } = useAutoPaperTheme();
 Sliding drawer/sheet, spring-animated and theme-aware. Slides in from any of the four edges: `left`/`right` for a nav/settings drawer, `top`/`bottom` for a bottom sheet, same mechanism either way, so one package covers both use cases (this is what makes a standalone bottom-sheet dependency unnecessary in this stack). One `createDrawer()` call per instance; `combineDrawerProviders` flattens nesting multiple drawers into a single wrapper. See [`demos/drawer.tsx`](src/app/demos/drawer.tsx) for a left nav drawer, a right settings drawer, and a bottom sheet side by side.
 
 ```ts
-import { combineDrawerProviders, createDrawer } from '@rific/drawer';
+import * as AutoPaper from '@rific/auto-paper';
+import { combineDrawerProviders, createDrawer, DrawerProvider } from '@rific/drawer';
 
 const nav = createDrawer({ side: 'left', width: 300 });
 const sheet = createDrawer({ side: 'bottom', contentSize: true }); // sizes to its content instead of a fixed height
+const settings = createDrawer({ side: 'right', width: 320, blur: true });
 
 const AllDrawersProvider = combineDrawerProviders(
-  [nav.DrawerProvider, { content: <NavDrawerContent /> }],
-  [sheet.DrawerProvider, { content: <SheetContent /> }]
+  [nav.DrawerInstanceProvider, { content: <NavDrawerContent /> }],
+  [sheet.DrawerInstanceProvider, { content: <SheetContent /> }],
+  [settings.DrawerInstanceProvider, { content: <SettingsDrawerContent /> }]
 );
+
+// once, near the app root: wires @rific/auto-paper's BlurView into every Drawer with blur: true
+<DrawerProvider autoPaper={AutoPaper}>
+  <AllDrawersProvider>{children}</AllDrawersProvider>
+</DrawerProvider>
 
 // anywhere else:
 const { open } = sheet.useDrawer();
 ```
 
-Each panel comes with a swipe-to-dismiss drag handle, an edge-swipe-to-open gesture, and an optional blurred surface via `@rific/auto-paper`'s `BlurView`, no extra wiring needed for any of it.
+Each panel comes with a swipe-to-dismiss drag handle and an edge-swipe-to-open gesture built in. `blur: true` renders the panel surface via `@rific/auto-paper`'s `BlurView` instead of a solid fill — but only once `<DrawerProvider autoPaper={AutoPaper}>` is mounted near the app root; without it, `blur: true` silently falls back to solid.
 
 ---
 
@@ -181,6 +189,7 @@ npm run reset        # clear cache + start
 ```bash
 npm run prebuild     # expo prebuild --clean
 npm run ios          # run on iOS simulator
+npm run ios:device   # run on connected physical iOS device
 npm run android      # run on Android emulator
 ```
 
@@ -196,8 +205,9 @@ npm run test
 ### EAS
 
 ```bash
+npm run build:development
+npm run build:preview
 npm run build:production
-npm run build:staging
 npm run update           # eas update
 npm run update:bump      # bump OTA version + push
 ```
