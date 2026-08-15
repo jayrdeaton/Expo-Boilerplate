@@ -13,6 +13,9 @@ web-build/
 expo-env.d.ts
 dist
 build*/
+*.ipa
+*.apk
+*.aab
 
 # AI Readme files
 readmes/
