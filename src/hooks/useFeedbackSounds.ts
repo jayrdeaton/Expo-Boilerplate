@@ -5,6 +5,8 @@ import { useCallback } from 'react'
 // bundle time, same convention as every other local-asset require in this codebase.
 const CLICK_SOUND = require('../../assets/sounds/click.wav')
 const POP_SOUND = require('../../assets/sounds/pop.wav')
+const CHIME_SOUND = require('../../assets/sounds/chime.wav')
+const BUZZ_SOUND = require('../../assets/sounds/buzz.wav')
 
 // Deferred a tick via setTimeout, seekTo(0) before play() — expo-audio's play() blocks the
 // native UI thread synchronously on Android, so firing it inline from a press handler adds that
@@ -19,9 +21,13 @@ const play = (player: ReturnType<typeof useAudioPlayer>) => {
 export const useFeedbackSounds = () => {
   const clickPlayer = useAudioPlayer(CLICK_SOUND)
   const popPlayer = useAudioPlayer(POP_SOUND)
+  const chimePlayer = useAudioPlayer(CHIME_SOUND)
+  const buzzPlayer = useAudioPlayer(BUZZ_SOUND)
 
   const playClick = useCallback(() => play(clickPlayer), [clickPlayer])
   const playPop = useCallback(() => play(popPlayer), [popPlayer])
+  const playChime = useCallback(() => play(chimePlayer), [chimePlayer])
+  const playBuzz = useCallback(() => play(buzzPlayer), [buzzPlayer])
 
-  return { playClick, playPop }
+  return { playClick, playPop, playChime, playBuzz }
 }

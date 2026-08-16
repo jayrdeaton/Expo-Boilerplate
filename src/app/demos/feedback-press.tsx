@@ -12,7 +12,7 @@ const FeedbackPressDemo = () => {
   const router = useRouter()
   const theme = useTheme()
   const vibration = useVibration()
-  const { playPop } = useFeedbackSounds()
+  const { playChime, playBuzz } = useFeedbackSounds()
   const [checked, setChecked] = useState(true)
   const [switchOn, setSwitchOn] = useState(true)
   const [segment, setSegment] = useState('day')
@@ -68,20 +68,20 @@ const FeedbackPressDemo = () => {
             Sound
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            The provider is configured with a click sound on selection. Each button below overrides that per-instance.
+            The provider plays a click on press and a pop on long-press by default. Press and hold each button below to hear both.
           </Text>
+          <Button mode='contained' style={styles.item} onPress={() => {}} onLongPress={() => {}}>
+            Provider default (press: click · hold: pop)
+          </Button>
           <View style={[styles.row, styles.item]}>
-            <Button mode='outlined' onPress={() => {}}>
-              Haptic + sound
-            </Button>
-            <Button mode='outlined' soundDisabled onPress={() => {}}>
+            <Button mode='outlined' soundDisabled onPress={() => {}} onLongPress={() => {}}>
               soundDisabled
             </Button>
-            <Button mode='outlined' hapticDisabled onPress={() => {}}>
+            <Button mode='outlined' hapticDisabled onPress={() => {}} onLongPress={() => {}}>
               hapticDisabled
             </Button>
-            <Button mode='outlined' sound={{ selection: playPop }} onPress={() => {}}>
-              Custom sound
+            <Button mode='outlined' sound={{ selection: playChime, notification: playBuzz }} onPress={() => {}} onLongPress={() => {}}>
+              Custom sound (press: chime · hold: buzz)
             </Button>
           </View>
 
