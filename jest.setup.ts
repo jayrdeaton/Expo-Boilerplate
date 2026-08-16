@@ -89,6 +89,14 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: () => Promise.resolve(null)
 }))
 
+// expo-audio
+jest.mock('expo-audio', () => ({
+  useAudioPlayer: jest.fn(() => ({
+    play: jest.fn(),
+    seekTo: jest.fn().mockResolvedValue(undefined)
+  }))
+}))
+
 // expo-blur
 jest.mock('expo-blur', () => ({
   BlurView: ({ children }: { children?: React.ReactNode }) => children

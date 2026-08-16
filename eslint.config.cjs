@@ -3,7 +3,8 @@ const expoConfig = require('eslint-config-expo/flat')
 const prettierRecommended = require('eslint-plugin-prettier/recommended')
 const simpleImportSort = require('eslint-plugin-simple-import-sort')
 const tsParser = require('@typescript-eslint/parser')
-const eslintReactNative = require('eslint-plugin-react-native')
+const reactNative = require('eslint-plugin-react-native')
+const packageJson = require('eslint-plugin-package-json')
 
 module.exports = defineConfig([
   {
@@ -16,14 +17,23 @@ module.exports = defineConfig([
     },
     settings: { react: { version: '19' } }
   },
-  expoConfig,
-  prettierRecommended,
   {
     ignores: ['dist/**', 'node_modules/**', 'ios/**', 'android/**', '.expo/**', '.vscode/**', 'coverage/**', '.yalc/**', '.claude/worktrees/**']
   },
+  expoConfig,
+  prettierRecommended,
+  packageJson.configs.recommended,
+  {
+    extends: [packageJson.configs.recommended],
+    files: ['package.json'],
+    rules: {
+      'package-json/order-properties': 'warn',
+      'package-json/sort-collections': 'warn'
+    }
+  },
   {
     plugins: {
-      'react-native': eslintReactNative,
+      'react-native': reactNative,
       'simple-import-sort': simpleImportSort
     },
     settings: {
@@ -41,7 +51,11 @@ module.exports = defineConfig([
       'react-native/sort-styles': 'warn',
       'react-native/no-inline-styles': 'warn',
       'react-native/no-unused-styles': 'warn',
-      'react-native/no-raw-text': 'off'
+      'react-native/no-raw-text': 'off',
+      'react-hooks/refs': 'warn',
+      'react-hooks/immutability': 'warn',
+      'react-hooks/preserve-manual-memoization': 'warn',
+      'react-hooks/set-state-in-effect': 'warn'
     }
   }
 ])

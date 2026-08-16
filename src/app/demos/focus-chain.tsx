@@ -6,14 +6,14 @@ import { useCallback } from 'react'
 import { Keyboard, Platform, StyleSheet, View } from 'react-native'
 import { Divider, Surface, Text, TextInput, useTheme } from 'react-native-paper'
 
-const FEATURES = ['Single hook, no refs, no state, no useEffect', 'Works with any focusable component (TextInput, custom inputs)', 'No React Native dependency, works in plain React too (wire onSubmitEditing to the Enter key on DOM inputs)', 'Call order determines focus order, no indices to manage', 'onSubmitEditing auto-wired to advance to the next field', 'Last field in the chain can submit the form']
+const FEATURES = ['Single hook, no manual ref bookkeeping, no state, no useEffect', 'Works with any focusable component (TextInput, custom inputs)', 'No React Native dependency, works in plain React too (wire onSubmitEditing to the Enter key on DOM inputs)', 'Call order determines focus order, no indices to manage', 'onSubmitEditing auto-wired to advance to the next field', 'Last field in the chain can submit the form']
 
 const API_ITEMS = [
   { name: 'useFocusChain()', desc: 'Returns a register factory. Call once at the top of your component.' },
-  { name: 'register()', desc: 'Call once per input in order. Returns { ref, onSubmitEditing, focus }.' },
-  { name: 'ref', desc: 'Pass to the input ref prop to register the focusable element.' },
-  { name: 'onSubmitEditing', desc: 'Pass to onSubmitEditing. Focuses the next registered input automatically.' },
-  { name: 'focus()', desc: 'Imperatively focus this specific input from anywhere.' }
+  { name: 'register()', desc: 'Call once per input in order. Returns { ref, props }.' },
+  { name: 'ref', desc: "Pass to the input's ref prop directly. Kept out of props so a callback-ref never gets mistaken for a reactive value under the React Compiler." },
+  { name: 'props.onSubmitEditing', desc: 'Spread via props. Focuses the next registered input automatically.' },
+  { name: 'props.focus()', desc: 'Imperatively focus this specific input from anywhere.' }
 ]
 
 const USAGE = `import { useFocusChain } from '@rific/focus-chain'
@@ -27,17 +27,20 @@ const MyForm = () => {
   return (
     <>
       <TextInput
-        {...first}
+        ref={first.ref}
+        {...first.props}
         returnKeyType="next"
         placeholder="First name"
       />
       <TextInput
-        {...second}
+        ref={second.ref}
+        {...second.props}
         returnKeyType="next"
         placeholder="Last name"
       />
       <TextInput
-        {...third}
+        ref={third.ref}
+        {...third.props}
         returnKeyType="done"
         placeholder="Email"
         onSubmitEditing={handleSubmit}
@@ -77,9 +80,9 @@ const FocusChainDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Press Next (or Return) on your keyboard to move through the fields below. No manual ref wiring.
           </Text>
-          <TextInput {...first} label='First name' mode='outlined' returnKeyType='next' style={styles.input} />
-          <TextInput {...second} label='Last name' mode='outlined' returnKeyType='next' style={styles.input} />
-          <TextInput {...third} autoCapitalize='none' keyboardType='email-address' label='Email' mode='outlined' onSubmitEditing={handleSubmit} returnKeyType='done' style={styles.input} />
+          <TextInput ref={first.ref} {...first.props} label='First name' mode='outlined' returnKeyType='next' style={styles.input} />
+          <TextInput ref={second.ref} {...second.props} label='Last name' mode='outlined' returnKeyType='next' style={styles.input} />
+          <TextInput ref={third.ref} {...third.props} autoCapitalize='none' keyboardType='email-address' label='Email' mode='outlined' onSubmitEditing={handleSubmit} returnKeyType='done' style={styles.input} />
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>

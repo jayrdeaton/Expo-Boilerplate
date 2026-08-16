@@ -1,4 +1,4 @@
-import { hapticActions } from '@rific/haptic-press'
+import { hapticActions } from '@rific/feedback-press'
 import { scrollViewActions } from '@rific/scroll-view'
 
 import { settingsActions } from '../../redux/settingsSlice'

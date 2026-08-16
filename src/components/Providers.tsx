@@ -1,5 +1,5 @@
 import { Drawer } from '@rific/drawer'
-import { hapticActions, HapticPressProvider, type HapticSettings } from '@rific/haptic-press'
+import { FeedbackPressProvider, hapticActions, type HapticSettings } from '@rific/feedback-press'
 import { scrollViewActions, type ScrollViewSettings, ScrollViewSettingsProvider } from '@rific/scroll-view'
 import { type HistoryContainerProps, HistoryModal, Toaster, ToastProvider } from '@rific/toaster'
 import * as Haptics from 'expo-haptics'
@@ -12,6 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
+import { useFeedbackSounds } from '@/hooks/useFeedbackSounds'
 import { persistor, type RootState, store } from '@/redux/store'
 
 import { Theme } from './Theme'
@@ -27,14 +28,15 @@ const HistoryDrawerContainer = ({ children, onClose, visible }: HistoryContainer
   )
 }
 
-const HapticBridge = ({ children }: ProvidersProps) => {
+const FeedbackBridge = ({ children }: ProvidersProps) => {
   const haptic = useSelector((state: RootState) => state.haptic)
   const dispatch = useDispatch()
   const onChange = useCallback((s: HapticSettings) => dispatch(hapticActions.initialize(s)), [dispatch])
+  const { playClick, playPop } = useFeedbackSounds()
   return (
-    <HapticPressProvider initialValue={haptic} onChange={onChange} paper={RNPaper}>
+    <FeedbackPressProvider initialValue={haptic} onChange={onChange} paper={RNPaper} sound={{ selection: playClick, notification: playPop }}>
       {children}
-    </HapticPressProvider>
+    </FeedbackPressProvider>
   )
 }
 
@@ -55,7 +57,7 @@ export const Providers = ({ children }: ProvidersProps) => {
       <SafeAreaProvider>
         <ReduxProvider store={store}>
           <PersistGate persistor={persistor}>
-            <HapticBridge>
+            <FeedbackBridge>
               <ScrollViewBridge>
                 <KeyboardProvider>
                   <Theme>
@@ -66,7 +68,7 @@ export const Providers = ({ children }: ProvidersProps) => {
                   </Theme>
                 </KeyboardProvider>
               </ScrollViewBridge>
-            </HapticBridge>
+            </FeedbackBridge>
           </PersistGate>
         </ReduxProvider>
       </SafeAreaProvider>

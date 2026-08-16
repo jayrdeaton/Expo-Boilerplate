@@ -1,4 +1,4 @@
-import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useVibration } from '@rific/haptic-press'
+import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useVibration } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { NotificationFeedbackType } from 'expo-haptics'
 import { Stack, useRouter } from 'expo-router'
@@ -6,10 +6,13 @@ import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Divider, Text, useTheme } from 'react-native-paper'
 
-const HapticPressDemo = () => {
+import { useFeedbackSounds } from '@/hooks/useFeedbackSounds'
+
+const FeedbackPressDemo = () => {
   const router = useRouter()
   const theme = useTheme()
   const vibration = useVibration()
+  const { playPop } = useFeedbackSounds()
   const [checked, setChecked] = useState(true)
   const [switchOn, setSwitchOn] = useState(true)
   const [segment, setSegment] = useState('day')
@@ -18,10 +21,10 @@ const HapticPressDemo = () => {
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
       <Stack.Screen options={{ headerShown: false }} />
       <ScrollViewProvider>
-        <ScrollViewHeader backAction={() => router.back()} title='Haptic Press' caption='@rific/haptic-press' />
+        <ScrollViewHeader backAction={() => router.back()} title='Feedback Press' caption='@rific/feedback-press' />
         <ScrollView contentContainerStyle={styles.container}>
           <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-            Drop-in replacements for react-native-paper pressable components (Button, IconButton, TouchableRipple, Card, Chip, AppbarBackAction, AppbarAction, FAB, Checkbox, Switch, SegmentedButtons) that automatically fire expo-haptics on press. Enabled/disabled globally via HapticPressProvider.
+            Drop-in replacements for react-native-paper pressable components (Button, IconButton, TouchableRipple, Card, Chip, AppbarBackAction, AppbarAction, FAB, Checkbox, Switch, SegmentedButtons) that automatically fire expo-haptics on press, plus an app-supplied sound at the same instant. Enabled/disabled globally via FeedbackPressProvider.
           </Text>
 
           <Divider style={styles.divider} />
@@ -62,10 +65,32 @@ const HapticPressDemo = () => {
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
+            Sound
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            The provider is configured with a click sound on selection. Each button below overrides that per-instance.
+          </Text>
+          <View style={[styles.row, styles.item]}>
+            <Button mode='outlined' onPress={() => {}}>
+              Haptic + sound
+            </Button>
+            <Button mode='outlined' soundDisabled onPress={() => {}}>
+              soundDisabled
+            </Button>
+            <Button mode='outlined' hapticDisabled onPress={() => {}}>
+              hapticDisabled
+            </Button>
+            <Button mode='outlined' sound={{ selection: playPop }} onPress={() => {}}>
+              Custom sound
+            </Button>
+          </View>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
             Wrapped Components
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            Each is a drop-in replacement for its react-native-paper counterpart: same API, haptics added automatically.
+            Each is a drop-in replacement for its react-native-paper counterpart: same API, haptics and sound added automatically.
           </Text>
 
           <Button mode='contained' style={styles.item} onPress={() => {}}>
@@ -86,7 +111,7 @@ const HapticPressDemo = () => {
           </View>
 
           <Card style={styles.item} onPress={() => {}}>
-            <Card.Title title='Haptic Card' subtitle='Press anywhere on this card for haptic feedback' />
+            <Card.Title title='Feedback Card' subtitle='Press anywhere on this card for haptic + sound feedback' />
           </Card>
 
           <View style={styles.fabRow}>
@@ -133,4 +158,4 @@ const styles = StyleSheet.create({
   sectionLabel: { marginBottom: 8 }
 })
 
-export default HapticPressDemo
+export default FeedbackPressDemo

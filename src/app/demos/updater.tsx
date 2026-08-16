@@ -1,4 +1,4 @@
-import { Button } from '@rific/haptic-press'
+import { Button } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { useUpdater } from '@rific/updater'
 import { Stack, useRouter } from 'expo-router'

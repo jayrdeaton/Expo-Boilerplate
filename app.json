@@ -54,7 +54,8 @@
           }
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "expo-audio"
     ],
     "extra": {
       "router": {},

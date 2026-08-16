@@ -1,4 +1,4 @@
-import { Button } from '@rific/haptic-press'
+import { Button } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { StyleSheet, View } from 'react-native'
@@ -35,11 +35,11 @@ const INSTALLED: PackageEntry[] = [
     route: '/demos/drawer'
   },
   {
-    name: 'haptic-press',
-    label: '@rific/haptic-press',
+    name: 'feedback-press',
+    label: '@rific/feedback-press',
     icon: 'gesture-tap',
-    description: 'Haptic feedback wrappers for Paper components',
-    route: '/demos/haptic-press'
+    description: 'Haptic + sound feedback wrappers for Paper components',
+    route: '/demos/feedback-press'
   },
   {
     name: 'scroll-view',

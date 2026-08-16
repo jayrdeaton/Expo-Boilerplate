@@ -1,4 +1,4 @@
-import { HapticPressProvider } from '@rific/haptic-press'
+import { FeedbackPressProvider } from '@rific/feedback-press'
 import { render } from '@testing-library/react-native'
 import React from 'react'
 import * as RNPaper from 'react-native-paper'
@@ -10,14 +10,14 @@ jest.mock('expo-router', () => ({
   useRouter: () => ({ back: jest.fn(), push: jest.fn() })
 }))
 
-// react-native-paper is no longer auto-detected via require() inside @rific/haptic-press's
-// <Button> - it must be injected via <HapticPressProvider paper={...}>, matching how the real
+// react-native-paper is no longer auto-detected via require() inside @rific/feedback-press's
+// <Button> - it must be injected via <FeedbackPressProvider paper={...}>, matching how the real
 // app wires it in src/components/Providers.tsx.
 const renderHomeScreen = () =>
   render(
-    <HapticPressProvider paper={RNPaper as unknown as Parameters<typeof HapticPressProvider>[0]['paper']}>
+    <FeedbackPressProvider paper={RNPaper as unknown as Parameters<typeof FeedbackPressProvider>[0]['paper']}>
       <HomeScreen />
-    </HapticPressProvider>
+    </FeedbackPressProvider>
   )
 
 describe('HomeScreen', () => {

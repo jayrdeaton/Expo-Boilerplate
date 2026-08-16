@@ -11,9 +11,9 @@ jest.mock('@rific/auto-paper', () => ({
   themeReducer: (state = { appearance: 'auto', blur: true, color: '#4caf50', harmony: 'split-complementary' }) => state
 }))
 
-jest.mock('@rific/haptic-press', () => ({
+jest.mock('@rific/feedback-press', () => ({
   hapticActions: { initialize: (payload: unknown) => ({ payload, type: 'haptic/initialize' }) },
-  HapticPressProvider: (props: any) => {
+  FeedbackPressProvider: (props: any) => {
     mockHapticProviderCalls.push(props)
     return props.children
   },
@@ -55,7 +55,7 @@ describe('Providers', () => {
     expect(getByText('app content')).toBeTruthy()
   })
 
-  it('passes vibrate=true (default) to HapticPressProvider', async () => {
+  it('passes vibrate=true (default) to FeedbackPressProvider', async () => {
     await render(
       <Providers>
         <Text>child</Text>

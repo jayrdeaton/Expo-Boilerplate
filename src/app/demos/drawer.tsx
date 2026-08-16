@@ -1,6 +1,6 @@
 import * as AutoPaper from '@rific/auto-paper'
 import { combineDrawerProviders, createDrawer, DrawerProvider } from '@rific/drawer'
-import { Button } from '@rific/haptic-press'
+import { Button } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { useState } from 'react'

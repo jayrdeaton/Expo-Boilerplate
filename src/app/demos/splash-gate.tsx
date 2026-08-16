@@ -1,4 +1,4 @@
-import { Button } from '@rific/haptic-press'
+import { Button } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { createSplashGate } from '@rific/splash-gate'
 import { Stack, useRouter } from 'expo-router'
