@@ -2,7 +2,7 @@ import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedB
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { NotificationFeedbackType } from 'expo-haptics'
 import { Stack, useRouter } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Divider, Text, useTheme } from 'react-native-paper'
 
@@ -14,7 +14,7 @@ const FeedbackPressDemo = () => {
   const router = useRouter()
   const theme = useTheme()
   const vibration = useVibration()
-  const { playClick, playPop, playChime, playBuzz, playClassicClick, playClassicPop, playClassicChime, playClassicBuzz, playExperimentalPluck, playExperimentalBlip, playExperimentalBell, playExperimentalSwoosh, playExperimentalRing } = useFeedbackSounds()
+  const { playClick, playPop, playChime, playBuzz, playClassicClick, playClassicPop, playClassicChime, playClassicBuzz, playRetroBlip, playRetroTick, playRetroBlipReverse, playRetroJump, playRetroLaser, playRetroPowerup, playExperimentalPluck, playExperimentalBell, playExperimentalSwoosh, playExperimentalRing, playWarmClick, playWarmPop, playWarmChime, playWarmBuzz, playMinimalClick, playMinimalPop, playMinimalChime, playMinimalBuzz, playMechanicalShutter, playMechanicalRelay, playMechanicalTypewriter, playMechanicalLatch, playLofiClick, playLofiPop, playLofiChime, playLofiBuzz, playGlitchStutter, playGlitchCrush, playGlitchSkip, playGlitchStatic, playNatureDroplet, playNatureChirp, playNatureRustle, playNatureSplash } = useFeedbackSounds()
   const soundSets = [
     {
       label: 'Default',
@@ -35,14 +35,85 @@ const FeedbackPressDemo = () => {
       ]
     },
     {
+      label: 'Warm',
+      note: 'Same four roles as Default/Classic, deliberately spread across pitch and warmth instead of one register - click bright and short, buzz low and round. Length follows role: pop (the long-press payoff) is given real length, click stays snappy.',
+      sounds: [
+        { label: 'Click', fn: playWarmClick },
+        { label: 'Pop', fn: playWarmPop },
+        { label: 'Chime', fn: playWarmChime },
+        { label: 'Buzz', fn: playWarmBuzz }
+      ]
+    },
+    {
+      label: 'Minimal',
+      note: 'Same four roles again, but the opposite instinct from Warm: brevity and cleanliness are the whole character, not pitch/warmth variety. A single clean high sine per sound, near-zero tail.',
+      sounds: [
+        { label: 'Click', fn: playMinimalClick },
+        { label: 'Pop', fn: playMinimalPop },
+        { label: 'Chime', fn: playMinimalChime },
+        { label: 'Buzz', fn: playMinimalBuzz }
+      ]
+    },
+    {
+      label: 'Lofi',
+      note: 'Same four roles, heavily low-pass filtered plus soft-clip saturation and a trace of vinyl-crackle noise under the chime - warm and dull rather than crisp, the cassette-tape end of the spectrum.',
+      sounds: [
+        { label: 'Click', fn: playLofiClick },
+        { label: 'Pop', fn: playLofiPop },
+        { label: 'Chime', fn: playLofiChime },
+        { label: 'Buzz', fn: playLofiBuzz }
+      ]
+    },
+    {
+      label: 'Retro',
+      note: '8-bit square-wave chiptune SFX. Blip Reverse is Blip’s own samples played backwards, not a separate composition.',
+      sounds: [
+        { label: 'Blip', fn: playRetroBlip },
+        { label: 'Tick', fn: playRetroTick },
+        { label: 'Blip Reverse', fn: playRetroBlipReverse },
+        { label: 'Jump', fn: playRetroJump },
+        { label: 'Laser', fn: playRetroLaser },
+        { label: 'Powerup', fn: playRetroPowerup }
+      ]
+    },
+    {
       label: 'Experimental',
-      note: 'Pluck: Karplus-Strong physical modeling · Blip: 8-bit square arpeggio · Bell: FM synthesis · Swoosh: filtered noise · Ring: ring modulation',
+      note: 'Pluck: Karplus-Strong physical modeling · Bell: FM synthesis · Swoosh: filtered noise · Ring: ring modulation',
       sounds: [
         { label: 'Pluck', fn: playExperimentalPluck },
-        { label: 'Blip', fn: playExperimentalBlip },
         { label: 'Bell', fn: playExperimentalBell },
         { label: 'Swoosh', fn: playExperimentalSwoosh },
         { label: 'Ring', fn: playExperimentalRing }
+      ]
+    },
+    {
+      label: 'Mechanical',
+      note: 'Built from filtered white noise instead of pure tones - shutters, switches, and keys are noise-driven transients in the real world, not sine waves.',
+      sounds: [
+        { label: 'Shutter', fn: playMechanicalShutter },
+        { label: 'Relay', fn: playMechanicalRelay },
+        { label: 'Typewriter', fn: playMechanicalTypewriter },
+        { label: 'Latch', fn: playMechanicalLatch }
+      ]
+    },
+    {
+      label: 'Glitch',
+      note: 'Digital-artifact techniques - bitcrush, sample-and-hold, granular repeat - deliberately introducing quantization and stutter a real recording never would.',
+      sounds: [
+        { label: 'Stutter', fn: playGlitchStutter },
+        { label: 'Crush', fn: playGlitchCrush },
+        { label: 'Skip', fn: playGlitchSkip },
+        { label: 'Static', fn: playGlitchStatic }
+      ]
+    },
+    {
+      label: 'Nature',
+      note: 'A physical-world counterpart to Mechanical - noise-driven, but pitch-bent resonance and soft band-passed textures instead of sharp metallic transients, for an organic rather than man-made character.',
+      sounds: [
+        { label: 'Droplet', fn: playNatureDroplet },
+        { label: 'Chirp', fn: playNatureChirp },
+        { label: 'Rustle', fn: playNatureRustle },
+        { label: 'Splash', fn: playNatureSplash }
       ]
     }
   ]
@@ -59,6 +130,31 @@ const FeedbackPressDemo = () => {
   const [keyedCounts, setKeyedCounts] = useState<Record<string, number>>({})
   const bumpKey = useCallback((key: string) => setKeyedCounts((prev) => ({ ...prev, [key]: (prev[key] ?? 0) + 1 })), [])
   const keyedHold = useHoldToRepeatByKey(bumpKey, 400)
+
+  // Measures how long each button was held before release, to make exclusive's click-on-release
+  // delay visible rather than just audible/felt: Default's click fires at onPressIn (~0ms into the
+  // hold, always), Exclusive's fires at onPressOut (however long the hold lasted), so the held
+  // duration IS the extra delay exclusive introduces for a press that never escalates.
+  const [defaultHeldMs, setDefaultHeldMs] = useState<number | null>(null)
+  const [exclusiveHeldMs, setExclusiveHeldMs] = useState<number | null>(null)
+  const defaultPressStart = useRef<number | null>(null)
+  const exclusivePressStart = useRef<number | null>(null)
+  const handleDefaultPressIn = useCallback(() => {
+    defaultPressStart.current = Date.now()
+  }, [])
+  const handleDefaultPressOut = useCallback(() => {
+    if (defaultPressStart.current == null) return
+    setDefaultHeldMs(Date.now() - defaultPressStart.current)
+    defaultPressStart.current = null
+  }, [])
+  const handleExclusivePressIn = useCallback(() => {
+    exclusivePressStart.current = Date.now()
+  }, [])
+  const handleExclusivePressOut = useCallback(() => {
+    if (exclusivePressStart.current == null) return
+    setExclusiveHeldMs(Date.now() - exclusivePressStart.current)
+    exclusivePressStart.current = null
+  }, [])
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
@@ -129,6 +225,28 @@ const FeedbackPressDemo = () => {
             <Button mode='outlined' sound={{ selection: playClassicClick, notification: playClassicPop }} onPress={() => {}} onLongPress={() => {}}>
               Classic sound (press: click · hold: pop)
             </Button>
+          </View>
+
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            Notice the button above always clicks on touch-down, then also pops if you hold past delayLongPress — that&apos;s intentional default wiring, not a bug. Pass exclusive for exactly one or the other: click is deferred to release and only fires if the press never escalated to a long-press. Same onPress/onLongPress on both buttons below — Default&apos;s click always lands at ~0ms into the hold; Exclusive&apos;s lands at release, so however long you hold (short of delayLongPress) before letting go is the delay it adds. Hold each briefly and release to measure it, then hold past 400ms to feel Exclusive suppress the click entirely.
+          </Text>
+          <View style={[styles.row, styles.item]}>
+            <View style={styles.compareItem}>
+              <Button mode='outlined' onPress={() => {}} onLongPress={() => {}} onPressIn={handleDefaultPressIn} onPressOut={handleDefaultPressOut} delayLongPress={400}>
+                Default
+              </Button>
+              <Text variant='bodySmall' style={{ color: theme.colors.onSurfaceVariant }}>
+                held {defaultHeldMs ?? '—'}ms · click at ~0ms
+              </Text>
+            </View>
+            <View style={styles.compareItem}>
+              <Button mode='outlined' exclusive onPress={() => {}} onLongPress={() => {}} onPressIn={handleExclusivePressIn} onPressOut={handleExclusivePressOut} delayLongPress={400}>
+                Exclusive
+              </Button>
+              <Text variant='bodySmall' style={{ color: theme.colors.onSurfaceVariant }}>
+                held {exclusiveHeldMs ?? '—'}ms · click at ~{exclusiveHeldMs ?? '—'}ms
+              </Text>
+            </View>
           </View>
 
           <Text variant='bodySmall' style={[styles.hint, styles.item, { color: theme.colors.onSurfaceVariant }]}>
@@ -248,6 +366,7 @@ const FeedbackPressDemo = () => {
 }
 
 const styles = StyleSheet.create({
+  compareItem: { alignItems: 'center', gap: 4 },
   container: { paddingHorizontal: 16, paddingTop: 16 },
   desc: { marginTop: 0 },
   divider: { marginVertical: 20 },
