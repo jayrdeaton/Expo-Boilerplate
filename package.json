@@ -36,7 +36,7 @@
     "@reduxjs/toolkit": "^2.12.0",
     "@rific/auto-paper": "^0.9.4",
     "@rific/drawer": "^0.4.2",
-    "@rific/feedback-press": "^0.7.0",
+    "@rific/feedback-press": "^0.8.0",
     "@rific/focus-chain": "^0.4.3",
     "@rific/resizable-input": "^0.3.1",
     "@rific/scroll-view": "^0.6.5",

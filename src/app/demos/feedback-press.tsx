@@ -1,12 +1,14 @@
-import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useVibration } from '@rific/feedback-press'
+import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useHoldToRepeat, useHoldToRepeatByKey, useVibration } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { NotificationFeedbackType } from 'expo-haptics'
 import { Stack, useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Divider, Text, useTheme } from 'react-native-paper'
 
 import { useFeedbackSounds } from '@/hooks/useFeedbackSounds'
+
+const HOLD_KEYS = ['A', 'B', 'C'] as const
 
 const FeedbackPressDemo = () => {
   const router = useRouter()
@@ -16,6 +18,16 @@ const FeedbackPressDemo = () => {
   const [checked, setChecked] = useState(true)
   const [switchOn, setSwitchOn] = useState(true)
   const [segment, setSegment] = useState('day')
+
+  const [count, setCount] = useState(0)
+  const increment = useCallback(() => setCount((c) => c + 1), [])
+  const decrement = useCallback(() => setCount((c) => c - 1), [])
+  const incrementHold = useHoldToRepeat(increment, 400)
+  const decrementHold = useHoldToRepeat(decrement, 400)
+
+  const [keyedCounts, setKeyedCounts] = useState<Record<string, number>>({})
+  const bumpKey = useCallback((key: string) => setKeyedCounts((prev) => ({ ...prev, [key]: (prev[key] ?? 0) + 1 })), [])
+  const keyedHold = useHoldToRepeatByKey(bumpKey, 400)
 
   return (
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
@@ -140,6 +152,38 @@ const FeedbackPressDemo = () => {
               { value: 'month', label: 'Month' }
             ]}
           />
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
+            Hold to Repeat
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            useHoldToRepeat fires an action immediately once you&apos;ve held past delayLongPress, then again every 400ms for as long as you keep holding — with a haptic + sound pulse on every tick, not just the first. Release to stop instantly. Press and hold, don&apos;t tap.
+          </Text>
+          <View style={styles.holdRow}>
+            <FAB icon='minus' size='small' onLongPress={decrementHold.onLongPress} onPressOut={decrementHold.onPressOut} delayLongPress={400} />
+            <Text variant='headlineSmall' style={styles.holdCount}>
+              {count}
+            </Text>
+            <FAB icon='plus' size='small' onLongPress={incrementHold.onLongPress} onPressOut={incrementHold.onPressOut} delayLongPress={400} />
+          </View>
+
+          <Text variant='titleMedium' style={[styles.sectionLabel, styles.item]}>
+            Hold to Repeat (keyed)
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            useHoldToRepeatByKey keeps a separate timer per key — hold two of these at once (two fingers) and each repeats on its own cadence; releasing one never stops the other.
+          </Text>
+          <View style={styles.row}>
+            {HOLD_KEYS.map((key) => (
+              <View key={key} style={styles.keyedItem}>
+                <Text variant='labelLarge'>
+                  {key}: {keyedCounts[key] ?? 0}
+                </Text>
+                <FAB icon='plus' size='small' onLongPress={keyedHold.onLongPress(key)} onPressOut={keyedHold.onPressOut(key)} delayLongPress={400} />
+              </View>
+            ))}
+          </View>
         </ScrollView>
       </ScrollViewProvider>
     </View>
@@ -153,7 +197,10 @@ const styles = StyleSheet.create({
   fabRow: { flexDirection: 'row', gap: 16, justifyContent: 'center', paddingVertical: 8 },
   fill: { flex: 1 },
   hint: { marginBottom: 12 },
+  holdCount: { minWidth: 40, textAlign: 'center' },
+  holdRow: { alignItems: 'center', flexDirection: 'row', gap: 16, justifyContent: 'center', paddingVertical: 8 },
   item: { marginBottom: 12 },
+  keyedItem: { alignItems: 'center', gap: 8 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   sectionLabel: { marginBottom: 8 }
 })
