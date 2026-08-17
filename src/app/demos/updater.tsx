@@ -8,19 +8,23 @@ import { Chip, Divider, Surface, Text, useTheme } from 'react-native-paper'
 const INFO_ITEMS = [
   {
     label: 'autoCheck (default: true)',
-    desc: 'Silently polls for updates on every app foreground event. No UI is shown unless an update is found.'
+    desc: 'Registers an AppState listener that fetches updates on every foreground resume. Set to false for full manual control.'
+  },
+  {
+    label: 'autoPrompt (default: true)',
+    desc: 'When a foreground fetch finds an update, the confirm dialog shows and reloads immediately — no tap required. Set to false to stage it silently instead, surfaced via updateReady until check() or the next cold launch.'
   },
   {
     label: 'onConfirm callback',
-    desc: 'Called with the update manifest when a new build is available. Return true to reload immediately, false to defer. Receives createdAt and optional metadata.'
+    desc: 'Custom confirmation dialog in place of the default Alert. Called with the update manifest — return true to reload, false to cancel. Receives createdAt and optional metadata.'
   },
   {
     label: 'updateReady',
-    desc: 'Flips to true after a new bundle is downloaded and ready. Use it to show a custom "restart to update" badge in your UI.'
+    desc: 'True once a fetch has staged an update. Transient with the default autoPrompt: true; persists until check() runs when autoPrompt is false — useful for a settings badge.'
   },
   {
     label: 'check()',
-    desc: 'Manually triggers an update fetch. Useful in a settings screen, debug panel, or pull-to-refresh handler.'
+    desc: 'Manually triggers an update fetch (or reuses an already-staged manifest), then the confirm dialog and reload. Useful in a settings screen, debug panel, or pull-to-refresh handler.'
   }
 ]
 
@@ -36,7 +40,7 @@ const UpdaterDemo = () => {
         <ScrollViewHeader backAction={() => router.back()} title='Updater' caption='@rific/updater' />
         <ScrollView contentContainerStyle={styles.container}>
           <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-            OTA update hook for Expo apps. Silently fetches updates on every foreground resume with no UI interruption. Exposes a manual check function and an optional confirmation callback before applying the update.
+            OTA update hook for Expo apps. Checks for updates on every foreground resume and prompts to restart as soon as one's found. Exposes a manual check function and an optional confirmation callback before applying the update — pass autoPrompt: false to stage updates silently instead.
           </Text>
 
           <Divider style={styles.divider} />
