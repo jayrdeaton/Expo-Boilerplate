@@ -14,7 +14,38 @@ const FeedbackPressDemo = () => {
   const router = useRouter()
   const theme = useTheme()
   const vibration = useVibration()
-  const { playChime, playBuzz } = useFeedbackSounds()
+  const { playClick, playPop, playChime, playBuzz, playClassicClick, playClassicPop, playClassicChime, playClassicBuzz, playExperimentalPluck, playExperimentalBlip, playExperimentalBell, playExperimentalSwoosh, playExperimentalRing } = useFeedbackSounds()
+  const soundSets = [
+    {
+      label: 'Default',
+      sounds: [
+        { label: 'Click', fn: playClick },
+        { label: 'Pop', fn: playPop },
+        { label: 'Chime', fn: playChime },
+        { label: 'Buzz', fn: playBuzz }
+      ]
+    },
+    {
+      label: 'Classic',
+      sounds: [
+        { label: 'Click', fn: playClassicClick },
+        { label: 'Pop', fn: playClassicPop },
+        { label: 'Chime', fn: playClassicChime },
+        { label: 'Buzz', fn: playClassicBuzz }
+      ]
+    },
+    {
+      label: 'Experimental',
+      note: 'Pluck: Karplus-Strong physical modeling · Blip: 8-bit square arpeggio · Bell: FM synthesis · Swoosh: filtered noise · Ring: ring modulation',
+      sounds: [
+        { label: 'Pluck', fn: playExperimentalPluck },
+        { label: 'Blip', fn: playExperimentalBlip },
+        { label: 'Bell', fn: playExperimentalBell },
+        { label: 'Swoosh', fn: playExperimentalSwoosh },
+        { label: 'Ring', fn: playExperimentalRing }
+      ]
+    }
+  ]
   const [checked, setChecked] = useState(true)
   const [switchOn, setSwitchOn] = useState(true)
   const [segment, setSegment] = useState('day')
@@ -80,7 +111,7 @@ const FeedbackPressDemo = () => {
             Sound
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-            The provider plays a click on press and a pop on long-press by default. Press and hold each button below to hear both.
+            The provider plays a synthesized click on press and a synthesized pop on long-press by default. Press and hold each button below to hear both — including the original recorded set, kept around as a Classic override.
           </Text>
           <Button mode='contained' style={styles.item} onPress={() => {}} onLongPress={() => {}}>
             Provider default (press: click · hold: pop)
@@ -95,7 +126,33 @@ const FeedbackPressDemo = () => {
             <Button mode='outlined' sound={{ selection: playChime, notification: playBuzz }} onPress={() => {}} onLongPress={() => {}}>
               Custom sound (press: chime · hold: buzz)
             </Button>
+            <Button mode='outlined' sound={{ selection: playClassicClick, notification: playClassicPop }} onPress={() => {}} onLongPress={() => {}}>
+              Classic sound (press: click · hold: pop)
+            </Button>
           </View>
+
+          <Text variant='bodySmall' style={[styles.hint, styles.item, { color: theme.colors.onSurfaceVariant }]}>
+            Every sound on its own, no press gesture required — tap a chip to audition it.
+          </Text>
+          {soundSets.map((set) => (
+            <View key={set.label} style={styles.item}>
+              <Text variant='labelLarge' style={styles.soundSetLabel}>
+                {set.label}
+              </Text>
+              {set.note && (
+                <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+                  {set.note}
+                </Text>
+              )}
+              <View style={styles.row}>
+                {set.sounds.map((s) => (
+                  <Chip key={s.label} soundDisabled onPress={s.fn} compact>
+                    {s.label}
+                  </Chip>
+                ))}
+              </View>
+            </View>
+          ))}
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
@@ -202,7 +259,8 @@ const styles = StyleSheet.create({
   item: { marginBottom: 12 },
   keyedItem: { alignItems: 'center', gap: 8 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  sectionLabel: { marginBottom: 8 }
+  sectionLabel: { marginBottom: 8 },
+  soundSetLabel: { marginBottom: 4 }
 })
 
 export default FeedbackPressDemo
