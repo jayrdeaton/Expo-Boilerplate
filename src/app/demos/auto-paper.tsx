@@ -1,9 +1,10 @@
 import { AppearancePicker, AutoAppearancePicker, AutoPalettePicker, ColorPicker, Dialog, HarmonyPicker, Menu, PalettePicker, useAutoPaperTheme, useThemeSettings } from '@rific/auto-paper'
+import { Button, Switch } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, Dialog as PaperDialog, Divider, Menu as PaperMenu, Surface, Switch, Text } from 'react-native-paper'
+import { Dialog as PaperDialog, Divider, Menu as PaperMenu, Surface, Text } from 'react-native-paper'
 
 const AutoPaperDemo = () => {
   const router = useRouter()

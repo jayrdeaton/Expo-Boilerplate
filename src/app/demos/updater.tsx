@@ -40,7 +40,7 @@ const UpdaterDemo = () => {
         <ScrollViewHeader backAction={() => router.back()} title='Updater' caption='@rific/updater' />
         <ScrollView contentContainerStyle={styles.container}>
           <Text variant='bodyMedium' style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
-            OTA update hook for Expo apps. Checks for updates on every foreground resume and prompts to restart as soon as one's found. Exposes a manual check function and an optional confirmation callback before applying the update — pass autoPrompt: false to stage updates silently instead.
+            OTA update hook for Expo apps. Checks for updates on every foreground resume and prompts to restart as soon as one&apos;s found. Exposes a manual check function and an optional confirmation callback before applying the update — pass autoPrompt: false to stage updates silently instead.
           </Text>
 
           <Divider style={styles.divider} />

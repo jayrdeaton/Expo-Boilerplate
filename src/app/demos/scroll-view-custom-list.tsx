@@ -1,8 +1,9 @@
+import { Chip, SegmentedButtons } from '@rific/feedback-press'
 import { CustomList, PullSearch, type PullSearchHandle, ScrollViewFooter, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { useRouter } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
-import { Chip, Divider, SegmentedButtons, Text, useTheme } from 'react-native-paper'
+import { Divider, Text, useTheme } from 'react-native-paper'
 import Animated from 'react-native-reanimated'
 
 import { timeout } from '@/utils/timeout'

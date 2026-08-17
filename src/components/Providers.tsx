@@ -3,7 +3,7 @@ import { FeedbackPressProvider, hapticActions, type HapticSettings } from '@rifi
 import { scrollViewActions, type ScrollViewSettings, ScrollViewSettingsProvider } from '@rific/scroll-view'
 import { type HistoryContainerProps, HistoryModal, Toaster, ToastProvider } from '@rific/toaster'
 import * as Haptics from 'expo-haptics'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useWindowDimensions } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
@@ -12,7 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider as ReduxProvider, useDispatch, useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import { useFeedbackSounds } from '@/hooks/useFeedbackSounds'
+import { useDefaultSounds } from '@/hooks/sounds/useDefaultSounds'
 import { persistor, type RootState, store } from '@/redux/store'
 
 import { Theme } from './Theme'
@@ -30,11 +30,15 @@ const HistoryDrawerContainer = ({ children, onClose, visible }: HistoryContainer
 
 const FeedbackBridge = ({ children }: ProvidersProps) => {
   const haptic = useSelector((state: RootState) => state.haptic)
+  const soundEnabled = useSelector((state: RootState) => state.settings.soundEnabled)
   const dispatch = useDispatch()
   const onChange = useCallback((s: HapticSettings) => dispatch(hapticActions.initialize(s)), [dispatch])
-  const { playClick, playPop } = useFeedbackSounds()
+  const { playClick, playPop } = useDefaultSounds()
+  // undefined (not soundDisabled) so a muted global setting falls all the way back to
+  // FeedbackPressProvider's own EMPTY_SOUND default, same as never passing `sound` at all.
+  const sound = useMemo(() => (soundEnabled ? { selection: playClick, notification: playPop } : undefined), [soundEnabled, playClick, playPop])
   return (
-    <FeedbackPressProvider initialValue={haptic} onChange={onChange} paper={RNPaper} sound={{ selection: playClick, notification: playPop }}>
+    <FeedbackPressProvider initialValue={haptic} onChange={onChange} paper={RNPaper} sound={sound}>
       {children}
     </FeedbackPressProvider>
   )

@@ -1,18 +1,24 @@
-import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useHoldToRepeat, useHoldToRepeatByKey, useVibration } from '@rific/feedback-press'
+import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useHapticSettings, useHoldToRepeat, useHoldToRepeatByKey, useVibration } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { NotificationFeedbackType } from 'expo-haptics'
 import { Stack, useRouter } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Divider, Text, useTheme } from 'react-native-paper'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useFeedbackSounds } from '@/hooks/useFeedbackSounds'
+import { settingsActions } from '@/redux/settingsSlice'
+import type { RootState } from '@/redux/store'
 
 const HOLD_KEYS = ['A', 'B', 'C'] as const
 
 const FeedbackPressDemo = () => {
   const router = useRouter()
   const theme = useTheme()
+  const dispatch = useDispatch()
+  const { settings: hapticSettings, set: setHapticSettings } = useHapticSettings()
+  const soundEnabled = useSelector((state: RootState) => state.settings.soundEnabled)
   const vibration = useVibration()
   const { playClick, playPop, playChime, playBuzz, playClassicClick, playClassicPop, playClassicChime, playClassicBuzz, playRetroBlip, playRetroTick, playRetroBlipReverse, playRetroJump, playRetroLaser, playRetroPowerup, playExperimentalPluck, playExperimentalBell, playExperimentalSwoosh, playExperimentalRing, playWarmClick, playWarmPop, playWarmChime, playWarmBuzz, playMinimalClick, playMinimalPop, playMinimalChime, playMinimalBuzz, playMechanicalShutter, playMechanicalRelay, playMechanicalTypewriter, playMechanicalLatch, playLofiClick, playLofiPop, playLofiChime, playLofiBuzz, playGlitchStutter, playGlitchCrush, playGlitchSkip, playGlitchStatic, playNatureDroplet, playNatureChirp, playNatureRustle, playNatureSplash } = useFeedbackSounds()
   const soundSets = [
@@ -168,6 +174,22 @@ const FeedbackPressDemo = () => {
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>
+            App Settings
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
+            App-wide switches, not just this screen&apos;s demo toggles below — haptics persists via the same redux-backed FeedbackPressProvider wiring every wrapped component already reads from, and sound persists alongside it. Both survive an app restart.
+          </Text>
+          <View style={styles.settingRow}>
+            <Text variant='bodyMedium'>Haptics</Text>
+            <Switch value={hapticSettings.vibrate} onValueChange={(v) => setHapticSettings({ vibrate: v })} />
+          </View>
+          <View style={styles.settingRow}>
+            <Text variant='bodyMedium'>Sound</Text>
+            <Switch value={soundEnabled} onValueChange={(v) => dispatch(settingsActions.setSoundEnabled(v))} />
+          </View>
+
+          <Divider style={styles.divider} />
+          <Text variant='titleMedium' style={styles.sectionLabel}>
             Haptic Types
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
@@ -251,6 +273,9 @@ const FeedbackPressDemo = () => {
 
           <Text variant='bodySmall' style={[styles.hint, styles.item, { color: theme.colors.onSurfaceVariant }]}>
             Every sound on its own, no press gesture required — tap a chip to audition it.
+          </Text>
+          <Text variant='bodySmall' style={[styles.hint, styles.item, { color: theme.colors.onSurfaceVariant }]}>
+            Every sound below plays through @rific/feedback-press/audio&apos;s useAudioPool rather than a single shared player, which is why rapid repeat taps on the same chip never drop a sound — each tap round-robins to a different pooled player instead of racing the previous tap&apos;s still-in-flight playback.
           </Text>
           {soundSets.map((set) => (
             <View key={set.label} style={styles.item}>
@@ -379,6 +404,7 @@ const styles = StyleSheet.create({
   keyedItem: { alignItems: 'center', gap: 8 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   sectionLabel: { marginBottom: 8 },
+  settingRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 },
   soundSetLabel: { marginBottom: 4 }
 })
 

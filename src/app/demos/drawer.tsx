@@ -1,11 +1,11 @@
 import * as AutoPaper from '@rific/auto-paper'
 import { combineDrawerProviders, createDrawer, DrawerProvider } from '@rific/drawer'
-import { Button } from '@rific/feedback-press'
+import { Button, IconButton, Switch } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
-import { Divider, IconButton, List, Surface, Switch, Text, useTheme } from 'react-native-paper'
+import { Divider, List, Surface, Text, useTheme } from 'react-native-paper'
 import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 

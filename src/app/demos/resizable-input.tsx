@@ -1,9 +1,10 @@
+import { IconButton } from '@rific/feedback-press'
 import { ResizableInput, ResizableInputProvider } from '@rific/resizable-input'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
-import { Divider, IconButton, Surface, Text, TextInput as PaperTextInput, useTheme } from 'react-native-paper'
+import { Divider, Surface, Text, TextInput as PaperTextInput, useTheme } from 'react-native-paper'
 
 const HEIGHT_STEP = 20
 const MIN_HEIGHT_FLOOR = 40

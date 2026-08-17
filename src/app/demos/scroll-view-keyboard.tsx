@@ -1,8 +1,9 @@
+import { Button, Switch } from '@rific/feedback-press'
 import { ScrollView, ScrollViewFooter, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { useRouter } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { Keyboard, Platform, StyleSheet, View } from 'react-native'
-import { Button, Switch, Text, TextInput, useTheme } from 'react-native-paper'
+import { Text, TextInput, useTheme } from 'react-native-paper'
 
 const KeyboardDemo = () => {
   const router = useRouter()

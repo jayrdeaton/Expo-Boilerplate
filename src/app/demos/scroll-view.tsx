@@ -1,9 +1,10 @@
 import { useThemeSettings } from '@rific/auto-paper'
+import { AppbarAction, Button, Chip, Switch } from '@rific/feedback-press'
 import { PullSearch, type PullSearchHandle, ScrollView, ScrollViewFooter, ScrollViewHeader, ScrollViewProvider, useScrollView, useScrollViewSettings } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Appbar, Button, Chip, Divider, Switch, Text, useTheme } from 'react-native-paper'
+import { Divider, Text, useTheme } from 'react-native-paper'
 
 const ACTION_SIZES = [32, 40, 48] as const
 
@@ -69,7 +70,7 @@ const ScrollViewDemo = () => {
     <View style={[styles.fill, { backgroundColor: theme.colors.background }]}>
       <Stack.Screen options={{ headerShown: false }} />
       <ScrollViewProvider fixed={fixed}>
-        <ScrollViewHeader actionSize={actionSize} backAction={() => router.back()} caption={showCaption ? '@rific/scroll-view' : undefined} title='Scroll View' trailingAction={showTrailing ? <Appbar.Action icon={settings.headerFixed ? 'lock' : 'lock-open-outline'} onPress={() => set({ headerFixed: !settings.headerFixed })} /> : undefined} trailingActionFixed={trailingActionFixed} />
+        <ScrollViewHeader actionSize={actionSize} backAction={() => router.back()} caption={showCaption ? '@rific/scroll-view' : undefined} title='Scroll View' trailingAction={showTrailing ? <AppbarAction icon={settings.headerFixed ? 'lock' : 'lock-open-outline'} onPress={() => set({ headerFixed: !settings.headerFixed })} /> : undefined} trailingActionFixed={trailingActionFixed} />
         <ScrollView contentContainerStyle={styles.container} pullSearchHeight={pullSearchHeight}>
           {pullSearch}
 

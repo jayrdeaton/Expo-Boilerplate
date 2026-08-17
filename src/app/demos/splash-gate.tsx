@@ -1,10 +1,10 @@
-import { Button } from '@rific/feedback-press'
+import { Button, Chip } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { createSplashGate } from '@rific/splash-gate'
 import { Stack, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ActivityIndicator, Chip, Divider, Icon, Surface, Text, useTheme } from 'react-native-paper'
+import { ActivityIndicator, Divider, Icon, Surface, Text, useTheme } from 'react-native-paper'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 
 // A handful of made-up conditions for this demo's own sandboxed "screen" below, not the real

@@ -40,6 +40,7 @@ describe('store', () => {
 
     it('initializes settings defaults', () => {
       expect(store.getState().settings.debug).toBe(false)
+      expect(store.getState().settings.soundEnabled).toBe(true)
     })
   })
 

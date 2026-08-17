@@ -1,8 +1,8 @@
-import { Button } from '@rific/feedback-press'
+import { Button, Card } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { Stack, useRouter } from 'expo-router'
 import { StyleSheet, View } from 'react-native'
-import { Avatar, Card, Divider, Text, useTheme } from 'react-native-paper'
+import { Avatar, Divider, Text, useTheme } from 'react-native-paper'
 
 type PackageEntry = {
   name: string
