@@ -13,7 +13,8 @@
     ],
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "checkAutomatically": "ON_LOAD"
+      "checkAutomatically": "ON_LOAD",
+      "url": "https://u.expo.dev/de02c8cc-bf5b-4922-97bd-88bdde107c75"
     },
     "runtimeVersion": {
       "policy": "fingerprint"
@@ -36,7 +37,17 @@
       }
     },
     "android": {
-      "package": "com.infinitetoken.expostarter"
+      "package": "com.infinitetoken.expostarter",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ]
     },
     "plugins": [
       "expo-router",
