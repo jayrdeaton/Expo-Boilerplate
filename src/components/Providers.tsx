@@ -1,9 +1,9 @@
 import { Drawer } from '@rific/drawer'
-import { FeedbackPressProvider, hapticActions, type HapticSettings } from '@rific/feedback-press'
+import { FeedbackPressProvider, hapticActions, type HapticSettings, soundActions, type SoundSettings } from '@rific/feedback-press'
 import { scrollViewActions, type ScrollViewSettings, ScrollViewSettingsProvider } from '@rific/scroll-view'
 import { type HistoryContainerProps, HistoryModal, Toaster, ToastProvider } from '@rific/toaster'
 import * as Haptics from 'expo-haptics'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { useWindowDimensions } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
@@ -30,15 +30,13 @@ const HistoryDrawerContainer = ({ children, onClose, visible }: HistoryContainer
 
 const FeedbackBridge = ({ children }: ProvidersProps) => {
   const haptic = useSelector((state: RootState) => state.haptic)
-  const soundEnabled = useSelector((state: RootState) => state.settings.soundEnabled)
+  const sound = useSelector((state: RootState) => state.sound)
   const dispatch = useDispatch()
   const onChange = useCallback((s: HapticSettings) => dispatch(hapticActions.initialize(s)), [dispatch])
+  const onSoundChange = useCallback((s: SoundSettings) => dispatch(soundActions.initialize(s)), [dispatch])
   const { playClick, playPop } = useDefaultSounds()
-  // undefined (not soundDisabled) so a muted global setting falls all the way back to
-  // FeedbackPressProvider's own EMPTY_SOUND default, same as never passing `sound` at all.
-  const sound = useMemo(() => (soundEnabled ? { selection: playClick, notification: playPop } : undefined), [soundEnabled, playClick, playPop])
   return (
-    <FeedbackPressProvider initialValue={haptic} onChange={onChange} paper={RNPaper} sound={sound}>
+    <FeedbackPressProvider initialValue={haptic} onChange={onChange} paper={RNPaper} soundInitialValue={sound} onSoundChange={onSoundChange} sound={{ selection: playClick, notification: playPop }}>
       {children}
     </FeedbackPressProvider>
   )

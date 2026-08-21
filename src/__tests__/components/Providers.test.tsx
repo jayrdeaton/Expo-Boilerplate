@@ -13,11 +13,13 @@ jest.mock('@rific/auto-paper', () => ({
 
 jest.mock('@rific/feedback-press', () => ({
   hapticActions: { initialize: (payload: unknown) => ({ payload, type: 'haptic/initialize' }) },
+  soundActions: { initialize: (payload: unknown) => ({ payload, type: 'sound/initialize' }) },
   FeedbackPressProvider: (props: any) => {
     mockHapticProviderCalls.push(props)
     return props.children
   },
-  hapticReducer: (state = { vibrate: true }) => state
+  hapticReducer: (state = { vibrate: true }) => state,
+  soundReducer: (state = { enabled: true }) => state
 }))
 
 jest.mock('@rific/toaster', () => ({
@@ -63,5 +65,15 @@ describe('Providers', () => {
     )
     expect(mockHapticProviderCalls.length).toBeGreaterThan(0)
     expect(mockHapticProviderCalls[0]).toEqual(expect.objectContaining({ initialValue: expect.objectContaining({ vibrate: true }) }))
+  })
+
+  it('passes enabled=true (default) sound settings to FeedbackPressProvider', async () => {
+    await render(
+      <Providers>
+        <Text>child</Text>
+      </Providers>
+    )
+    expect(mockHapticProviderCalls.length).toBeGreaterThan(0)
+    expect(mockHapticProviderCalls[0]).toEqual(expect.objectContaining({ soundInitialValue: expect.objectContaining({ enabled: true }) }))
   })
 })

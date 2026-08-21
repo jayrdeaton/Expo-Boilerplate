@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { combineReducers, configureStore, type Middleware } from '@reduxjs/toolkit'
 import { themeReducer } from '@rific/auto-paper'
-import { hapticReducer } from '@rific/feedback-press'
+import { hapticReducer, soundReducer } from '@rific/feedback-press'
 import { scrollViewReducer } from '@rific/scroll-view'
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
 
@@ -18,6 +18,7 @@ const rootReducer = combineReducers({
   theme: themeReducer,
   scrollView: scrollViewReducer,
   haptic: hapticReducer,
+  sound: soundReducer,
   settings
 })
 

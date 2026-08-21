@@ -10,11 +10,12 @@ describe('store', () => {
   })
 
   describe('state shape', () => {
-    it('has theme, scrollView, haptic, and settings keys', () => {
+    it('has theme, scrollView, haptic, sound, and settings keys', () => {
       const state = store.getState()
       expect(state).toHaveProperty('theme')
       expect(state).toHaveProperty('scrollView')
       expect(state).toHaveProperty('haptic')
+      expect(state).toHaveProperty('sound')
       expect(state).toHaveProperty('settings')
     })
 
@@ -38,9 +39,12 @@ describe('store', () => {
       expect(store.getState().haptic.vibrate).toBe(true)
     })
 
+    it('initializes sound defaults', () => {
+      expect(store.getState().sound.enabled).toBe(true)
+    })
+
     it('initializes settings defaults', () => {
       expect(store.getState().settings.debug).toBe(false)
-      expect(store.getState().settings.soundEnabled).toBe(true)
     })
   })
 

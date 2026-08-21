@@ -1,24 +1,20 @@
-import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useHapticSettings, useHoldToRepeat, useHoldToRepeatByKey, useVibration } from '@rific/feedback-press'
+import { AppbarAction, Button, Card, Checkbox, Chip, FAB, IconButton, SegmentedButtons, Switch, useHapticSettings, useHoldToRepeat, useHoldToRepeatByKey, useSoundSettings, useVibration } from '@rific/feedback-press'
 import { ScrollView, ScrollViewHeader, ScrollViewProvider } from '@rific/scroll-view'
 import { NotificationFeedbackType } from 'expo-haptics'
 import { Stack, useRouter } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Divider, Text, useTheme } from 'react-native-paper'
-import { useDispatch, useSelector } from 'react-redux'
 
 import { useFeedbackSounds } from '@/hooks/useFeedbackSounds'
-import { settingsActions } from '@/redux/settingsSlice'
-import type { RootState } from '@/redux/store'
 
 const HOLD_KEYS = ['A', 'B', 'C'] as const
 
 const FeedbackPressDemo = () => {
   const router = useRouter()
   const theme = useTheme()
-  const dispatch = useDispatch()
   const { settings: hapticSettings, set: setHapticSettings } = useHapticSettings()
-  const soundEnabled = useSelector((state: RootState) => state.settings.soundEnabled)
+  const { settings: soundSettings, set: setSoundSettings } = useSoundSettings()
   const vibration = useVibration()
   const { playClick, playPop, playChime, playBuzz, playClassicClick, playClassicPop, playClassicChime, playClassicBuzz, playRetroBlip, playRetroTick, playRetroBlipReverse, playRetroJump, playRetroLaser, playRetroPowerup, playExperimentalPluck, playExperimentalBell, playExperimentalSwoosh, playExperimentalRing, playWarmClick, playWarmPop, playWarmChime, playWarmBuzz, playMinimalClick, playMinimalPop, playMinimalChime, playMinimalBuzz, playMechanicalShutter, playMechanicalRelay, playMechanicalTypewriter, playMechanicalLatch, playLofiClick, playLofiPop, playLofiChime, playLofiBuzz, playGlitchStutter, playGlitchCrush, playGlitchSkip, playGlitchStatic, playNatureDroplet, playNatureChirp, playNatureRustle, playNatureSplash } = useFeedbackSounds()
   const soundSets = [
@@ -185,7 +181,7 @@ const FeedbackPressDemo = () => {
           </View>
           <View style={styles.settingRow}>
             <Text variant='bodyMedium'>Sound</Text>
-            <Switch value={soundEnabled} onValueChange={(v) => dispatch(settingsActions.setSoundEnabled(v))} />
+            <Switch value={soundSettings.enabled} onValueChange={(v) => setSoundSettings({ enabled: v })} />
           </View>
 
           <Divider style={styles.divider} />

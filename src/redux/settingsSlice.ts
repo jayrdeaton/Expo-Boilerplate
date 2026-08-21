@@ -2,12 +2,10 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 export type SettingsState = {
   debug: boolean
-  soundEnabled: boolean
 }
 
 export const defaultSettingsState: SettingsState = {
-  debug: false,
-  soundEnabled: true
+  debug: false
 }
 
 const slice = createSlice({
@@ -15,7 +13,6 @@ const slice = createSlice({
   initialState: defaultSettingsState,
   reducers: {
     setDebug: (state, action: PayloadAction<boolean>) => ({ ...state, debug: action.payload }),
-    setSoundEnabled: (state, action: PayloadAction<boolean>) => ({ ...state, soundEnabled: action.payload }),
     resetSettings: () => defaultSettingsState
   }
 })

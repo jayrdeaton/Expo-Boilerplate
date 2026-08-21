@@ -6,10 +6,6 @@ describe('settingsSlice', () => {
       expect(settingsReducer(undefined, { type: '@@INIT' }).debug).toBe(false)
     })
 
-    it('sets soundEnabled to true', () => {
-      expect(settingsReducer(undefined, { type: '@@INIT' }).soundEnabled).toBe(true)
-    })
-
     it('matches defaultSettingsState', () => {
       expect(settingsReducer(undefined, { type: '@@INIT' })).toEqual(defaultSettingsState)
     })
@@ -22,28 +18,15 @@ describe('settingsSlice', () => {
     })
 
     it('sets debug back to false', () => {
-      const modified: SettingsState = { debug: true, soundEnabled: true }
+      const modified: SettingsState = { debug: true }
       const state = settingsReducer(modified, settingsActions.setDebug(false))
       expect(state.debug).toBe(false)
     })
   })
 
-  describe('setSoundEnabled', () => {
-    it('sets soundEnabled to false', () => {
-      const state = settingsReducer(defaultSettingsState, settingsActions.setSoundEnabled(false))
-      expect(state.soundEnabled).toBe(false)
-    })
-
-    it('sets soundEnabled back to true', () => {
-      const modified: SettingsState = { debug: false, soundEnabled: false }
-      const state = settingsReducer(modified, settingsActions.setSoundEnabled(true))
-      expect(state.soundEnabled).toBe(true)
-    })
-  })
-
   describe('resetSettings', () => {
     it('restores debug to false', () => {
-      const modified: SettingsState = { debug: true, soundEnabled: true }
+      const modified: SettingsState = { debug: true }
       const state = settingsReducer(modified, settingsActions.resetSettings())
       expect(state.debug).toBe(false)
     })
@@ -65,12 +48,6 @@ describe('settingsSlice', () => {
     it('resetSettings creates action with correct type', () => {
       const action = settingsActions.resetSettings()
       expect(action.type).toBe('settings/resetSettings')
-    })
-
-    it('setSoundEnabled creates action with correct type and payload', () => {
-      const action = settingsActions.setSoundEnabled(false)
-      expect(action.type).toBe('settings/setSoundEnabled')
-      expect(action.payload).toBe(false)
     })
   })
 })
