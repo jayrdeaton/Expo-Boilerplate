@@ -146,18 +146,27 @@ const second = register();
 
 ### `@rific/splash-gate`
 
-Names every async condition this app's first screen depends on and holds the splash screen up until all of them report ready, instead of hiding it the moment the first one resolves and letting anything else (an icon font, a hydrated preference) pop in a beat later. Wired into [`Theme.tsx`](src/components/Theme.tsx): `theme` (auto-paper's own Provider `onReady`) and `fonts` (the icon font every react-native-paper icon in this app depends on, preloaded via `expo-font`'s `useFonts`). See [`demos/splash-gate.tsx`](src/app/demos/splash-gate.tsx) for an isolated, replayable simulation of the mechanism. The real splash screen can only ever show once, at cold launch, so it can't be demoed directly from a screen you navigate to.
+Names every async condition this app's first screen depends on and holds the splash screen up until all of them report ready, instead of hiding it the moment the first one resolves and letting anything else (an icon font, a hydrated preference) pop in a beat later. Wired into [`Theme.tsx`](src/components/Theme.tsx): `theme` (auto-paper's own Provider `onReady`) and `fonts` (the icon font every react-native-paper icon in this app depends on, preloaded via `expo-font`'s `useFonts`). See [`demos/splash-gate.tsx`](src/app/demos/splash-gate.tsx) for an isolated, replayable simulation of the mechanism, plus a live comparison demoing the `Gate` component below. The real splash screen can only ever show once, at cold launch, so it can't be demoed directly from a screen you navigate to.
 
 ```ts
-import { createSplashGate } from '@rific/splash-gate';
+import { createGate } from '@rific/splash-gate';
 
 // splashGate.ts, created once, at module scope
-export const { markReady, useReady, pendingGates } = createSplashGate(['theme', 'fonts'] as const);
+export const { markReady, useReady, pendingGates, Gate } = createGate(['theme', 'fonts'] as const);
 
 // Theme.tsx
 const [fontsLoaded] = useFonts({ ... });
 useReady('fonts', fontsLoaded);
 const onThemeReady = () => markReady('theme'); // a one-shot callback, not a boolean, call directly
+```
+
+`Gate` is `useReady` plus render-gating in one step: it withholds `children` until `ready` is `true`, instead of just marking the gate. Reach for it over `useReady` when what you're mounting is a component whose own state locks in on first render (a lazy `useState(() => initialProp)` initializer, the same pattern most context providers use) — marking the gate ready doesn't help if the child already locked onto a stale placeholder before that:
+
+```tsx
+// keyboardLayout: null while loading from storage, the real value once it resolves
+<Gate gate="keyboardLayout" ready={layout !== null}>
+  <ThirdPartyLayoutProvider initialLayout={layout}>{children}</ThirdPartyLayoutProvider>
+</Gate>
 ```
 
 ---

@@ -10,7 +10,7 @@ import { markSplashReady, useSplashReady } from '../../utils/splashGate'
 
 jest.mock('../../utils/splashGate', () => ({
   markSplashReady: jest.fn(),
-  // A real (not mocked) useSplashReady would need a real createSplashGate instance behind it.
+  // A real (not mocked) useSplashReady would need a real createGate instance behind it.
   // Theme's own 'fonts' gate is driven by useFonts below, which the mock in jest.setup.ts already
   // resolves synchronously to `[true]`, so there's nothing useful this fake would add beyond not
   // throwing when Theme calls it.
