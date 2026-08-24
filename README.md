@@ -116,7 +116,7 @@ success('Saved!');
 
 ### `@rific/updater`
 
-OTA update hook for Expo apps. Silently fetches updates in the background on foreground, with an optional manual check that shows a confirmation dialog before reloading.
+OTA update hook for Expo apps. Checks for updates on launch and on every foreground resume, prompting to restart as soon as one's found — pass `autoPrompt: false` to stage them silently instead. Also exposes a manual `check()`, plus `onConfirm`/`onInfo`/`onError` callbacks to replace the default `Alert.alert` dialogs.
 
 ```ts
 import { useUpdater } from '@rific/updater';
