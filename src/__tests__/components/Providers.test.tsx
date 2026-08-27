@@ -67,13 +67,15 @@ describe('Providers', () => {
     expect(mockHapticProviderCalls[0]).toEqual(expect.objectContaining({ initialValue: expect.objectContaining({ vibrate: true }) }))
   })
 
-  it('passes enabled=true (default) sound settings to FeedbackPressProvider', async () => {
+  it('passes enabled=false (dev default, no stored preference) sound settings to FeedbackPressProvider', async () => {
+    // store.ts defaults a never-persisted sound preference to !__DEV__, which is false in this
+    // Jest/dev environment, so local/Claude test runs stay muted; production defaults to true.
     await render(
       <Providers>
         <Text>child</Text>
       </Providers>
     )
     expect(mockHapticProviderCalls.length).toBeGreaterThan(0)
-    expect(mockHapticProviderCalls[0]).toEqual(expect.objectContaining({ soundInitialValue: expect.objectContaining({ enabled: true }) }))
+    expect(mockHapticProviderCalls[0]).toEqual(expect.objectContaining({ soundInitialValue: expect.objectContaining({ enabled: false }) }))
   })
 })

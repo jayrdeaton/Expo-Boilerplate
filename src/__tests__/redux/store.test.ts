@@ -40,7 +40,9 @@ describe('store', () => {
     })
 
     it('initializes sound defaults', () => {
-      expect(store.getState().sound.enabled).toBe(true)
+      // store.ts defaults a never-persisted sound preference to !__DEV__ (false here, since Jest
+      // runs with __DEV__ true) so local/Claude test runs stay muted; production defaults to true.
+      expect(store.getState().sound.enabled).toBe(!__DEV__)
     })
 
     it('initializes settings defaults', () => {
