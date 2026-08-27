@@ -53,9 +53,9 @@ const FocusChainDemo = () => {
   const router = useRouter()
   const theme = useTheme()
   const register = useFocusChain()
-  const first = register()
-  const second = register()
-  const third = register()
+  const { ref: firstRef, props: firstProps } = register()
+  const { ref: secondRef, props: secondProps } = register()
+  const { ref: thirdRef, props: thirdProps } = register()
   const { success } = useToast()
 
   const handleSubmit = useCallback(() => {
@@ -80,9 +80,9 @@ const FocusChainDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Press Next (or Return) on your keyboard to move through the fields below. No manual ref wiring.
           </Text>
-          <TextInput ref={first.ref} {...first.props} label='First name' mode='outlined' returnKeyType='next' style={styles.input} />
-          <TextInput ref={second.ref} {...second.props} label='Last name' mode='outlined' returnKeyType='next' style={styles.input} />
-          <TextInput ref={third.ref} {...third.props} autoCapitalize='none' keyboardType='email-address' label='Email' mode='outlined' onSubmitEditing={handleSubmit} returnKeyType='done' style={styles.input} />
+          <TextInput ref={firstRef} {...firstProps} label='First name' mode='outlined' returnKeyType='next' style={styles.input} />
+          <TextInput ref={secondRef} {...secondProps} label='Last name' mode='outlined' returnKeyType='next' style={styles.input} />
+          <TextInput ref={thirdRef} {...thirdProps} autoCapitalize='none' keyboardType='email-address' label='Email' mode='outlined' onSubmitEditing={handleSubmit} returnKeyType='done' style={styles.input} />
 
           <Divider style={styles.divider} />
           <Text variant='titleMedium' style={styles.sectionLabel}>

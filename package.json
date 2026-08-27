@@ -10,6 +10,7 @@
     "build:development": "expo prebuild --clean && eas build --profile development --local",
     "build:preview": "eas build --profile preview",
     "build:production": "eas build --profile production",
+    "ci": "npm run lint && npm test && npm run typecheck",
     "client": "expo start --dev-client",
     "doctor": "expo install --fix && npx expo-doctor@latest",
     "fingerprint:compare": "eas fingerprint:compare",
@@ -28,8 +29,7 @@
     "update": "rific-bump-ota src/constants/release.ts && eas update",
     "update:development": "npm run update -- --branch development --environment development --message \"$(git log -1 --pretty=%B)\"",
     "update:preview": "npm run update -- --branch preview --environment preview --non-interactive --message \"$(git log -1 --pretty=%B)\"",
-    "update:production": "npm run update -- --branch production --environment production --non-interactive --message \"$(git log -1 --pretty=%B)\"",
-    "ci": "npm run lint && npm test && npm run typecheck"
+    "update:production": "npm run update -- --branch production --environment production --non-interactive --message \"$(git log -1 --pretty=%B)\""
   },
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",
