@@ -1,0 +1,14 @@
+name: CI
+run-name: CI - ${{ github.event.pull_request.title || github.event.head_commit.message }}
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  quality:
+    uses: infinitetoken/Workflows/.github/workflows/npm-ci.yml@v0.1.4
+    with:
+      script: ci
