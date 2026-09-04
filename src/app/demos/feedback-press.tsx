@@ -16,7 +16,7 @@ const FeedbackPressDemo = () => {
   const { settings: hapticSettings, set: setHapticSettings } = useHapticSettings()
   const { settings: soundSettings, set: setSoundSettings } = useSoundSettings()
   const vibration = useVibration()
-  const { playClick, playPop, playChime, playBuzz, playClassicClick, playClassicPop, playClassicChime, playClassicBuzz, playRetroBlip, playRetroTick, playRetroBlipReverse, playRetroJump, playRetroLaser, playRetroPowerup, playExperimentalPluck, playExperimentalBell, playExperimentalSwoosh, playExperimentalRing, playWarmClick, playWarmPop, playWarmChime, playWarmBuzz, playMinimalClick, playMinimalPop, playMinimalChime, playMinimalBuzz, playMechanicalShutter, playMechanicalRelay, playMechanicalTypewriter, playMechanicalLatch, playLofiClick, playLofiPop, playLofiChime, playLofiBuzz, playGlitchStutter, playGlitchCrush, playGlitchSkip, playGlitchStatic, playNatureDroplet, playNatureChirp, playNatureRustle, playNatureSplash } = useFeedbackSounds()
+  const { playClick, playPop, playChime, playBuzz, playClassicClick, playClassicPop, playClassicChime, playClassicBuzz } = useFeedbackSounds()
   const soundSets = [
     {
       label: 'Default',
@@ -34,88 +34,6 @@ const FeedbackPressDemo = () => {
         { label: 'Pop', fn: playClassicPop },
         { label: 'Chime', fn: playClassicChime },
         { label: 'Buzz', fn: playClassicBuzz }
-      ]
-    },
-    {
-      label: 'Warm',
-      note: 'Same four roles as Default/Classic, deliberately spread across pitch and warmth instead of one register - click bright and short, buzz low and round. Length follows role: pop (the long-press payoff) is given real length, click stays snappy.',
-      sounds: [
-        { label: 'Click', fn: playWarmClick },
-        { label: 'Pop', fn: playWarmPop },
-        { label: 'Chime', fn: playWarmChime },
-        { label: 'Buzz', fn: playWarmBuzz }
-      ]
-    },
-    {
-      label: 'Minimal',
-      note: 'Same four roles again, but the opposite instinct from Warm: brevity and cleanliness are the whole character, not pitch/warmth variety. A single clean high sine per sound, near-zero tail.',
-      sounds: [
-        { label: 'Click', fn: playMinimalClick },
-        { label: 'Pop', fn: playMinimalPop },
-        { label: 'Chime', fn: playMinimalChime },
-        { label: 'Buzz', fn: playMinimalBuzz }
-      ]
-    },
-    {
-      label: 'Lofi',
-      note: 'Same four roles, heavily low-pass filtered plus soft-clip saturation and a trace of vinyl-crackle noise under the chime - warm and dull rather than crisp, the cassette-tape end of the spectrum.',
-      sounds: [
-        { label: 'Click', fn: playLofiClick },
-        { label: 'Pop', fn: playLofiPop },
-        { label: 'Chime', fn: playLofiChime },
-        { label: 'Buzz', fn: playLofiBuzz }
-      ]
-    },
-    {
-      label: 'Retro',
-      note: '8-bit square-wave chiptune SFX. Blip Reverse is Blip’s own samples played backwards, not a separate composition.',
-      sounds: [
-        { label: 'Blip', fn: playRetroBlip },
-        { label: 'Tick', fn: playRetroTick },
-        { label: 'Blip Reverse', fn: playRetroBlipReverse },
-        { label: 'Jump', fn: playRetroJump },
-        { label: 'Laser', fn: playRetroLaser },
-        { label: 'Powerup', fn: playRetroPowerup }
-      ]
-    },
-    {
-      label: 'Experimental',
-      note: 'Pluck: Karplus-Strong physical modeling · Bell: FM synthesis · Swoosh: filtered noise · Ring: ring modulation',
-      sounds: [
-        { label: 'Pluck', fn: playExperimentalPluck },
-        { label: 'Bell', fn: playExperimentalBell },
-        { label: 'Swoosh', fn: playExperimentalSwoosh },
-        { label: 'Ring', fn: playExperimentalRing }
-      ]
-    },
-    {
-      label: 'Mechanical',
-      note: 'Built from filtered white noise instead of pure tones - shutters, switches, and keys are noise-driven transients in the real world, not sine waves.',
-      sounds: [
-        { label: 'Shutter', fn: playMechanicalShutter },
-        { label: 'Relay', fn: playMechanicalRelay },
-        { label: 'Typewriter', fn: playMechanicalTypewriter },
-        { label: 'Latch', fn: playMechanicalLatch }
-      ]
-    },
-    {
-      label: 'Glitch',
-      note: 'Digital-artifact techniques - bitcrush, sample-and-hold, granular repeat - deliberately introducing quantization and stutter a real recording never would.',
-      sounds: [
-        { label: 'Stutter', fn: playGlitchStutter },
-        { label: 'Crush', fn: playGlitchCrush },
-        { label: 'Skip', fn: playGlitchSkip },
-        { label: 'Static', fn: playGlitchStatic }
-      ]
-    },
-    {
-      label: 'Nature',
-      note: 'A physical-world counterpart to Mechanical - noise-driven, but pitch-bent resonance and soft band-passed textures instead of sharp metallic transients, for an organic rather than man-made character.',
-      sounds: [
-        { label: 'Droplet', fn: playNatureDroplet },
-        { label: 'Chirp', fn: playNatureChirp },
-        { label: 'Rustle', fn: playNatureRustle },
-        { label: 'Splash', fn: playNatureSplash }
       ]
     }
   ]
@@ -278,11 +196,6 @@ const FeedbackPressDemo = () => {
               <Text variant='labelLarge' style={styles.soundSetLabel}>
                 {set.label}
               </Text>
-              {set.note && (
-                <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
-                  {set.note}
-                </Text>
-              )}
               <View style={styles.row}>
                 {set.sounds.map((s) => (
                   <Chip key={s.label} soundDisabled onPress={s.fn} compact>

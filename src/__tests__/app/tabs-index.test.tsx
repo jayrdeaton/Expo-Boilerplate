@@ -1,6 +1,5 @@
 import { FeedbackPressProvider } from '@rific/feedback-press'
 import { render } from '@testing-library/react-native'
-import React from 'react'
 import * as RNPaper from 'react-native-paper'
 
 import HomeScreen from '../../app/(tabs)/index'

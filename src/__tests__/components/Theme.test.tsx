@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { act, render } from '@testing-library/react-native'
-import React from 'react'
 import { Text } from 'react-native'
 import { Provider as ReduxProvider } from 'react-redux'
 

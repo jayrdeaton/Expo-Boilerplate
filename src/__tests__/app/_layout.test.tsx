@@ -1,7 +1,6 @@
 import { useUpdater } from '@rific/updater'
 import { render } from '@testing-library/react-native'
 import * as SplashScreen from 'expo-splash-screen'
-import React from 'react'
 
 import RootLayout from '../../app/_layout'
 

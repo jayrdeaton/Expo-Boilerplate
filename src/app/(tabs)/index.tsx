@@ -107,10 +107,10 @@ type PackageCardProps = { pkg: PackageEntry; mode: 'elevated' | 'outlined'; cta:
 const PackageCard = ({ pkg, mode, cta }: PackageCardProps) => {
   const router = useRouter()
   return (
-    <Card mode={mode} style={styles.card} onPress={() => router.push(pkg.route as any)}>
+    <Card mode={mode} style={styles.card} onPress={() => router.push(pkg.route)}>
       <Card.Title title={pkg.label} titleVariant='labelLarge' subtitle={pkg.description} subtitleNumberOfLines={2} left={(props) => <Avatar.Icon {...props} icon={pkg.icon} size={40} />} />
       <Card.Actions>
-        <Button compact onPress={() => router.push(pkg.route as any)}>
+        <Button compact onPress={() => router.push(pkg.route)}>
           {cta}
         </Button>
       </Card.Actions>

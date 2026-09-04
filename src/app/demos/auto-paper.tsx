@@ -190,7 +190,7 @@ const AutoPaperDemo = () => {
             </Text>
             {', any two arbitrary colors can derive a third that stays maximally distinct from both.'}
           </Text>
-          <Button mode='outlined' onPress={() => router.push('/demos/auto-paper-two-color' as any)}>
+          <Button mode='outlined' onPress={() => router.push('/demos/auto-paper-two-color')}>
             Open example
           </Button>
 

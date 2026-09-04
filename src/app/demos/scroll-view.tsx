@@ -118,7 +118,7 @@ const ScrollViewDemo = () => {
           </Text>
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             {'Applies a blur backdrop to the header and footer chrome. Powered by '}
-            <Text variant='bodySmall' style={{ color: theme.colors.primary }} onPress={() => router.push('/demos/auto-paper' as any)}>
+            <Text variant='bodySmall' style={{ color: theme.colors.primary }} onPress={() => router.push('/demos/auto-paper')}>
               @rific/auto-paper
             </Text>
             {'. Toggle here affects all scroll-view screens.'}
@@ -192,7 +192,7 @@ const ScrollViewDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Standard flat list with pull-to-search and blur chrome.
           </Text>
-          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-flat-list' as any)}>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-flat-list')}>
             Open example
           </Button>
 
@@ -203,7 +203,7 @@ const ScrollViewDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Grouped list with sticky blur headers and pull-to-search.
           </Text>
-          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-section-list' as any)}>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-section-list')}>
             Open example
           </Button>
 
@@ -214,7 +214,7 @@ const ScrollViewDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Full-page horizontal pager. Header and footer are automatically fixed; a Start chip replaces the Top chip.
           </Text>
-          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-horizontal' as any)}>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-horizontal')}>
             Open example
           </Button>
 
@@ -225,7 +225,7 @@ const ScrollViewDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Bring your own list component with pull-to-search, sort filters, and a centerContent segmented control.
           </Text>
-          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-custom-list' as any)}>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-custom-list')}>
             Open example
           </Button>
 
@@ -236,7 +236,7 @@ const ScrollViewDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Toggles numColumns between a single-column list and a 3-column grid via a key remount, a repro bed for the header/offset remount bug.
           </Text>
-          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-grid' as any)}>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-grid')}>
             Open example
           </Button>
 
@@ -251,7 +251,7 @@ const ScrollViewDemo = () => {
             </Text>
             {'.'}
           </Text>
-          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-flash-list' as any)}>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-flash-list')}>
             Open example
           </Button>
 
@@ -262,7 +262,7 @@ const ScrollViewDemo = () => {
           <Text variant='bodySmall' style={[styles.hint, { color: theme.colors.onSurfaceVariant }]}>
             Adds the keyboard height to the bottom content inset so focused fields stay visible above the keyboard. Native only, no effect on web.
           </Text>
-          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-keyboard' as any)}>
+          <Button mode='outlined' onPress={() => router.push('/demos/scroll-view-keyboard')}>
             Open example
           </Button>
         </ScrollView>
